@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+	         xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
+             x:Class="XamCnblogs.UI.Cells.ArticlesCommentItemCell">
+    <Grid
+             x:Name="GridView"
+             Padding="{StaticResource StandardPadding}" 
+              BackgroundColor="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <ffimageloading:CachedImage   Grid.Row="0"
+               Grid.Column="0"
+                HorizontalOptions="CenterAndExpand" 
+                VerticalOptions="StartAndExpand"
+			    WidthRequest="50" 
+                HeightRequest="50"
+                LoadingPlaceholder = "avatar_placeholder.png"
+	            ErrorPlaceholder = "avatar_placeholder.png"
+			    DownsampleToViewSize="true"
+			    Source = "{Binding FaceUrlDisplay}">
+            <ffimageloading:CachedImage.Transformations>
+                <fftransformations:CircleTransformation />
+            </ffimageloading:CachedImage.Transformations>
+        </ffimageloading:CachedImage>
+        <StackLayout Grid.Row="0"
+               Grid.Column="1">
+            <Label
+               Text="{Binding Author}"
+                Style="{StaticResource PrimaryTextStyle}" />
+            <controls:CommentItemLabel
+                Text="{Binding ContentDisplay}"
+                Style="{StaticResource SecondaryTextStyle}"/>
+            <Label Grid.Row="2"
+               Grid.Column="1"
+               Text="{Binding DateDisplay}"
+               Style="{StaticResource SecondaryTextStyle}" 
+               HorizontalOptions="EndAndExpand"/>
+        </StackLayout>
+    </Grid>
+</ContentView>

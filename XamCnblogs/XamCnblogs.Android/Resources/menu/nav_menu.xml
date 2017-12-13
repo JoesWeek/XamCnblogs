@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+  <group android:id="@+id/nav_section_main"
+      android:checkableBehavior="single">
+    <item
+        android:id="@+id/menu_blog"
+        android:icon="@drawable/menu_blog"
+        android:title="博文"/>
+    <item
+        android:id="@+id/menu_news"
+        android:icon="@drawable/menu_news"
+        android:title="新闻"/>
+    <item
+        android:id="@+id/menu_kbarticles"
+        android:icon="@drawable/menu_kbarticles"
+        android:title="知识库" />
+    <item
+        android:id="@+id/menu_statuses"
+        android:icon="@drawable/menu_statuses"
+        android:title="闪存" />
+    <item
+        android:id="@+id/menu_question"
+        android:icon="@drawable/menu_question"
+        android:title="博问" />
+    <item
+        android:id="@+id/menu_bookmarks"
+        android:icon="@drawable/menu_bookmarks"
+        android:title="收藏" />
+  </group>
+
+  <item android:title="关于" >
+    <menu>
+      <item
+          android:id="@+id/menu_setting"
+          android:icon="@drawable/menu_setting"
+          android:title="设置"
+          android:checkable="true" />
+      <item
+          android:id="@+id/menu_share"
+          android:icon="@drawable/menu_share"
+          android:title="分享"
+          android:checkable="true" />
+    </menu>
+  </item>
+</menu>
