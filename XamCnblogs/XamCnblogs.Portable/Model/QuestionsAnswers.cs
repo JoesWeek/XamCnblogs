@@ -35,5 +35,13 @@ namespace XamCnblogs.Portable.Model
                 return CommentCounts > 0 ? CommentCounts.ToString() : "回复";
             }
         }
+        [JsonIgnore]
+        public string AnswerDisplay
+        {
+            get
+            {
+                return HtmlTemplate.ReplaceHtml(Answer);
+            }
+        }
     }
 }

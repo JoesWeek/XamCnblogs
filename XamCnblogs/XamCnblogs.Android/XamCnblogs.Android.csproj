@@ -93,6 +93,7 @@
     <Compile Include="Helpers\Toaster.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Renderers\CommentEditorRenderer.cs" />
+    <Compile Include="Renderers\CommentItemLabelRenderer.cs" />
     <Compile Include="Renderers\DetailsPageWebViewRenderer.cs" />
     <Compile Include="Renderers\AuthorizeWebViewRenderer.cs" />
     <Compile Include="Renderers\ItemLabelRenderer.cs" />
@@ -217,6 +218,18 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\commenteditor_pressed.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\placeholder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_tab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_reply.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_gold.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

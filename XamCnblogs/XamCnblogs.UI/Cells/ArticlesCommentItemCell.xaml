@@ -13,15 +13,15 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="50"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <ffimageloading:CachedImage   Grid.Row="0"
                Grid.Column="0"
                 HorizontalOptions="CenterAndExpand" 
                 VerticalOptions="StartAndExpand"
-			    WidthRequest="50" 
-                HeightRequest="50"
+			    WidthRequest="35" 
+                HeightRequest="35"
                 LoadingPlaceholder = "avatar_placeholder.png"
 	            ErrorPlaceholder = "avatar_placeholder.png"
 			    DownsampleToViewSize="true"
@@ -36,10 +36,10 @@
                Text="{Binding Author}"
                 Style="{StaticResource PrimaryTextStyle}" />
             <controls:CommentItemLabel
-                Text="{Binding ContentDisplay}"
-                Style="{StaticResource SecondaryTextStyle}"/>
-            <Label Grid.Row="2"
-               Grid.Column="1"
+               LineSpacing="1.3"
+               Text="{Binding Body}"
+               Style="{DynamicResource SecondaryTextStyle}" />
+            <Label
                Text="{Binding DateDisplay}"
                Style="{StaticResource SecondaryTextStyle}" 
                HorizontalOptions="EndAndExpand"/>

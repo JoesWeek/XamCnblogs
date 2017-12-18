@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+	         xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
+             x:Class="XamCnblogs.UI.Cells.NewsItemCell">
+    <Grid  
+             x:Name="GridView"
+             Padding="{StaticResource StandardPadding}" 
+             BackgroundColor="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="100"/>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0"
+               Grid.ColumnSpan="2"
+               Text="{Binding Title}"
+                Style="{StaticResource PrimaryTextStyle}" />
+        <StackLayout Grid.Row="1"
+               Grid.ColumnSpan="2"
+               Orientation="Horizontal">
+            <ffimageloading:CachedImage  
+                HorizontalOptions="Center" 
+                VerticalOptions="Center"
+			    WidthRequest="70" 
+                HeightRequest="70"
+                LoadingPlaceholder = "placeholder.png"
+	            ErrorPlaceholder = "placeholder.png"
+			    DownsampleToViewSize="true"
+			    Source = "{Binding TopicIcon}">
+            </ffimageloading:CachedImage>
+            <controls:ItemLabel
+               LineSpacing="1.3"
+               MaxLines="4"
+                VerticalOptions="CenterAndExpand"
+               Text="{Binding Summary}"
+               Style="{StaticResource SecondaryTextStyle}" />
+        </StackLayout>
+        <Label Grid.Row="2"
+               Grid.Column="0"
+               Text="{Binding DiggValue}"
+               Style="{StaticResource SecondaryTextStyle}" />
+        <Label Grid.Row="2"
+               Grid.Column="1"
+               Text="{Binding DateDisplay}"
+               Style="{StaticResource SecondaryTextStyle}" 
+               HorizontalOptions="EndAndExpand"/>
+    </Grid>
+</ContentView>

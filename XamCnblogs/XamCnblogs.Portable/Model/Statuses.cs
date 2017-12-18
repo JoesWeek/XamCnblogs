@@ -31,14 +31,6 @@ namespace XamCnblogs.Portable.Model
             }
         }
         [JsonIgnore]
-        public string CommentDisplay
-        {
-            get
-            {
-                return CommentCount > 0 ? "共有 " + CommentCount + " 条回复" : "暂时没有回复";
-            }
-        }
-        [JsonIgnore]
         public string DateDisplay { get { return DateAdded.ToUniversalTime().Humanize(); } }
         [JsonIgnore]
         public List<StatusesComments> Comments { get; set; } = new List<StatusesComments>();

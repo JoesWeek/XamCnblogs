@@ -1,5 +1,6 @@
 ﻿using FormsToolkit;
 using Rg.Plugins.Popup.Extensions;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ using Xamarin.Forms.Xaml;
 using XamCnblogs.Portable.Helpers;
 using XamCnblogs.Portable.Model;
 using XamCnblogs.Portable.ViewModel;
+using XamCnblogs.UI.Pages.New;
 
 namespace XamCnblogs.UI.Pages.Article
 {
@@ -66,8 +68,8 @@ namespace XamCnblogs.UI.Pages.Article
             else
             {
                 var page = new ArticlesCommentPopupPage(articles.BlogApp, articles.Id, new Action<ArticlesComments>(OnResult));
-
-                await Navigation.PushPopupAsync(page);
+                if (page != null && Navigation != null)
+                    await Navigation.PushPopupAsync(page);
             }
         }
         private void OnResult(ArticlesComments result)

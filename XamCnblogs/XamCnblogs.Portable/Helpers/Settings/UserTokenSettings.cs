@@ -27,7 +27,7 @@ namespace XamCnblogs.Portable.Helpers
         /// </summary>
         public bool HasExpiresIn()
         {
-            if (UserToken != string.Empty && UserTokenRefreshTime.AddSeconds(UserExpiresIn) < DateTime.Now)
+            if (UserToken != null && UserTokenRefreshTime.AddSeconds(UserExpiresIn) > DateTime.Now)
             {
                 return false;
             }

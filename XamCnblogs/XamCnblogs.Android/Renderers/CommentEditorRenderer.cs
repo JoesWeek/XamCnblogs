@@ -27,7 +27,7 @@ namespace XamCnblogs.Droid.Renderers
                 var element = e.NewElement as CommentEditor;
                 this.Control.Hint = element.Placeholder;
                 this.Control.TextSize = 13;
-                this.Control.Background = Context.GetDrawable(Resource.Drawable.commenteditor_normal);
+                this.Control.Background = Context.GetDrawable(Resource.Drawable.commenteditor);
 
                 IntPtr IntPtrtextViewClass = JNIEnv.FindClass(typeof(TextView));
                 IntPtr mCursorDrawableResProperty = JNIEnv.GetFieldID(IntPtrtextViewClass, "mCursorDrawableRes", "I");

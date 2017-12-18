@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
+             x:Class="XamCnblogs.UI.Pages.KbArticle.KbArticlesDetailsPage"
+             Title="{Binding Title}"
+             BackgroundColor="{StaticResource Background}">
+    <StackLayout Spacing="0">
+        <controls:LoadMoreListView
+            x:Name="KbArticlesDetailsView"
+            Header="{Binding KbArticlesDetails}"
+            HasUnevenRows="True"
+            IsPullToRefreshEnabled="True"
+            RefreshCommand="{Binding RefreshCommand}"
+            IsRefreshing="{Binding IsBusy}"
+            CanLoadMore="False"
+            BackgroundColor="White"
+            SeparatorColor="{StaticResource Divider}">
+            <controls:LoadMoreListView.HeaderTemplate>
+                <DataTemplate>
+                    <Grid
+                             x:Name="GridView"
+                             BackgroundColor="White">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0"
+                                IsVisible="{Binding HasContent}"
+                                Margin="{StaticResource StandardPadding}"
+                                Text="{Binding Title}"
+                                Style="{StaticResource TitleTextStyle}"/>
+                        <StackLayout Grid.Row="1"
+                              Orientation="Horizontal"
+                              Margin="{StaticResource StandardPadding}"
+                              IsVisible="{Binding HasContent}">
+                            <Label
+                                   Text="{Binding DateDisplay}"
+                                   Style="{StaticResource SecondaryTextStyle}"
+                                   VerticalOptions="CenterAndExpand" />
+                        </StackLayout>
+                        <controls:DetailsPageWebView Grid.Row="2"
+                               ContentType="StringData" 
+                               Source="{Binding Content}" 
+                               Margin="{StaticResource StandardPadding}"
+                               IsVisible="{Binding HasContent}" />
+                        <StackLayout Grid.Row="3"
+                               HeightRequest="300"
+                               IsVisible="{Binding HasError}">
+                            <StackLayout
+                                   HorizontalOptions="CenterAndExpand"
+                                   VerticalOptions="EndAndExpand">
+                                <Label
+                                        Text="似乎出了点问题"
+                                        Style="{StaticResource SecondaryTextStyle}"
+                                        HorizontalOptions="CenterAndExpand" />
+                                <Label
+                                        Text="重新加载"
+                                        Style="{StaticResource SecondaryTextStyle}"
+                                        HorizontalOptions="CenterAndExpand">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnTapped"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </StackLayout>
+                        </StackLayout>
+                    </Grid>
+                </DataTemplate>
+            </controls:LoadMoreListView.HeaderTemplate>
+        </controls:LoadMoreListView>
+        <StackLayout 
+            Spacing="0"
+            BackgroundColor="White"
+            VerticalOptions="End">
+            <controls:HeaderDivider
+                VerticalOptions="Start"/>
+            <Grid
+                x:Name="BottomGridView"
+                VerticalOptions="CenterAndExpand"
+                Padding="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="45" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <StackLayout  Grid.Row="0" Grid.Column="1" Spacing="3" VerticalOptions="CenterAndExpand">
+                    <Image Source="icon_bookmarks.png" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                    <Label Text="收藏" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Style="{StaticResource MoreSecondaryStyle}"/>
+                </StackLayout>
+                <StackLayout  Grid.Row="0" Grid.Column="2" Spacing="3" VerticalOptions="CenterAndExpand">
+                    <Image Source="icon_digg.png" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                    <Label Text="{Binding KbArticlesDetails.DiggDisplay}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Style="{StaticResource MoreSecondaryStyle}"/>
+                </StackLayout>
+                <StackLayout  Grid.Row="0" Grid.Column="3" Spacing="3" VerticalOptions="CenterAndExpand">
+                    <Image Source="icon_read.png" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                    <Label Text="{Binding KbArticlesDetails.ViewDisplay}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Style="{StaticResource MoreSecondaryStyle}"/>
+                </StackLayout>
+            </Grid>
+        </StackLayout>
+    </StackLayout>
+</ContentPage>

@@ -36,9 +36,23 @@ namespace XamCnblogs.Portable.Model
         [JsonIgnore]
         public string DateDisplay => DateAdded.ToUniversalTime().Humanize();
         [JsonIgnore]
-        public string DiggValue => AnswerCount + " 回答 · " + ViewCount + " 阅读";
-        [JsonIgnore]
         public string TagsDisplay => Tags == null ? "" : Tags.Replace(',', ' ');
+        [JsonIgnore]
+        public string DiggValue
+        {
+            get
+            {
+                return DiggCount + " 推荐 · " + AnswerCount + " 回答 · " + ViewCount + " 阅读";
+            }
+        }
+        [JsonIgnore]
+        public string ContentDisplay
+        {
+            get
+            {
+                return HtmlTemplate.ReplaceHtml(Content);
+            }
+        }
     }
     public class QuestionUserInfo
     {

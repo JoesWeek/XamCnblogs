@@ -13,7 +13,7 @@ namespace XamCnblogs.Portable.ViewModel
 {
     public class NewsDetailsViewModel : ViewModelBase
     {
-        public ObservableRangeCollection<NewsComment> NewsComments { get; } = new ObservableRangeCollection<NewsComment>();
+        public ObservableRangeCollection<NewsComments> NewsComments { get; } = new ObservableRangeCollection<NewsComments>();
         private News news;
         public DateTime NextRefreshTime { get; set; }
         private int pageIndex = 1;
@@ -33,15 +33,14 @@ namespace XamCnblogs.Portable.ViewModel
 
         public NewsDetailsViewModel(News news)
         {
-            NextRefreshTime = DateTime.Now.AddMinutes(15);
             this.news = news;
             Title = news.Title;
             NewsDetails = new NewsDetailsModel()
             {
                 HasContent = false,
-                DiggDisplay = "推荐 " + news.DiggCount,
-                CommentDisplay = news.CommentCount.ToString(),
-                ViewDisplay = "阅读 " + news.ViewCount,
+                DiggDisplay = news.DiggCount > 0 ? news.DiggCount.ToString() : "推荐",
+                CommentDisplay = news.CommentCount > 0 ? news.CommentCount.ToString() : "评论",
+                ViewDisplay = news.ViewCount > 0 ? news.ViewCount.ToString() : "阅读",
                 DateDisplay = "发布于 " + news.DateDisplay
             };
         }
@@ -61,10 +60,10 @@ namespace XamCnblogs.Portable.ViewModel
                             news.Body = JsonConvert.DeserializeObject<string>(result.Message.ToString());
 
                             NewsDetails.Title = news.Title;
-                            NewsDetails.Content = news.Body;
-                            NewsDetails.DiggDisplay = "推荐 " + news.DiggCount;
-                            NewsDetails.CommentDisplay = news.CommentCount.ToString();
-                            NewsDetails.ViewDisplay = "阅读 " + news.ViewCount;
+                            NewsDetails.Content = news.BodyDisplay;
+                            NewsDetails.DiggDisplay = news.DiggCount > 0 ? news.DiggCount.ToString() : "推荐";
+                            NewsDetails.CommentDisplay = news.CommentCount > 0 ? news.CommentCount.ToString() : "评论";
+                            NewsDetails.ViewDisplay = news.ViewCount > 0 ? news.ViewCount.ToString() : "阅读";
                             NewsDetails.DateDisplay = "发布于 " + news.DateDisplay;
                             NewsDetails.HasError = false;
                             NewsDetails.HasContent = true;
@@ -115,7 +114,7 @@ namespace XamCnblogs.Portable.ViewModel
             var result = await StoreManager.NewsCommentService.GetCommentAsync(news.Id, pageIndex);
             if (result.Success)
             {
-                var news = JsonConvert.DeserializeObject<List<NewsComment>>(result.Message.ToString());
+                var news = JsonConvert.DeserializeObject<List<NewsComments>>(result.Message.ToString());
                 if (news.Count > 0)
                 {
                     if (pageIndex == 1 && NewsComments.Count > 0)
@@ -135,8 +134,15 @@ namespace XamCnblogs.Portable.ViewModel
             {
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
             }
-        }
 
+        }
+        public void AddComment(NewsComments comment)
+        {
+            NewsComments.Add(comment);
+            if (LoadStatus == LoadMoreStatus.StausNodata)
+                LoadStatus = LoadMoreStatus.StausEnd;
+            NewsDetails.CommentDisplay = (news.CommentCount + 1).ToString();
+        }
         public class NewsDetailsModel : BaseViewModel
         {
             string diggDisplay;

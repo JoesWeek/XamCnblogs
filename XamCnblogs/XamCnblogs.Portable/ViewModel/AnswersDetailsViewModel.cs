@@ -43,7 +43,9 @@ namespace XamCnblogs.Portable.ViewModel
             AnswersDetails.IconDisplay = answers.AnswerUserInfo.IconDisplay;
             AnswersDetails.UserDisplay = answers.UserDisplay;
             AnswersDetails.IsBest = answers.IsBest;
-            AnswersDetails.Answer = answers.Answer;
+            AnswersDetails.Answer = answers.AnswerDisplay;
+            AnswersDetails.DiggDisplay = answers.DiggCount > 0 ? answers.DiggCount.ToString() : "推荐";
+            AnswersDetails.CommentDisplay = answers.CommentCounts > 0 ? answers.CommentCounts.ToString() : "评论";
         }
         ICommand refreshCommand;
         public ICommand RefreshCommand =>
@@ -87,6 +89,13 @@ namespace XamCnblogs.Portable.ViewModel
                 }
             }));
 
+        public void AddComment(AnswersComment comment)
+        {
+            AnswersComment.Add(comment);
+            if (LoadStatus == LoadMoreStatus.StausNodata)
+                LoadStatus = LoadMoreStatus.StausEnd;
+            AnswersDetails.CommentDisplay = (answers.CommentCounts + 1).ToString();
+        }
         public class AnswersDetailsModel : BaseViewModel
         {
             string userName;
@@ -124,6 +133,12 @@ namespace XamCnblogs.Portable.ViewModel
             {
                 get { return isBest; }
                 set { SetProperty(ref isBest, value); }
+            }
+            string commentDisplay;
+            public string CommentDisplay
+            {
+                get { return commentDisplay; }
+                set { SetProperty(ref commentDisplay, value); }
             }
         }
     }

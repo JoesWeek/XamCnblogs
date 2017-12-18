@@ -12,6 +12,9 @@ namespace XamCnblogs.Portable.Model
     public enum AppPage
     {
         Articles,
-        News
+        News,
+        KbArticles,
+        Statuses,
+        Questions
     }
 }

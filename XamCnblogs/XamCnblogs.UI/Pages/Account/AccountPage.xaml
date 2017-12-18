@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+	         xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
+             x:Class="XamCnblogs.UI.Pages.Account.AccountPage"
+             Title="我">
+    <StackLayout >
+        <StackLayout ></StackLayout>
+        <Frame Padding="10">
+            <StackLayout Orientation="Horizontal" VerticalOptions="CenterAndExpand" Padding="5">
+                <ffimageloading:CachedImage 
+                    x:Name="AvatarLayout"
+                    HorizontalOptions="Center" 
+                    VerticalOptions="Center"
+			        WidthRequest="60" 
+                    HeightRequest="60"
+                    LoadingPlaceholder = "avatar_placeholder.png"
+	                ErrorPlaceholder = "avatar_placeholder.png"
+			        DownsampleToViewSize="true">
+                    <ffimageloading:CachedImage.Transformations>
+                        <fftransformations:CircleTransformation />
+                    </ffimageloading:CachedImage.Transformations>
+                </ffimageloading:CachedImage>
+                <StackLayout  
+                    VerticalOptions="CenterAndExpand">
+                    <Label
+                        x:Name="UserName"
+                                   Text="JoesWeek"
+                                   Style="{StaticResource PrimaryTextStyle}"
+                                   VerticalOptions="CenterAndExpand"/>
+                    <Label
+                        x:Name="UserSeniority"
+                                   Text="园龄：11个月"
+                                   Style="{StaticResource SecondaryTextStyle}"
+                                   VerticalOptions="CenterAndExpand"/>
+                    <Label
+                        x:Name="Login"
+                                   Text="点击登录"
+                                   Style="{StaticResource PrimaryTextStyle}"
+                                   VerticalOptions="CenterAndExpand"/>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnLogin"/>
+                    </StackLayout.GestureRecognizers>
+                </StackLayout>
+            </StackLayout>
+        </Frame>
+        <Frame Padding="0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="50" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Image Grid.Row="0" Grid.Column="0" Source="menu_blog.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+                <StackLayout   Grid.Row="0" Grid.Column="1"
+                    VerticalOptions="CenterAndExpand">
+                    <Label
+                                   Text="我的博文"
+                                   Style="{StaticResource PrimaryTextStyle}" VerticalOptions="CenterAndExpand"/>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnBlog"/>
+                    </StackLayout.GestureRecognizers>
+                </StackLayout>
+                <controls:HeaderDivider  Grid.Row="1" Grid.Column="1"/>
+                <Image Grid.Row="2" Grid.Column="0" Source="menu_bookmarks.png" VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand"/>
+                <StackLayout Grid.Row="2" Grid.Column="1"
+                    VerticalOptions="CenterAndExpand">
+                    <Label
+                                   Text="我的收藏"
+                                   Style="{StaticResource PrimaryTextStyle}" VerticalOptions="CenterAndExpand"/>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnBookmarks"/>
+                    </StackLayout.GestureRecognizers>
+                </StackLayout>
+            </Grid>
+        </Frame>
+        <StackLayout
+                    x:Name="LogoutLayout"
+                    HorizontalOptions="CenterAndExpand"
+                    IsVisible="False"
+                    Padding="10">
+            <Label
+                                   Text="退出账号"
+                                   Style="{StaticResource LogoutStyle}"/>
+            <StackLayout.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnLogout"/>
+            </StackLayout.GestureRecognizers>
+        </StackLayout>
+    </StackLayout>
+</ContentPage>

@@ -13,7 +13,8 @@
             <Color x:Key="SecondaryText">#757575</Color>
             <Color x:Key="MoreSecondaryText">#EBE8EB</Color>
             <Color x:Key="Icons">#FFFFFF</Color>
-            <Color x:Key="Divider">#BDBDBD</Color>
+            <Color x:Key="Divider">#EBE8EB</Color>
+            <Color x:Key="GoldText">#f47a20</Color>
             <Color x:Key="Background">#F4F4F4</Color>
 
             <Thickness x:Key="SmallPadding">4</Thickness>
@@ -28,8 +29,8 @@
             <OnPlatform x:TypeArguments="x:Double" Android="20" iOS="20" WinPhone="13" x:Key="TitleTextSize" />
 
             <Style x:Key="PrimaryTextStyle" TargetType="Label">
-                <Setter Property="TextColor" Value="{StaticResource PrimaryText}"/>
                 <Setter Property="FontSize" Value="{StaticResource PrimaryTextSize}" />
+                <Setter Property="TextColor" Value="{StaticResource PrimaryText}"/>
             </Style>
             <Style x:Key="SecondaryTextStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="{StaticResource SecondaryTextSize}" />
@@ -42,6 +43,14 @@
             <Style x:Key="TitleTextStyle" TargetType="Label">
                 <Setter Property="TextColor" Value="{StaticResource PrimaryText}"/>
                 <Setter Property="FontSize" Value="{StaticResource TitleTextSize}" />
+            </Style>
+            <Style x:Key="GoldTextStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{StaticResource SecondaryTextSize}" />
+                <Setter Property="TextColor" Value="{StaticResource GoldText}"/>
+            </Style>
+            <Style x:Key="LogoutStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="{DynamicResource SecondaryTextSize}" />
+                <Setter Property="TextColor" Value="Red"/>
             </Style>
         </ResourceDictionary>
     </Application.Resources>

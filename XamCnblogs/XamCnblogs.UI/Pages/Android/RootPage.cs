@@ -7,6 +7,10 @@ using Xamarin.Forms;
 using XamCnblogs.Portable.Model;
 using XamCnblogs.UI.Controls;
 using XamCnblogs.UI.Pages.Article;
+using XamCnblogs.UI.Pages.KbArticle;
+using XamCnblogs.UI.Pages.New;
+using XamCnblogs.UI.Pages.Question;
+using XamCnblogs.UI.Pages.Status;
 
 namespace XamCnblogs.UI.Pages.Android
 {
@@ -43,6 +47,18 @@ namespace XamCnblogs.UI.Pages.Android
                     case (int)AppPage.Articles:
                         pages.Add(menuId, new XamNavigationPage(new ArticlesTopTabbedPage()));
                         break;
+                    case (int)AppPage.News:
+                        pages.Add(menuId, new XamNavigationPage(new NewsTopTabbedPage()));
+                        break;
+                    case (int)AppPage.KbArticles:
+                        pages.Add(menuId, new XamNavigationPage(new KbArticlesPage()));
+                        break;
+                    case (int)AppPage.Statuses:
+                        pages.Add(menuId, new XamNavigationPage(new StatusesTopTabbedPage()));
+                        break;
+                    case (int)AppPage.Questions:
+                        pages.Add(menuId, new XamNavigationPage(new QuestionsTopTabbedPage()));
+                        break;
                 }
             }
 
@@ -63,7 +79,7 @@ namespace XamCnblogs.UI.Pages.Android
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            
+
             isRunning = true;
 
             await GoToDeepLink();

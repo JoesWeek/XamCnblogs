@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace XamCnblogs.Portable.Model
 {
-    public class NewsComment
+    public class NewsComments
     {
         public int CommentID { get; set; }
         public int ContentID { get; set; }
@@ -23,7 +23,7 @@ namespace XamCnblogs.Portable.Model
         public int AgreeCount { get; set; }
         public int AntiCount { get; set; }
         public int ParentCommentID { get; set; }
-        public NewsComment ParentComment { get; set; }
+        public NewsComments ParentComment { get; set; }
         [JsonIgnore]
         public string DateDisplay { get { return DateAdded.ToUniversalTime().Humanize(); } }
     }

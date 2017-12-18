@@ -28,15 +28,12 @@ namespace XamCnblogs.Portable.ViewModel
                 try
                 {
                     IsBusy = true;
+                    NextRefreshTime = DateTime.Now.AddMinutes(15);
+                    CanLoadMore = false;
+                    pageIndex = 1;
                     await Task.Run(async () =>
                     {
-                        CanLoadMore = false;
-                        NextRefreshTime = DateTime.Now.AddMinutes(15);
-                        pageIndex = 1;
-                        await Task.Run(async () =>
-                        {
-                            await ExecuteRefreshCommandAsync();
-                        });
+                        await ExecuteRefreshCommandAsync();
                     });
                 }
                 catch (Exception)
@@ -95,6 +92,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
+                Toast.SendToast(result.Message.ToString());
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
             }
         }

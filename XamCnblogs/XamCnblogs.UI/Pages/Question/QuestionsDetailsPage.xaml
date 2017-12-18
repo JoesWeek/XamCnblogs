@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+	         xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
+             xmlns:converter="clr-namespace:XamCnblogs.UI.Converters;assembly=XamCnblogs.UI"
+             xmlns:cells="clr-namespace:XamCnblogs.UI.Cells;assembly=XamCnblogs.UI"
+             x:Class="XamCnblogs.UI.Pages.Question.QuestionsDetailsPage"
+             Title="{Binding Title}"
+             BackgroundColor="{StaticResource Background}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:IsGoldConverter x:Key="IsGoldConverter" />
+            <converter:IsTagConverter x:Key="IsTagConverter" />
+            <converter:DealFlagConverter x:Key="DealFlagConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <StackLayout Spacing="0">
+        <controls:LoadMoreListView
+            x:Name="QuestionsDetailsView"
+            ItemsSource="{Binding QuestionAnswers}"
+            Header="{Binding QuestionsDetails}"
+            HasUnevenRows="True"
+            IsPullToRefreshEnabled="True"
+            RefreshCommand="{Binding RefreshCommand}"
+            IsRefreshing="{Binding IsBusy}"
+            LoadStatus="{Binding LoadStatus}"
+            CanLoadMore="{Binding CanLoadMore}"
+            FailHeight="70"
+            BackgroundColor="White"
+            SeparatorColor="{StaticResource Divider}">
+            <controls:LoadMoreListView.HeaderTemplate>
+                <DataTemplate>
+                    <Grid
+                         x:Name="GridView"
+                         BackgroundColor="White">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0"
+                                IsVisible="{Binding HasContent}"
+                                Margin="{StaticResource StandardPadding}"
+                                Text="{Binding Title}"
+                                Style="{StaticResource TitleTextStyle}"/>
+                        <StackLayout Grid.Row="1"
+                            Orientation="Horizontal"
+                            Margin="{StaticResource StandardPadding}">
+                            <StackLayout
+                               Spacing="10"
+                               Orientation="Horizontal"
+                               HorizontalOptions="FillAndExpand"
+                               VerticalOptions="CenterAndExpand">
+                                <ffimageloading:CachedImage 
+                                    HorizontalOptions="Center" 
+                                    VerticalOptions="Center"
+			                        WidthRequest="35"
+                                    HeightRequest="35"
+                                    LoadingPlaceholder = "avatar_placeholder.png"
+	                                ErrorPlaceholder = "avatar_placeholder.png"
+			                        DownsampleToViewSize="true"
+			                        Source = "{Binding IconDisplay}">
+                                    <ffimageloading:CachedImage.Transformations>
+                                        <fftransformations:CircleTransformation />
+                                    </ffimageloading:CachedImage.Transformations>
+                                </ffimageloading:CachedImage>
+                                <StackLayout
+                                    Orientation="Vertical"
+                                    Spacing="0"
+                                    HorizontalOptions="FillAndExpand"
+                                    VerticalOptions="CenterAndExpand">
+                                    <Label
+                                       Text="{Binding UserName}" 
+                                       Style="{StaticResource SecondaryTextStyle}"
+                                       VerticalOptions="CenterAndExpand"/>
+                                    <Label
+                                       Text="{Binding UserDisplay}" 
+                                       Style="{StaticResource SecondaryTextStyle}"
+                                       VerticalOptions="CenterAndExpand"/>
+                                </StackLayout>
+                            </StackLayout>
+                            <StackLayout
+                               Spacing="0"
+                               Orientation="Vertical"
+                               HorizontalOptions="EndAndExpand"
+                               VerticalOptions="CenterAndExpand">
+                                <StackLayout
+                                   Orientation="Horizontal"
+                                   HorizontalOptions="CenterAndExpand"
+                                   VerticalOptions="CenterAndExpand"
+                                   IsVisible="{Binding Award, Converter={StaticResource IsGoldConverter}}">
+                                    <Image Source="ic_gold.png"/>
+                                    <Label
+                                       Text="{Binding Award}"
+                                       Style="{StaticResource GoldTextStyle}" />
+                                </StackLayout>
+                                <Label
+                                   Text="{Binding DealFlagDisplay}"
+                                   FontSize="{StaticResource SecondaryTextSize}"
+                                   TextColor="{Binding DealFlag, Converter={StaticResource DealFlagConverter}}"
+                                   HorizontalOptions="CenterAndExpand"
+                                   VerticalOptions="CenterAndExpand" />
+                            </StackLayout>
+                        </StackLayout>
+                        <StackLayout  Grid.Row="2"
+                            Margin="{StaticResource StandardPadding}">
+                            <controls:DetailsPageWebView
+                               ContentType="StringData" 
+                               Source="{Binding Content}" 
+                               Margin="{StaticResource StandardPadding}"
+                               IsVisible="{Binding HasContent}" />
+                            <StackLayout
+                                 Orientation="Horizontal"
+                                 IsVisible="{Binding TagsDisplay, Converter={StaticResource IsTagConverter}}">
+                                <Image Source="ic_tab.png"/>
+                                <Label
+                                   Text="{Binding TagsDisplay}"
+                                   Style="{StaticResource SecondaryTextStyle}" />
+                            </StackLayout>
+                        </StackLayout>
+                        <StackLayout Grid.Row="3"
+                                 Spacing="0"
+                                 Padding="0"
+                                 BackgroundColor="{StaticResource Background}"
+                                 IsVisible="{Binding HasContent}">
+                            <controls:HeaderDivider/>
+                            <StackLayout
+                                    Spacing="0"
+                                    Padding="{StaticResource StandardPadding}"
+                                    Orientation="Horizontal">
+                                <Label
+                                    Text="所有回答"
+                                    Style="{StaticResource SecondaryTextStyle}"
+                                    HorizontalOptions="FillAndExpand"
+                                    VerticalOptions="CenterAndExpand"/>
+                            </StackLayout>
+                        </StackLayout>
+                        <StackLayout Grid.Row="4"
+                               HeightRequest="300"
+                               IsVisible="{Binding HasError}">
+                            <StackLayout
+                                   BackgroundColor="Red"
+                                   HorizontalOptions="CenterAndExpand"
+                                   VerticalOptions="EndAndExpand">
+                                <Label
+                                        Text="似乎出了点问题"
+                                        Style="{StaticResource SecondaryTextStyle}"
+                                        HorizontalOptions="CenterAndExpand" />
+                                <Label
+                                        Text="重新加载"
+                                        Style="{StaticResource SecondaryTextStyle}"
+                                        HorizontalOptions="CenterAndExpand">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnTapped"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </StackLayout>
+                        </StackLayout>
+                    </Grid>
+                </DataTemplate>
+            </controls:LoadMoreListView.HeaderTemplate>
+            <controls:LoadMoreListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <cells:QuestionsAnswersItemCell/>
+                    </ViewCell>
+                </DataTemplate>
+            </controls:LoadMoreListView.ItemTemplate>
+        </controls:LoadMoreListView>
+        <StackLayout 
+            Spacing="0"
+            BackgroundColor="White"
+            VerticalOptions="End">
+            <controls:HeaderDivider
+                VerticalOptions="Start"/>
+            <Grid
+                x:Name="BottomGridView"
+                VerticalOptions="CenterAndExpand"
+                Padding="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="45" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <StackLayout  Grid.Row="0"  Grid.Column="0"  Spacing="0" VerticalOptions="CenterAndExpand" Orientation="Horizontal">
+                    <Image Source="icon_edit.png" VerticalOptions="CenterAndExpand"></Image>
+                    <Label Text="想说点什么" VerticalOptions="CenterAndExpand"></Label>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnShowComment"/>
+                    </StackLayout.GestureRecognizers>
+                </StackLayout>
+                <StackLayout  Grid.Row="0" Grid.Column="1" Spacing="3" VerticalOptions="CenterAndExpand">
+                    <Image Source="icon_bookmarks.png" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                    <Label Text="收藏" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Style="{StaticResource MoreSecondaryStyle}"/>
+                </StackLayout>
+                <StackLayout  Grid.Row="0" Grid.Column="2" Spacing="3" VerticalOptions="CenterAndExpand">
+                    <Image Source="icon_digg.png" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                    <Label Text="{Binding QuestionsDetails.DiggDisplay}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Style="{StaticResource MoreSecondaryStyle}"/>
+                </StackLayout>
+                <StackLayout  Grid.Row="0" Grid.Column="3" Spacing="3" VerticalOptions="CenterAndExpand">
+                    <Image Source="icon_read.png" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                    <Label Text="{Binding QuestionsDetails.ViewDisplay}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Style="{StaticResource MoreSecondaryStyle}"/>
+                </StackLayout>
+                <StackLayout  Grid.Row="0"  Grid.Column="4" Spacing="3" VerticalOptions="CenterAndExpand">
+                    <Image Source="icon_reply.png" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                    <Label Text="{Binding QuestionsDetails.CommentDisplay}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Style="{StaticResource MoreSecondaryStyle}"></Label>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnScrollComment"/>
+                    </StackLayout.GestureRecognizers>
+                </StackLayout>
+            </Grid>
+        </StackLayout>
+    </StackLayout>
+</ContentPage>

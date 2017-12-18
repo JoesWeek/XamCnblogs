@@ -29,5 +29,13 @@ namespace XamCnblogs.Portable.Model
                 return DiggCount + " 推荐 · " + ViewCount + " 阅读";
             }
         }
+        [JsonIgnore]
+        public string BodyDisplay
+        {
+            get
+            {
+                return HtmlTemplate.ReplaceHtml(Body);
+            }
+        }
     }
 }

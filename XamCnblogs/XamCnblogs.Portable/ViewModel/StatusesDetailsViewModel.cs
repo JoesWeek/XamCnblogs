@@ -30,7 +30,7 @@ namespace XamCnblogs.Portable.ViewModel
         {
             this.statuses = statuses;
             CanLoadMore = false;
-            CommentDisplay = statuses.CommentCount > 0 ? statuses.CommentCount.ToString() : "评论";
+            CommentDisplay = statuses.CommentCount > 0 ? statuses.CommentCount.ToString() : "回复";
         }
         ICommand refreshCommand;
         public ICommand RefreshCommand =>
@@ -71,6 +71,13 @@ namespace XamCnblogs.Portable.ViewModel
                     IsBusy = false;
                 }
             }));
+        public void AddComment(StatusesComments comment)
+        {
+            Comments.Add(comment);
+            if (LoadStatus == LoadMoreStatus.StausNodata)
+                LoadStatus = LoadMoreStatus.StausEnd;
+            CommentDisplay = (Statuses.CommentCount + 1).ToString();
+        }
         LoadMoreStatus loadStatus;
         public LoadMoreStatus LoadStatus
         {

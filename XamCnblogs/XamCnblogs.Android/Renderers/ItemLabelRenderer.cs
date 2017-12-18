@@ -13,25 +13,22 @@ namespace XamCnblogs.Droid.Renderers
         {
 
         }
-        protected XamCnblogs.UI.Controls.ItemLabel ItemLabel { get; private set; }
         protected override void OnElementChanged(ElementChangedEventArgs<Label> e)
         {
             base.OnElementChanged(e);
-            if (e.OldElement == null)
+            if (e.NewElement != null)
             {
-                this.ItemLabel = (XamCnblogs.UI.Controls.ItemLabel)Element;
-            }
+                var itemLabel = (XamCnblogs.UI.Controls.ItemLabel)Element;
+                var lineSpacing = itemLabel.LineSpacing;
+                var maxLines = itemLabel.MaxLines;
 
-            var lineSpacing = this.ItemLabel.LineSpacing;
-            var maxLines = this.ItemLabel.MaxLines;
-
-            this.Control.SetLineSpacing(1f, (float)lineSpacing);
-            if (maxLines > 1)
-            {
-                this.Control.SetMaxLines(maxLines);
-                this.Control.Ellipsize = global::Android.Text.TextUtils.TruncateAt.End;
+                this.Control.SetLineSpacing(1f, (float)lineSpacing);
+                if (maxLines > 1)
+                {
+                    this.Control.SetMaxLines(maxLines);
+                    this.Control.Ellipsize = global::Android.Text.TextUtils.TruncateAt.End;
+                }
             }
-            this.UpdateLayout();
         }
     }
 }

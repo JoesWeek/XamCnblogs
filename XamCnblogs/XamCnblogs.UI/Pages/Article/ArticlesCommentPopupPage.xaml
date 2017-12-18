@@ -19,5 +19,34 @@
          BackgroundColor="{StaticResource Background}"
          Spacing="0">
         <controls:HeaderDivider/>
+        <StackLayout 
+             Padding="{StaticResource StandardPadding}">
+            <controls:CommentEditor
+                x:Name="Comment"
+                Placeholder ="随便说点什么吧"
+                TextColor="{StaticResource PrimaryText}"
+                IsEnabled="{Binding IsBusy, Converter={StaticResource OppositeConverter}}"
+                HeightRequest="100"/>
+            <StackLayout 
+                 HeightRequest="30"
+                 Orientation="Horizontal"
+                 HorizontalOptions="EndAndExpand">
+                <ActivityIndicator
+                    IsRunning="{Binding IsBusy}"
+                    Color="{StaticResource SecondaryText}"
+                    WidthRequest="20"
+                    HeightRequest="20"
+                    VerticalOptions="CenterAndExpand"/>
+                <Image
+                    x:Name="Send"
+                    IsVisible="{Binding IsBusy, Converter={StaticResource OppositeConverter}}"
+                    Source="menu_send_p.png" 
+                    VerticalOptions="CenterAndExpand">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnSendComment"/>
+                    </Image.GestureRecognizers>
+                </Image>
+            </StackLayout>
+        </StackLayout>
     </StackLayout>
 </pages:PopupPage>

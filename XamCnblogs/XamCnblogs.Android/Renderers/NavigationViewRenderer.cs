@@ -14,6 +14,7 @@ using Xamarin.Forms.Platform.Android;
 using XamCnblogs.Droid.Renderers;
 using XamCnblogs.Portable.Helpers;
 using XamCnblogs.Portable.Model;
+using XamCnblogs.UI.Pages.Account;
 
 [assembly: ExportRenderer(typeof(XamCnblogs.UI.Controls.NavigationView), typeof(NavigationViewRenderer))]
 namespace XamCnblogs.Droid.Renderers
@@ -74,6 +75,15 @@ namespace XamCnblogs.Droid.Renderers
                 case Resource.Id.menu_news:
                     id = (int)AppPage.News;
                     break;
+                case Resource.Id.menu_kbarticles:
+                    id = (int)AppPage.KbArticles;
+                    break;
+                case Resource.Id.menu_statuses:
+                    id = (int)AppPage.Statuses;
+                    break;
+                case Resource.Id.menu_question:
+                    id = (int)AppPage.Questions;
+                    break;
             }
             this.Element.OnNavigationItemSelected(new XamCnblogs.UI.Controls.NavigationItemSelectedEventArgs
             {
@@ -112,16 +122,20 @@ namespace XamCnblogs.Droid.Renderers
             }
             else
             {
-                author.Text = UserSettings.Current.DisplayName + "(" + UserSettings.Current.Seniority + ")";
+                author.Text = UserSettings.Current.DisplayName + (UserSettings.Current.Seniority != "" ? ("(园龄：" + UserSettings.Current.Seniority + ")") : "");
                 logout.Visibility = ViewStates.Visible;
             }
         }
 
-        void NavigateToLogin()
+        async void NavigateToLogin()
         {
             if (UserTokenSettings.Current.HasExpiresIn())
             {
                 MessagingService.Current.SendMessage(MessageKeys.NavigateLogin);
+            }
+            else
+            {
+                MessagingService.Current.SendMessage(MessageKeys.NavigateAccount);
             }
         }
         void NavigateToLogout()

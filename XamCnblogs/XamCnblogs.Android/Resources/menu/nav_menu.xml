@@ -22,10 +22,6 @@
         android:id="@+id/menu_question"
         android:icon="@drawable/menu_question"
         android:title="博问" />
-    <item
-        android:id="@+id/menu_bookmarks"
-        android:icon="@drawable/menu_bookmarks"
-        android:title="收藏" />
   </group>
 
   <item android:title="关于" >

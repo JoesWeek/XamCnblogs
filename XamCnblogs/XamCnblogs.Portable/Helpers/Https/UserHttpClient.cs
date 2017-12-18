@@ -38,38 +38,6 @@ namespace XamCnblogs.Portable.Helpers
             var response = await client.PostAsync(url, content);
             return await GetResultMessage(response);
         }
-        private async Task<ResponseMessage> CheckTokenAsync()
-        {
-            var message = new ResponseMessage();
-            if (UserTokenSettings.Current.HasExpiresIn())
-            {
-                try
-                {
-                    var result = await TokenAsync();
-                    if (result.Success)
-                    {
-                        UpdateToken(JsonConvert.DeserializeObject<Token>(result.Message.ToString()));
-                    }
-                    else
-                    {
-                        result.Success = false;
-                    }
-                    return result;
-                }
-                catch (Exception ex)
-                {
-                    message.Success = false;
-                    message.Message = ex.Message;
-
-                    return message;
-                }
-            }
-            else
-            {
-                message.Success = true;
-            }
-            return message;
-        }
         private async Task<ResponseMessage> TokenAsync()
         {
             var parameters = new Dictionary<string, string>();
@@ -86,16 +54,11 @@ namespace XamCnblogs.Portable.Helpers
             {
                 case HttpStatusCode.OK:
                     return new ResponseMessage() { Success = true, Message = await response.Content.ReadAsStringAsync() };
+                case HttpStatusCode.Created:
+                    return new ResponseMessage() { Success = true, Message = await response.Content.ReadAsStringAsync() };
                 default:
                     return new ResponseMessage() { Success = false, Message = response.StatusCode };
             }
-        }
-        private void UpdateToken(Token token)
-        {
-            //Settings.Current.AccessToken = token.AccessToken;
-            //Settings.Current.ExpiresIn = token.ExpiresIn;
-            //Settings.Current.TokenType = token.TokenType;
-            //Settings.Current.TokenRefreshTime = DateTime.Now;
         }
     }
 }

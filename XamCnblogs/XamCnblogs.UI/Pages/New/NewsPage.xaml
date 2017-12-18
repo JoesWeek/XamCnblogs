@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:cells="clr-namespace:XamCnblogs.UI.Cells;assembly=XamCnblogs.UI"
+		     xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
+             x:Class="XamCnblogs.UI.Pages.New.NewsPage"
+             BackgroundColor="{StaticResource Background}"
+             Title="新闻">
+    <controls:LoadMoreListView
+            x:Name="NewsListView"
+            ItemsSource="{Binding News}"
+            HasUnevenRows="True"
+            IsPullToRefreshEnabled="True"
+            RefreshCommand="{Binding RefreshCommand}"
+            IsRefreshing="{Binding IsBusy}"
+            LoadMoreCommand="{Binding LoadMoreCommand}"
+            LoadStatus="{Binding LoadStatus}"
+            CanLoadMore="{Binding CanLoadMore}"
+            BackgroundColor="White"
+            SeparatorColor="{StaticResource Divider}">
+        <controls:LoadMoreListView.ItemTemplate>
+            <DataTemplate>
+                <ViewCell>
+                    <cells:NewsItemCell/>
+                </ViewCell>
+            </DataTemplate>
+        </controls:LoadMoreListView.ItemTemplate>
+    </controls:LoadMoreListView>
+</ContentPage>

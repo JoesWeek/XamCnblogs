@@ -2,6 +2,7 @@
 using Humanizer;
 using Newtonsoft.Json;
 using System;
+using System.Globalization;
 
 namespace XamCnblogs.Portable.Model
 {
@@ -27,6 +28,14 @@ namespace XamCnblogs.Portable.Model
             get
             {
                 return DiggCount + " 推荐 · " + CommentCount + " 评论 · " + ViewCount + " 阅读";
+            }
+        }
+        [JsonIgnore]
+        public string BodyDisplay
+        {
+            get
+            {
+                return HtmlTemplate.ReplaceHtml(Body);
             }
         }
     }

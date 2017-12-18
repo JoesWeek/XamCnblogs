@@ -37,7 +37,10 @@ namespace XamCnblogs.Portable.ViewModel
             NextRefreshTime = DateTime.Now.AddMinutes(15);
             QuestionsDetails = new QuestionsDetailsModel()
             {
-                HasContent = false
+                HasContent = false,
+                DiggDisplay = questions.DiggCount > 0 ? questions.DiggCount.ToString() : "推荐",
+                CommentDisplay = questions.AnswerCount > 0 ? questions.AnswerCount.ToString() : "回答",
+                ViewDisplay = questions.ViewCount > 0 ? questions.ViewCount.ToString() : "阅读"
             };
         }
         ICommand refreshCommand;
@@ -58,7 +61,7 @@ namespace XamCnblogs.Portable.ViewModel
                             QuestionsDetails.Title = questions.Title;
                             QuestionsDetails.UserName = questions.QuestionUserInfo.UserName;
                             QuestionsDetails.UserDisplay = HtmlTemplate.GetScoreName(questions.QuestionUserInfo.QScore) + " · " + questions.QuestionUserInfo.QScore + "园豆" + " · 提问于 " + questions.DateDisplay;
-                            QuestionsDetails.Content = questions.Content;
+                            QuestionsDetails.Content = questions.ContentDisplay;
                             QuestionsDetails.IconDisplay = questions.QuestionUserInfo.IconDisplay;
                             QuestionsDetails.Award = questions.Award;
                             QuestionsDetails.TagsDisplay = questions.TagsDisplay;
@@ -128,6 +131,13 @@ namespace XamCnblogs.Portable.ViewModel
             }
         }
 
+        public void AddComment(QuestionsAnswers comment)
+        {
+            QuestionAnswers.Add(comment);
+            if (LoadStatus == LoadMoreStatus.StausNodata)
+                LoadStatus = LoadMoreStatus.StausEnd;
+            QuestionsDetails.CommentDisplay = (questions.AnswerCount + 1).ToString();
+        }
         public class QuestionsDetailsModel : BaseViewModel
         {
             string userName;

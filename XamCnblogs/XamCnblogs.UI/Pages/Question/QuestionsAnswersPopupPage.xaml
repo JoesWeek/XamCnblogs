@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
+             xmlns:animations="clr-namespace:XamCnblogs.UI.Animations;assembly=XamCnblogs.UI"
+             xmlns:converter="clr-namespace:XamCnblogs.UI.Converters;assembly=XamCnblogs.UI"
+             x:Class="XamCnblogs.UI.Pages.New.QuestionsAnswersPopupPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:OppositeConverter x:Key="OppositeConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <pages:PopupPage.Animation>
+        <animations:UserAnimation/>
+    </pages:PopupPage.Animation>
+    <StackLayout
+         VerticalOptions="End"
+         BackgroundColor="{StaticResource Background}"
+         Spacing="0">
+        <controls:HeaderDivider/>
+        <StackLayout 
+             Padding="{StaticResource StandardPadding}">
+            <controls:CommentEditor
+                x:Name="Comment"
+                Placeholder ="随便说点什么吧"
+                TextColor="{StaticResource PrimaryText}"
+                IsEnabled="{Binding IsBusy, Converter={StaticResource OppositeConverter}}"
+                HeightRequest="100"/>
+            <StackLayout 
+                 HeightRequest="30"
+                 Orientation="Horizontal"
+                 HorizontalOptions="EndAndExpand">
+                <ActivityIndicator
+                    IsRunning="{Binding IsBusy}"
+                    Color="{StaticResource SecondaryText}"
+                    WidthRequest="20"
+                    HeightRequest="20"
+                    VerticalOptions="CenterAndExpand"/>
+                <Image
+                    x:Name="Send"
+                    IsVisible="{Binding IsBusy, Converter={StaticResource OppositeConverter}}"
+                    Source="menu_send_p.png" 
+                    VerticalOptions="CenterAndExpand">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnSendComment"/>
+                    </Image.GestureRecognizers>
+                </Image>
+            </StackLayout>
+        </StackLayout>
+    </StackLayout>
+</pages:PopupPage>

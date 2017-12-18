@@ -29,7 +29,7 @@ namespace XamCnblogs.UI.Pages.Article
             this.result = result;
             InitializeComponent();
             BindingContext = new ArticlesCommentViewModel(blogApp, id, new Action<string>(OnClose));
-            //this.Comment.Focus();
+            this.Comment.Focus();
         }
         private void OnClose(object sender, EventArgs e)
         {
@@ -54,19 +54,19 @@ namespace XamCnblogs.UI.Pages.Article
         void OnSendComment(object sender, EventArgs args)
         {
             var toast = DependencyService.Get<IToast>();
-            //var comment = this.Comment.Text;
-            //if (comment == null)
-            //{
-            //    toast.SendToast("说点什么吧.");
-            //}
-            //else if (comment.Length < 5)
-            //{
-            //    toast.SendToast("多说一点吧.");
-            //}
-            //else
-            //{
-            //    ViewModel.CommentCommand.Execute(comment);
-            //}
+            var comment = this.Comment.Text;
+            if (comment == null)
+            {
+                toast.SendToast("说点什么吧.");
+            }
+            else if (comment.Length < 5)
+            {
+                toast.SendToast("多说一点吧.");
+            }
+            else
+            {
+                ViewModel.CommentCommand.Execute(comment);
+            }
         }
     }
 }

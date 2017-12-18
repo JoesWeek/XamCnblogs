@@ -1,4 +1,5 @@
 ﻿
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -27,26 +28,10 @@ namespace XamCnblogs.Portable.Services
         {
             var url = string.Format(Apis.ArticleCommentAdd, blogApp, id);
 
-            //content = @"{  'ReplyTo':0,  'ParentCommentId':0,  'Content': " + content + "}";
-
-
-            var client = new HttpClient
-            {
-                BaseAddress = new Uri(Apis.Host)
-            };
-            client.Timeout = TimeSpan.FromSeconds(10);
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(UserTokenSettings.Current.UserTokenType, UserTokenSettings.Current.UserToken);
-            var response = await client.PostAsync(url, new StringContent(content, Encoding.UTF8, "application/json"));
-            var mess = response.Content.ReadAsStringAsync().Result;
-
-            return await UserHttpClient.Current.PostAsync(url, new StringContent(content, Encoding.UTF8, "application/x-www-form-urlencoded"));
-
             var parameters = new Dictionary<string, string>();
-            parameters.Add("ReplyTo", "0");
-            parameters.Add("ParentCommentId", "0");
-            parameters.Add("Content", content);
+            parameters.Add("body", content);
 
-            return await UserHttpClient.Current.PostAsync(url, new FormUrlEncodedContent(parameters));
+            return await UserHttpClient.Current.PostAsync(url, new StringContent(JsonConvert.SerializeObject(parameters), Encoding.UTF8, "application/json"));
         }
     }
 }

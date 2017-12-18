@@ -22,10 +22,10 @@ namespace XamCnblogs.Portable.ViewModel
             NextRefreshTime = DateTime.Now.AddMinutes(15);
             CanLoadMore = false;
             //判断有没有登录
-            //if (position == 4 && Settings.Current.IsLoggedIn)
-            //{
-            //    LoadStatus = LoadMoreStatus.StausNologin;
-            //}
+            if (position == 4 && UserTokenSettings.Current.HasExpiresIn())
+            {
+                LoadStatus = LoadMoreStatus.StausNologin;
+            }
         }
         ICommand refreshCommand;
         public ICommand RefreshCommand =>
@@ -33,21 +33,21 @@ namespace XamCnblogs.Portable.ViewModel
             {
                 try
                 {
+                    NextRefreshTime = DateTime.Now.AddMinutes(15);
                     IsBusy = true;
                     CanLoadMore = false;
-                    NextRefreshTime = DateTime.Now.AddMinutes(15);
                     pageIndex = 1;
-                    //if (position == 4 && Settings.Current.IsLoggedIn)
-                    //{
-                    //    //判断有没有登录
-                    //    LoadStatus = LoadMoreStatus.StausNologin;
-                    //    if (Questions.Count > 0)
-                    //        Questions.Clear();
-                    //}
-                    //else
-                    //{
-                    //    await ExecuteRefreshCommandAsync();
-                    //}
+                    if (position == 4 && UserTokenSettings.Current.HasExpiresIn())
+                    {
+                        //判断有没有登录
+                        LoadStatus = LoadMoreStatus.StausNologin;
+                        if (Questions.Count > 0)
+                            Questions.Clear();
+                    }
+                    else
+                    {
+                        await ExecuteRefreshCommandAsync();
+                    }
                 }
                 catch (Exception)
                 {
@@ -106,6 +106,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
+                Toast.SendToast(result.Message.ToString());
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
             }
         }

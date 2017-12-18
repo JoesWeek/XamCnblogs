@@ -40,7 +40,7 @@ namespace XamCnblogs.Portable.ViewModel
             {
                 HasContent = false,
                 DiggDisplay = articles.DiggCount > 0 ? articles.DiggCount.ToString() : "推荐",
-                CommentDisplay = articles.CommentCount>0? articles.CommentCount.ToString():"评论",
+                CommentDisplay = articles.CommentCount > 0 ? articles.CommentCount.ToString() : "评论",
                 ViewDisplay = articles.ViewCount > 0 ? articles.ViewCount.ToString() : "阅读",
                 DateDisplay = "发布于 " + articles.DateDisplay
             };

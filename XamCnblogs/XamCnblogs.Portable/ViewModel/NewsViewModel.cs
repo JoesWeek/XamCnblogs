@@ -29,14 +29,11 @@ namespace XamCnblogs.Portable.ViewModel
             {
                 try
                 {
+                    NextRefreshTime = DateTime.Now.AddMinutes(15);
                     IsBusy = true;
-                    await Task.Run(async () =>
-                    {
-                        CanLoadMore = false;
-                        NextRefreshTime = DateTime.Now.AddMinutes(15);
-                        pageIndex = 1;
-                        await ExecuteRefreshCommandAsync();
-                    });
+                    CanLoadMore = false;
+                    pageIndex = 1;
+                    await ExecuteRefreshCommandAsync();
                 }
                 catch (Exception)
                 {
@@ -74,7 +71,7 @@ namespace XamCnblogs.Portable.ViewModel
             }));
         async Task ExecuteRefreshCommandAsync()
         {
-            var result = await StoreManager.NewsService.GetNewsAsync(position,pageIndex);
+            var result = await StoreManager.NewsService.GetNewsAsync(position, pageIndex);
             if (result.Success)
             {
                 var news = JsonConvert.DeserializeObject<List<News>>(result.Message.ToString());
@@ -95,6 +92,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
+                Toast.SendToast(result.Message.ToString());
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
             }
         }

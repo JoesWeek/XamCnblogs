@@ -75,6 +75,16 @@ namespace XamCnblogs.UI
                     }
                 }
             });
+            MessagingService.Current.Subscribe(MessageKeys.NavigateAccount, async m =>
+            {
+                Page page = new NavigationPage(new AccountPage());
+
+                var nav = Application.Current?.MainPage?.Navigation;
+                if (nav == null)
+                    return;
+
+                await NavigationService.PushModalAsync(nav, page);
+            });
         }
         protected override void OnSleep()
         {

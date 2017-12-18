@@ -114,18 +114,8 @@ namespace XamCnblogs.Portable.Helpers
             {
                 case HttpStatusCode.OK:
                     return new ResponseMessage() { Success = true, Message = await response.Content.ReadAsStringAsync() };
-                case HttpStatusCode.NotFound:
-                    return new ResponseMessage() { Success = false, Message = "404 NotFound" };
-                case HttpStatusCode.Unauthorized:
-                    return new ResponseMessage() { Success = false, Message = "401 Unauthorized" };
-                case HttpStatusCode.InternalServerError:
-                    return new ResponseMessage() { Success = false, Message = "500 InternalServerError" };
-                case HttpStatusCode.BadGateway:
-                    return new ResponseMessage() { Success = false, Message = "502 BadGateway" };
-                case HttpStatusCode.BadRequest:
-                    return new ResponseMessage() { Success = false, Message = "400 BadRequest" };
                 default:
-                    return new ResponseMessage() { Success = false, Message = "网络链接不可用 ,请稍后再试" };
+                    return new ResponseMessage() { Success = false, Message = response.StatusCode };
             }
         }
         private void UpdateToken(Token token)

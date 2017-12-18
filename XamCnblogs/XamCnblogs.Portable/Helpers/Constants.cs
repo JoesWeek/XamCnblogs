@@ -4,6 +4,7 @@
     {
         public const string NavigateLogin = "navigate_login";
         public const string NavigateToken = "navigate_token";
+        public const string NavigateAccount = "navigate_account";
     }
     public static class HtmlTemplate
     {

@@ -13,6 +13,7 @@ namespace XamCnblogs.Portable.ViewModel
 {
     public class KbArticlesDetailsViewModel : ViewModelBase
     {
+        public ObservableRangeCollection<string> KbArticlesComments { get; } = new ObservableRangeCollection<string>();
         private KbArticles articles;
         public DateTime NextRefreshTime { get; set; }
 
@@ -27,7 +28,13 @@ namespace XamCnblogs.Portable.ViewModel
             this.articles = articles;
             Title = articles.Title;
             NextRefreshTime = DateTime.Now.AddMinutes(15);
-            KbArticlesDetails = new KbArticlesDetailsModel();
+            KbArticlesDetails = new KbArticlesDetailsModel()
+            {
+                HasContent = false,
+                DiggDisplay = articles.DiggCount > 0 ? articles.DiggCount.ToString() : "推荐",
+                ViewDisplay = articles.ViewCount > 0 ? articles.ViewCount.ToString() : "阅读",
+                DateDisplay = "发布于 " + articles.DateDisplay
+            };
         }
         ICommand refreshCommand;
         public ICommand RefreshCommand =>
@@ -45,10 +52,18 @@ namespace XamCnblogs.Portable.ViewModel
                             articles.Body = JsonConvert.DeserializeObject<string>(result.Message.ToString());
 
                             KbArticlesDetails.Title = articles.Title;
-                            KbArticlesDetails.Content = articles.Body;
+                            KbArticlesDetails.Content = articles.BodyDisplay;
                             KbArticlesDetails.DiggDisplay = articles.DiggCount > 0 ? articles.DiggCount.ToString() : "推荐";
                             KbArticlesDetails.ViewDisplay = articles.ViewCount > 0 ? articles.ViewCount.ToString() : "阅读";
                             KbArticlesDetails.DateDisplay = "发布与 " + articles.DateDisplay;
+
+                            KbArticlesDetails.HasError = false;
+                            KbArticlesDetails.HasContent = true;
+                        }
+                        else
+                        {
+                            KbArticlesDetails.HasError = true;
+                            KbArticlesDetails.HasContent = false;
                         }
                     });
                 }
@@ -85,6 +100,18 @@ namespace XamCnblogs.Portable.ViewModel
             {
                 get { return dateDisplay; }
                 set { SetProperty(ref dateDisplay, value); }
+            }
+            bool hasError;
+            public bool HasError
+            {
+                get { return hasError; }
+                set { SetProperty(ref hasError, value); }
+            }
+            bool hasContent;
+            public bool HasContent
+            {
+                get { return hasContent; }
+                set { SetProperty(ref hasContent, value); }
             }
         }
     }
