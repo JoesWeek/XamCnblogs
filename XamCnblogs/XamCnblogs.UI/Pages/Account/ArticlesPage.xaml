@@ -1,12 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="XamCnblogs.UI.Pages.Account.ArticlesPage">
+		     xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
+             xmlns:cells="clr-namespace:XamCnblogs.UI.Cells;assembly=XamCnblogs.UI"
+             x:Class="XamCnblogs.UI.Pages.Account.ArticlesPage"
+             Title="我的博文">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <controls:LoadMoreListView
+            x:Name="ArticlesListView"
+            ItemsSource="{Binding Articles}"
+            HasUnevenRows="True"
+            IsPullToRefreshEnabled="True"
+            RefreshCommand="{Binding RefreshCommand}"
+            IsRefreshing="{Binding IsBusy}"
+            LoadMoreCommand="{Binding LoadMoreCommand}"
+            LoadStatus="{Binding LoadStatus}"
+            CanLoadMore="{Binding CanLoadMore}"
+            BackgroundColor="White"
+            SeparatorColor="{StaticResource Divider}">
+            <controls:LoadMoreListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <cells:ArticlesItemCell/>
+                    </ViewCell>
+                </DataTemplate>
+            </controls:LoadMoreListView.ItemTemplate>
+        </controls:LoadMoreListView>
     </ContentPage.Content>
 </ContentPage>

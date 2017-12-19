@@ -1,4 +1,5 @@
 ﻿
+using Rg.Plugins.Popup.Extensions;
 using System;
 using Xamarin.Forms;
 using XamCnblogs.Portable.Helpers;

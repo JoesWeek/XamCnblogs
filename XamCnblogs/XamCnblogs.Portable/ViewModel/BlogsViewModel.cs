@@ -10,17 +10,16 @@ using XamCnblogs.Portable.Model;
 
 namespace XamCnblogs.Portable.ViewModel
 {
-    public class ArticlesViewModel : ViewModelBase
+    public class BlogsViewModel : ViewModelBase
     {
         public ObservableRangeCollection<Articles> Articles { get; } = new ObservableRangeCollection<Articles>();
         public DateTime NextRefreshTime { get; set; }
+        string blogApp;
         private int pageIndex = 1;
         private int pageSize = 20;
-        private int position = 0;
-
-        public ArticlesViewModel(int position)
+        public BlogsViewModel(string blogApp)
         {
-            this.position = position;
+            this.blogApp = blogApp;
             NextRefreshTime = DateTime.Now.AddMinutes(15);
         }
         ICommand refreshCommand;
@@ -55,23 +54,22 @@ namespace XamCnblogs.Portable.ViewModel
             get { return loadStatus; }
             set { SetProperty(ref loadStatus, value); }
         }
+
         ICommand loadMoreCommand;
         public ICommand LoadMoreCommand => loadMoreCommand ?? (loadMoreCommand = new Command(async () =>
+        {
+            try
             {
-                try
-                {
-                    await ExecuteRefreshCommandAsync();
-                }
-                catch (Exception)
-                {
-                    LoadStatus = LoadMoreStatus.StausError;
-                }
-            }));
-
-
+                await ExecuteRefreshCommandAsync();
+            }
+            catch (Exception)
+            {
+                LoadStatus = LoadMoreStatus.StausError;
+            }
+        }));
         async Task ExecuteRefreshCommandAsync()
         {
-            var result = await StoreManager.ArticlesService.GetArticlesAsync(position, pageIndex, pageSize);
+            var result = await StoreManager.BlogsService.GetArticlesAsync(blogApp);
             if (result.Success)
             {
                 var articles = JsonConvert.DeserializeObject<List<Articles>>(result.Message.ToString());
@@ -101,7 +99,7 @@ namespace XamCnblogs.Portable.ViewModel
             else
             {
                 Toast.SendToast(result.Message.ToString());
-                LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
+                LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausEnd : LoadMoreStatus.StausNodata;
             }
         }
     }

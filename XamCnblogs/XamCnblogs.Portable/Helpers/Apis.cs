@@ -11,7 +11,7 @@
         public const string Users = Api + "/Users";
 
         public const string BlogApp = Api + "/blogs/{0}";
-        public const string BlogPosts = Api + "/blogs/{0}/posts?pageIndex={1}";
+        public const string BlogPosts = Api + "/blogs/{0}/posts?pageIndex={1}&pageSize={2}";
 
         public const string ArticleHome = Api + "/blogposts/@sitehome?pageIndex={0}&pageSize={1}";
         public const string ArticleHot = Api + "/blogposts/@picked?pageIndex={0}&pageSize={1}";

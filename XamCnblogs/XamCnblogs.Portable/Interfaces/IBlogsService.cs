@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 namespace XamCnblogs.Portable.Interfaces
 {
-    public interface IArticlesService
+    public interface IBlogsService
     {
-        Task<ResponseMessage> GetArticlesAsync(int position, int pageIndex = 1, int pageSize = 20);
+        Task<ResponseMessage> GetArticlesAsync(string blogApp, int pageIndex=1, int pageSize = 20);
     }
 }

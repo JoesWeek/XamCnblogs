@@ -71,5 +71,11 @@ namespace XamCnblogs.Portable.Services
         ICommentService commentService;
         public ICommentService CommentService => commentService ?? (commentService = DependencyService.Get<ICommentService>());
 
+        IBlogsService blogsService;
+        public IBlogsService BlogsService => blogsService ?? (blogsService = DependencyService.Get<IBlogsService>());
+
+        IBookmarksService bookmarksService;
+        public IBookmarksService BookmarksService => bookmarksService ?? (bookmarksService = DependencyService.Get<IBookmarksService>());
+
     }
 }

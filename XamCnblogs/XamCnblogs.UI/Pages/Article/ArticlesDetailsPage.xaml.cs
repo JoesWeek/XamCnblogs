@@ -80,5 +80,10 @@ namespace XamCnblogs.UI.Pages.Article
                 ArticlesDetailsView.ScrollTo(ViewModel.ArticlesComments.Last(), ScrollToPosition.Start, false);
             }
         }
+        async void OnBookmarks(object sender, EventArgs args)
+        {
+            var page = new ActivityIndicatorPopupPage();
+            await Navigation.PushPopupAsync(page);
+        }
     }
 }

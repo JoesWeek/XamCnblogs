@@ -10,17 +10,14 @@ using XamCnblogs.Portable.Model;
 
 namespace XamCnblogs.Portable.ViewModel
 {
-    public class ArticlesViewModel : ViewModelBase
+    public class BookmarksViewModel : ViewModelBase
     {
-        public ObservableRangeCollection<Articles> Articles { get; } = new ObservableRangeCollection<Articles>();
+        public ObservableRangeCollection<Bookmarks> Bookmarks { get; } = new ObservableRangeCollection<Bookmarks>();
         public DateTime NextRefreshTime { get; set; }
         private int pageIndex = 1;
         private int pageSize = 20;
-        private int position = 0;
-
-        public ArticlesViewModel(int position)
+        public BookmarksViewModel()
         {
-            this.position = position;
             NextRefreshTime = DateTime.Now.AddMinutes(15);
         }
         ICommand refreshCommand;
@@ -55,33 +52,32 @@ namespace XamCnblogs.Portable.ViewModel
             get { return loadStatus; }
             set { SetProperty(ref loadStatus, value); }
         }
+
         ICommand loadMoreCommand;
         public ICommand LoadMoreCommand => loadMoreCommand ?? (loadMoreCommand = new Command(async () =>
+        {
+            try
             {
-                try
-                {
-                    await ExecuteRefreshCommandAsync();
-                }
-                catch (Exception)
-                {
-                    LoadStatus = LoadMoreStatus.StausError;
-                }
-            }));
-
-
+                await ExecuteRefreshCommandAsync();
+            }
+            catch (Exception)
+            {
+                LoadStatus = LoadMoreStatus.StausError;
+            }
+        }));
         async Task ExecuteRefreshCommandAsync()
         {
-            var result = await StoreManager.ArticlesService.GetArticlesAsync(position, pageIndex, pageSize);
+            var result = await StoreManager.BookmarksService.GetBookmarksAsync(pageIndex,pageSize);
             if (result.Success)
             {
-                var articles = JsonConvert.DeserializeObject<List<Articles>>(result.Message.ToString());
+                var articles = JsonConvert.DeserializeObject<List<Bookmarks>>(result.Message.ToString());
                 if (articles.Count > 0)
                 {
-                    if (pageIndex == 1 && Articles.Count > 0)
-                        Articles.Clear();
-                    Articles.AddRange(articles);
+                    if (pageIndex == 1 && Bookmarks.Count > 0)
+                        Bookmarks.Clear();
+                    Bookmarks.AddRange(articles);
                     pageIndex++;
-                    if (Articles.Count >= pageSize)
+                    if (Bookmarks.Count >= pageSize)
                     {
                         LoadStatus = LoadMoreStatus.StausDefault;
                         CanLoadMore = true;
@@ -101,7 +97,7 @@ namespace XamCnblogs.Portable.ViewModel
             else
             {
                 Toast.SendToast(result.Message.ToString());
-                LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
+                LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausEnd : LoadMoreStatus.StausNodata;
             }
         }
     }

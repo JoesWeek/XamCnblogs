@@ -33,6 +33,8 @@ namespace XamCnblogs.Portable.ViewModel
             DependencyService.Register<IQuestionsAnswersService, QuestionsAnswersService>();
             DependencyService.Register<IAnswersCommentService, AnswersCommentService>();
             DependencyService.Register<ICommentService, CommentService>();
+            DependencyService.Register<IBlogsService, BlogsService>();
+            DependencyService.Register<IBookmarksService, BookmarksService>();
         }
 
         public AccessTokenSettings Settings

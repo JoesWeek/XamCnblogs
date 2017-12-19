@@ -83,7 +83,7 @@ namespace XamCnblogs.UI.Pages.Account
             }
             else
             {
-                Navigation.PushAsync(new ArticlesPage());
+                Navigation.PushAsync(new ArticlesPage(UserSettings.Current.BlogApp));
             }
         }
         void OnBookmarks(object sender, EventArgs args)
