@@ -16,6 +16,7 @@
                                     LoadingPlaceholder = "avatar_placeholder.png"
 	                                ErrorPlaceholder = "avatar_placeholder.png"
 			                        DownsampleToViewSize="true"
+                                    
 			                        Source = "https://avatars2.githubusercontent.com/u/28339829"                
                 RelativeLayout.XConstraint = "{ConstraintExpression Type=RelativeToParent,Property=X,Factor=0,Constant=0}" 
                 RelativeLayout.YConstraint = "{ConstraintExpression Type=RelativeToParent,Property=Y,Factor=0,Constant=0}">
