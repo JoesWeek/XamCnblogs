@@ -38,6 +38,12 @@ namespace XamCnblogs.Portable.Helpers
             var response = await client.PostAsync(url, content);
             return await GetResultMessage(response);
         }
+        public async Task<ResponseMessage> HeadAsyn(string url)
+        {
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(UserTokenSettings.Current.UserTokenType, UserTokenSettings.Current.UserToken);
+            var response = await client.GetAsync(url);
+            return await GetResultMessage(response);
+        }
         private async Task<ResponseMessage> TokenAsync()
         {
             var parameters = new Dictionary<string, string>();

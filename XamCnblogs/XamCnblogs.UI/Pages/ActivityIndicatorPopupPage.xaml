@@ -6,43 +6,39 @@
              xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
              x:Class="XamCnblogs.UI.Pages.ActivityIndicatorPopupPage">
     <RelativeLayout
-         WidthRequest="200"
-         HeightRequest="100"
+         WidthRequest="240"
+         HeightRequest="80"
          VerticalOptions="CenterAndExpand"
          HorizontalOptions="CenterAndExpand">
         <ffimageloading:CachedImage x:Name="bgImage"
-			                        WidthRequest="200" 
-                                    HeightRequest="100"
-                                    LoadingPlaceholder = "avatar_placeholder.png"
-	                                ErrorPlaceholder = "avatar_placeholder.png"
-			                        DownsampleToViewSize="true"
-                                    
-			                        Source = "https://avatars2.githubusercontent.com/u/28339829"                
-                RelativeLayout.XConstraint = "{ConstraintExpression Type=RelativeToParent,Property=X,Factor=0,Constant=0}" 
-                RelativeLayout.YConstraint = "{ConstraintExpression Type=RelativeToParent,Property=Y,Factor=0,Constant=0}">
+		     WidthRequest="240"
+             HeightRequest="80"
+             LoadingPlaceholder = "bg.png"
+	         ErrorPlaceholder = "bg.png"
+		     Source = "bg.png"
+             RelativeLayout.XConstraint = "{ConstraintExpression Type=RelativeToParent,Property=X,Factor=0,Constant=0}" 
+             RelativeLayout.YConstraint = "{ConstraintExpression Type=RelativeToParent,Property=Y,Factor=0,Constant=0}">
             <ffimageloading:CachedImage.Transformations>
-                <fftransformations:RoundedTransformation Radius="50"/>
+                <fftransformations:RoundedTransformation Radius="10" CropWidthRatio="3" CropHeightRatio="1"/>
             </ffimageloading:CachedImage.Transformations>
         </ffimageloading:CachedImage>
         <StackLayout
-         WidthRequest="200"
-         HeightRequest="100"
-         Spacing="10"
-         Orientation="Horizontal"
-                RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView,ElementName=bgImage,Property=X,Factor=0,Constant=0}"
-                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView,ElementName=bgImage,Property=Y,Factor=0,Constant=0}">
+             WidthRequest="240"
+             HeightRequest="80"
+             Spacing="10"
+             Orientation="Horizontal"
+             RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToView,ElementName=bgImage,Property=X,Factor=0,Constant=20}"
+             RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView,ElementName=bgImage,Property=Y,Factor=0,Constant=0}">
             <ActivityIndicator
-            IsRunning="True"
-            Color="{StaticResource SecondaryText}"
-            WidthRequest="35"
-            HeightRequest="35"
-            VerticalOptions="CenterAndExpand"
-            HorizontalOptions="Start"/>
+                IsRunning="True"
+                Color="{StaticResource SecondaryText}"
+                WidthRequest="35"
+                HeightRequest="35"
+                VerticalOptions="CenterAndExpand"/>
             <Label Grid.Row="0"
-            Text="加载中"
-            Style="{StaticResource PrimaryTextStyle}"
-            VerticalOptions="CenterAndExpand"
-            HorizontalOptions="Start"/>
+                Text="加载中"
+                Style="{StaticResource PrimaryTextStyle}"
+                VerticalOptions="CenterAndExpand"/>
         </StackLayout>
     </RelativeLayout>
 </pages:PopupPage>

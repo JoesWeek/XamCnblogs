@@ -21,6 +21,7 @@ namespace XamCnblogs.UI
             {
                 case Device.Android:
                     MainPage = new Pages.Android.RootPage();
+                    //MainPage = new NavigationPage(new BookmarksEditPage(new Bookmarks()));
                     break;
                 case Device.iOS:
                     break;

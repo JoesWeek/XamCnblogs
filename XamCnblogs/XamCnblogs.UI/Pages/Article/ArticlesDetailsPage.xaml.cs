@@ -12,6 +12,7 @@ using Xamarin.Forms.Xaml;
 using XamCnblogs.Portable.Helpers;
 using XamCnblogs.Portable.Model;
 using XamCnblogs.Portable.ViewModel;
+using XamCnblogs.UI.Pages.Account;
 using XamCnblogs.UI.Pages.New;
 
 namespace XamCnblogs.UI.Pages.Article
@@ -21,6 +22,7 @@ namespace XamCnblogs.UI.Pages.Article
         ArticlesDetailsViewModel ViewModel => vm ?? (vm = BindingContext as ArticlesDetailsViewModel);
         ArticlesDetailsViewModel vm;
         Articles articles;
+        ActivityIndicatorPopupPage popupPage;
         public ArticlesDetailsPage(Articles articles)
         {
             this.articles = articles;
@@ -82,8 +84,28 @@ namespace XamCnblogs.UI.Pages.Article
         }
         async void OnBookmarks(object sender, EventArgs args)
         {
-            var page = new ActivityIndicatorPopupPage();
-            await Navigation.PushPopupAsync(page);
+            if (UserTokenSettings.Current.HasExpiresIn())
+            {
+                MessagingService.Current.SendMessage(MessageKeys.NavigateLogin);
+            }
+            else
+            {
+                if (popupPage == null)
+                {
+                    popupPage = new ActivityIndicatorPopupPage();
+                }
+                await Navigation.PushPopupAsync(popupPage);
+                if (await ViewModel.ExecuteBookmarkCommandAsync())
+                {
+                    await Navigation.RemovePopupPageAsync(popupPage);
+
+                    await NavigationService.PushAsync(Navigation, new BookmarksEditPage(new Bookmarks() { Title = articles.Title, LinkUrl = articles.Url, FromCNBlogs = true }));
+                }
+                else
+                {
+                    await Navigation.RemovePopupPageAsync(popupPage);
+                }
+            }
         }
     }
 }

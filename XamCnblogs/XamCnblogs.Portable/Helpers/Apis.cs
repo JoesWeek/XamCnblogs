@@ -52,6 +52,7 @@
         public const string QuestionsAnswerCommentsDelete = Api + "/questions/{0}/answers/{1}/comments/{2}";
 
         public const string Bookmarks = Api + "/Bookmarks?pageIndex={0}&pageSize={1}";
+        public const string BookmarkHead = Api + "/Bookmarks?url={0}";
         public const string BookmarkDelete = Api + "/bookmarks/{0}";
         public const string BookmarkEdit = Api + "/bookmarks/{0}";
         public const string BookmarkAdd = Api + "/Bookmarks";

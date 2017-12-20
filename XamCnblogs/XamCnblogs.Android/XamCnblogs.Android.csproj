@@ -92,6 +92,8 @@
     <Compile Include="Helpers\Settings.cs" />
     <Compile Include="Helpers\Toaster.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="Renderers\XamEditorRenderer.cs" />
+    <Compile Include="Renderers\XamEntryRenderer.cs" />
     <Compile Include="Renderers\CommentEditorRenderer.cs" />
     <Compile Include="Renderers\CommentItemLabelRenderer.cs" />
     <Compile Include="Renderers\DetailsPageWebViewRenderer.cs" />
@@ -230,6 +232,15 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_gold.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\bg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\menu_send.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\editor_normal.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

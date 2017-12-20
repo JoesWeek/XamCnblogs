@@ -137,6 +137,16 @@ namespace XamCnblogs.Portable.ViewModel
             }
         }
 
+        public async Task<bool> ExecuteBookmarkCommandAsync()
+        {
+            var link = articles.Url;
+            var result = await StoreManager.ArticlesDetailsService.HeadBookmarksAsync(link);
+            if (!result.Success)
+            {
+                Toast.SendToast(result.Message.ToString());
+            }
+            return result.Success;
+        }
         public void AddComment(ArticlesComments comment)
         {
             ArticlesComments.Add(comment);

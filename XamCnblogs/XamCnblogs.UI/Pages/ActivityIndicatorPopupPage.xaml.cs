@@ -10,11 +10,16 @@ using Xamarin.Forms.Xaml;
 
 namespace XamCnblogs.UI.Pages
 {
-	public partial class ActivityIndicatorPopupPage : PopupPage
+    public partial class ActivityIndicatorPopupPage : PopupPage
     {
-		public ActivityIndicatorPopupPage()
-		{
-			InitializeComponent ();
-		}
-	}
+        public ActivityIndicatorPopupPage()
+        {
+            InitializeComponent();
+            this.CloseWhenBackgroundIsClicked = false;
+        }
+        protected override bool OnBackButtonPressed()
+        {
+            return true;
+        }
+    }
 }

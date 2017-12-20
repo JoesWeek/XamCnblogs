@@ -45,7 +45,6 @@ namespace XamCnblogs.Portable.ViewModel
                 }
             }));
 
-
         LoadMoreStatus loadStatus;
         public LoadMoreStatus LoadStatus
         {
@@ -67,7 +66,7 @@ namespace XamCnblogs.Portable.ViewModel
         }));
         async Task ExecuteRefreshCommandAsync()
         {
-            var result = await StoreManager.BookmarksService.GetBookmarksAsync(pageIndex,pageSize);
+            var result = await StoreManager.BookmarksService.GetBookmarksAsync(pageIndex, pageSize);
             if (result.Success)
             {
                 var articles = JsonConvert.DeserializeObject<List<Bookmarks>>(result.Message.ToString());
@@ -99,6 +98,16 @@ namespace XamCnblogs.Portable.ViewModel
                 Toast.SendToast(result.Message.ToString());
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausEnd : LoadMoreStatus.StausNodata;
             }
+        }
+
+        public async Task<bool> ExecuteBookmarkEditCommandAsync(Bookmarks bookmarks)
+        {
+            var result = await StoreManager.BookmarksService.GetBookmarksAsync(pageIndex, pageSize);
+            if (!result.Success)
+            {
+                Toast.SendToast(result.Message.ToString());
+            }
+            return result.Success;
         }
     }
 }

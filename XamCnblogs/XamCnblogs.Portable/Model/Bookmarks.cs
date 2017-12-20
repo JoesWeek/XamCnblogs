@@ -24,11 +24,11 @@ namespace XamCnblogs.Portable.Model
                     string t = null;
                     for (int i = 0; i < Tags.Count; i++)
                     {
-                        t += Tags[i] + " ";
+                        t += Tags[i] + ",";
                     }
-                    tag = t;
+                    tag = t.TrimEnd(',');
                 }
-                return tag.TrimEnd(' ');
+                return tag;
             }
             set { tag = value; }
         }
