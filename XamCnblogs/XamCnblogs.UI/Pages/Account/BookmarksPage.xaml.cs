@@ -21,6 +21,20 @@ namespace XamCnblogs.UI.Pages.Account
         {
             InitializeComponent();
             BindingContext = new BookmarksViewModel();
+
+            var cancel = new ToolbarItem
+            {
+                Text = "添加",
+                Command = new Command(async () =>
+                {
+                    await NavigationService.PushAsync(Navigation, new BookmarksEditPage(new Bookmarks()));
+                })
+            };
+            ToolbarItems.Add(cancel);
+
+            if (Device.Android == Device.RuntimePlatform)
+                cancel.Icon = "toolbar_add.png";
+
             this.BookmarksListView.ItemSelected += async delegate
             {
                 var articles = BookmarksListView.SelectedItem as Bookmarks;

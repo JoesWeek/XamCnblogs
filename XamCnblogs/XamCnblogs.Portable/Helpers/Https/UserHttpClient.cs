@@ -63,6 +63,7 @@ namespace XamCnblogs.Portable.Helpers
                 case HttpStatusCode.Created:
                     return new ResponseMessage() { Success = true, Message = await response.Content.ReadAsStringAsync() };
                 default:
+                    var message = await response.Content.ReadAsStringAsync();
                     return new ResponseMessage() { Success = false, Message = response.StatusCode };
             }
         }
