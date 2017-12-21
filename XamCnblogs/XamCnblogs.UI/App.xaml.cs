@@ -6,6 +6,7 @@ using Xamarin.Forms;
 using XamCnblogs.Portable.Helpers;
 using XamCnblogs.Portable.Model;
 using XamCnblogs.Portable.ViewModel;
+using XamCnblogs.UI.Pages;
 using XamCnblogs.UI.Pages.Account;
 
 namespace XamCnblogs.UI
@@ -21,7 +22,7 @@ namespace XamCnblogs.UI
             {
                 case Device.Android:
                     MainPage = new Pages.Android.RootPage();
-                    //MainPage = new NavigationPage(new BookmarksEditPage(new Bookmarks()));
+                    //MainPage = new NavigationPage(new Page1());
                     break;
                 case Device.iOS:
                     break;

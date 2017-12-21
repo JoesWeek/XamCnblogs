@@ -41,7 +41,7 @@ namespace XamCnblogs.Portable.Services
                 url = string.Format(Apis.BookmarkAdd);
             }
 
-            return await UserHttpClient.Current.PostAsync(url, new StringContent(JsonConvert.SerializeObject(parameters), Encoding.UTF8, "application/json"));
+            return await UserHttpClient.Current.PostAsync(url, new FormUrlEncodedContent(parameters));
         }
     }
 }

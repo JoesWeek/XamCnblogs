@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -64,6 +65,7 @@ namespace XamCnblogs.Portable.ViewModel
                 LoadStatus = LoadMoreStatus.StausError;
             }
         }));
+
         async Task ExecuteRefreshCommandAsync()
         {
             var result = await StoreManager.BookmarksService.GetBookmarksAsync(pageIndex, pageSize);
@@ -108,6 +110,28 @@ namespace XamCnblogs.Portable.ViewModel
                 Toast.SendToast(result.Message.ToString());
             }
             return result.Success;
+        }
+
+        public void EditBookmark(Bookmarks bookmark)
+        {
+            var book = Bookmarks.Where(b => b.WzLinkId == bookmark.WzLinkId).FirstOrDefault();
+            if (book == null)
+            {
+                Bookmarks.Insert(0, bookmark);
+            }
+            else
+            {
+                book.Title = bookmark.Title;
+                book.LinkUrl = bookmark.LinkUrl;
+                book.Summary = bookmark.Summary;
+                book.Tags = bookmark.Tags;
+                book.DateAdded = bookmark.DateAdded;
+                book.FromCNBlogs = bookmark.FromCNBlogs;
+
+                Bookmarks.Replace(book);
+            }
+            if (LoadStatus == LoadMoreStatus.StausNodata)
+                LoadStatus = LoadMoreStatus.StausEnd;
         }
     }
 }

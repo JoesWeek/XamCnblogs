@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Pages\Account\BookmarksEditPage.xaml.cs~RF22a28604.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FormsToolkit" Version="1.1.18" />
     <PackageReference Include="Humanizer" Version="2.2.0" />
     <PackageReference Include="Ideine.ModernHttpClient" Version="3.0.2" />
@@ -74,6 +78,9 @@
     <EmbeddedResource Update="Cells\StatusesItemCell.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Controls\ActivityIndicatorButton.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Controls\HeaderDivider.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -111,6 +118,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Pages\New\NewsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Pages\Page1.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Pages\Question\AnswersDetailsPage.xaml">

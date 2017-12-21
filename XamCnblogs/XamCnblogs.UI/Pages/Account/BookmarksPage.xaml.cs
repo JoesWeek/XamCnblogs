@@ -27,7 +27,7 @@ namespace XamCnblogs.UI.Pages.Account
                 Text = "添加",
                 Command = new Command(async () =>
                 {
-                    await NavigationService.PushAsync(Navigation, new BookmarksEditPage(new Bookmarks()));
+                    await NavigationService.PushAsync(Navigation, new BookmarksEditPage(new Bookmarks(), new Action<Bookmarks>(OnResult)));
                 })
             };
             ToolbarItems.Add(cancel);
@@ -72,6 +72,14 @@ namespace XamCnblogs.UI.Pages.Account
                 //加载本地数据
                 if (ViewModel.Bookmarks.Count == 0)
                     ViewModel.RefreshCommand.Execute(null);
+            }
+        }
+        private void OnResult(Bookmarks result)
+        {
+            if (result != null)
+            {
+                ViewModel.EditBookmark(result);
+                BookmarksListView.ScrollTo(ViewModel.Bookmarks.FirstOrDefault(), ScrollToPosition.Start, false);
             }
         }
     }

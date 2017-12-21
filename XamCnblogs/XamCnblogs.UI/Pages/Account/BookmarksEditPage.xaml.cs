@@ -19,7 +19,17 @@ namespace XamCnblogs.UI.Pages.Account
         BookmarksViewModel vm;
         Bookmarks bookmarks;
         ActivityIndicatorPopupPage popupPage;
+        Action<Bookmarks> result;
         public BookmarksEditPage(Bookmarks bookmarks) : base()
+        {
+            Init(bookmarks);
+        }
+        public BookmarksEditPage(Bookmarks bookmarks, Action<Bookmarks> result) : base()
+        {
+            this.result = result;
+            Init(bookmarks);
+        }
+        void Init(Bookmarks bookmarks)
         {
             this.bookmarks = bookmarks;
             InitializeComponent();
@@ -79,6 +89,7 @@ namespace XamCnblogs.UI.Pages.Account
                 bookmarks.Tags = tags.Split(',').ToList();
                 bookmarks.LinkUrl = link;
                 bookmarks.Summary = summary;
+                bookmarks.DateAdded = DateTime.Now;
 
                 if (popupPage == null)
                 {
@@ -88,7 +99,8 @@ namespace XamCnblogs.UI.Pages.Account
                 if (await ViewModel.ExecuteBookmarkEditCommandAsync(bookmarks))
                 {
                     await Navigation.RemovePopupPageAsync(popupPage);
-
+                    if (result != null)
+                        result.Invoke(bookmarks);
                     Navigation.RemovePage(this);
                 }
                 else

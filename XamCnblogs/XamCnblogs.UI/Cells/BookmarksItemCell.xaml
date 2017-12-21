@@ -43,11 +43,29 @@
                MaxLines="3"
                Text="{Binding LinkUrl}"
                Style="{StaticResource SecondaryTextStyle}" />
-        <StackLayout Grid.Row="2">
+        <StackLayout Grid.Row="2" Orientation="Horizontal"
+                HorizontalOptions="End">
+            <controls:ActivityIndicatorButton
+                x:Name="DeleteButton"
+                WidthRequest="20"
+                HeightRequest="20"
+                ActionID="{Binding WzLinkId}"
+                ImageSource="ic_delete.png"
+                VerticalOptions="CenterAndExpand"/>
+            <StackLayout
+                Spacing="0"
+                ClassId="{Binding WzLinkId}"
+                VerticalOptions="CenterAndExpand">
+                <Image
+                    Source="ic_edit.png"/>
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnEdit"/>
+                </StackLayout.GestureRecognizers>
+            </StackLayout>
             <Label
                 Text="{Binding DateDisplay}"
                 Style="{StaticResource SecondaryTextStyle}"
-                HorizontalOptions="EndAndExpand"/>
+                VerticalOptions="CenterAndExpand"/>
         </StackLayout>
     </Grid>
 </ContentView>
