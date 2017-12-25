@@ -39,7 +39,11 @@ namespace XamCnblogs.Portable.Services
                 var url = string.Format(Apis.NewsCommentAdd, id);
                 return await UserHttpClient.Current.PostAsync(url, new StringContent(JsonConvert.SerializeObject(parameters), Encoding.UTF8, "application/json"));
             }
-
+        }
+        public async Task<ResponseMessage> DeleteCommentAsync(int id)
+        {
+            var url = string.Format(Apis.NewsCommentEdit, id);
+            return await UserHttpClient.Current.DeleteAsync(url);
         }
     }
 }

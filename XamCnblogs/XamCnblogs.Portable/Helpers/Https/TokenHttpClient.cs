@@ -113,9 +113,18 @@ namespace XamCnblogs.Portable.Helpers
             switch (code)
             {
                 case HttpStatusCode.OK:
-                    return new ResponseMessage() { Success = true, Message = await response.Content.ReadAsStringAsync() };
+                    return new ResponseMessage() { Success = true, Code = HttpStatusCode.OK, Message = await response.Content.ReadAsStringAsync() };
                 default:
-                    return new ResponseMessage() { Success = false, Message = response.StatusCode };
+                    var message = await response.Content.ReadAsStringAsync();
+                    try
+                    {
+                        message = JsonConvert.DeserializeObject<Messages>(await response.Content.ReadAsStringAsync()).Message;
+                    }
+                    catch (Exception e)
+                    {
+                        message = response.StatusCode.ToString();
+                    }
+                    return new ResponseMessage() { Success = false, Code = response.StatusCode, Message = message };
             }
         }
         private void UpdateToken(Token token)

@@ -1,15 +1,21 @@
 ﻿using Humanizer;
+using MvvmHelpers;
 using Newtonsoft.Json;
 using System;
 using XamCnblogs.Portable.Helpers;
 
 namespace XamCnblogs.Portable.Model
 {
-    public class QuestionsAnswers
+    public class QuestionsAnswers : BaseViewModel
     {
         public int Qid { get; set; }
         public int AnswerID { get; set; }
-        public string Answer { get; set; }
+        private string answer;
+        public string Answer
+        {
+            get { return answer; }
+            set { SetProperty(ref answer, value); }
+        }
         public string ConvertedContent { get; set; }
         public int FormatType { get; set; }
         public string UserName { get; set; }
@@ -42,6 +48,13 @@ namespace XamCnblogs.Portable.Model
             {
                 return HtmlTemplate.ReplaceHtml(Answer);
             }
+        }
+        private bool isDelete;
+        [JsonIgnore]
+        public bool IsDelete
+        {
+            get { return isDelete; }
+            set { SetProperty(ref isDelete, value); }
         }
     }
 }

@@ -130,7 +130,7 @@ namespace XamCnblogs.Portable.ViewModel
             {
                 var index = Bookmarks.IndexOf(book);
                 Bookmarks[index] = bookmark;
-                Bookmarks[index].TagsDisplay = bookmark.DateDisplay;
+                Bookmarks[index].TagsDisplay = bookmark.TagsDisplay;
             }
             if (LoadStatus == LoadMoreStatus.StausNodata)
                 LoadStatus = LoadMoreStatus.StausEnd;

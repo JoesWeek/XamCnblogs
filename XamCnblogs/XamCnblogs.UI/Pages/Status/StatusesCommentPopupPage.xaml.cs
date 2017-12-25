@@ -17,38 +17,40 @@ namespace XamCnblogs.UI.Pages.New
 {
     public partial class StatusesCommentPopupPage : PopupPage
     {
-        StatusesCommentViewModel ViewModel => vm ?? (vm = BindingContext as StatusesCommentViewModel);
-        StatusesCommentViewModel vm;
+        StatusesDetailsViewModel ViewModel => vm ?? (vm = BindingContext as StatusesDetailsViewModel);
+        StatusesDetailsViewModel vm;
+        Statuses statuses;
         Action<StatusesComments> result;
+        StatusesComments comments;
         int id;
-        public StatusesCommentPopupPage(int id, Action<StatusesComments> result)
+        public StatusesCommentPopupPage(Statuses statuses, Action<StatusesComments> result)
         {
-            this.id = id;
+            this.statuses = statuses;
             this.result = result;
             InitializeComponent();
-            BindingContext = new StatusesCommentViewModel(id, new Action<string>(OnClose));
+            BindingContext = new StatusesDetailsViewModel(statuses);
             this.Comment.Focus();
         }
         private void OnClose(object sender, EventArgs e)
         {
-            OnClose(null);
+            ClosePopupPage(null);
         }
-        private void OnClose(string result)
+        private void ClosePopupPage(string result)
         {
             if (result != null)
             {
-                StatusesComments cmment = new StatusesComments();
-                cmment.UserDisplayName = UserSettings.Current.DisplayName;
-                cmment.UserIconUrl = UserSettings.Current.Avatar;
-                cmment.Content = result;
-                cmment.DateAdded = DateTime.Now;
-                cmment.StatusId = id;
-                cmment.UserGuid = UserSettings.Current.UserId;
-                this.result.Invoke(cmment);
+                comments = new StatusesComments();
+                comments.UserDisplayName = UserSettings.Current.DisplayName;
+                comments.UserIconUrl = UserSettings.Current.Avatar;
+                comments.Content = result;
+                comments.DateAdded = DateTime.Now;
+                comments.StatusId = id;
+                comments.UserGuid = UserSettings.Current.UserId;
+                this.result.Invoke(comments);
             }
             PopupNavigation.PopAsync();
         }
-        void OnSendComment(object sender, EventArgs args)
+        async void OnSendComment(object sender, EventArgs args)
         {
             var toast = DependencyService.Get<IToast>();
             var comment = this.Comment.Text;
@@ -62,7 +64,16 @@ namespace XamCnblogs.UI.Pages.New
             }
             else
             {
-                ViewModel.CommentCommand.Execute(comment);
+                SendButton.IsRunning = true;
+                if (await ViewModel.ExecuteCommentEditCommandAsync(statuses.Id, comment))
+                {
+                    SendButton.IsRunning = false;
+                    ClosePopupPage(comment);
+                }
+                else
+                {
+                    SendButton.IsRunning = false;
+                }
             }
         }
     }

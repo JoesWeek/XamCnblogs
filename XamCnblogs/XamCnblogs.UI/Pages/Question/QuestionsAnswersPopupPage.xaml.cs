@@ -12,43 +12,52 @@ namespace XamCnblogs.UI.Pages.New
 {
     public partial class QuestionsAnswersPopupPage : PopupPage
     {
-        QuestionsAnswersViewModel ViewModel => vm ?? (vm = BindingContext as QuestionsAnswersViewModel);
-        QuestionsAnswersViewModel vm;
+        QuestionsDetailsViewModel ViewModel => vm ?? (vm = BindingContext as QuestionsDetailsViewModel);
+        QuestionsDetailsViewModel vm;
         Action<QuestionsAnswers> result;
-        int questionId;
-        public QuestionsAnswersPopupPage(int questionId,Action<QuestionsAnswers> result)
+        Questions questions;
+        QuestionsAnswers questionsAnswers;
+        public QuestionsAnswersPopupPage(Questions questions, Action<QuestionsAnswers> result, QuestionsAnswers questionsAnswers = null)
         {
-            this.questionId = questionId;
+            this.questions = questions;
+            this.questionsAnswers = questionsAnswers;
             this.result = result;
             InitializeComponent();
-            BindingContext = new QuestionsAnswersViewModel(questionId, new Action<string>(OnClose));
+            BindingContext = new QuestionsDetailsViewModel(questions);
+            if (questionsAnswers != null)
+            {
+                this.Comment.Text = questionsAnswers.Answer;
+            }
             this.Comment.Focus();
         }
         private void OnClose(object sender, EventArgs e)
         {
-            OnClose(null);
+            ClosePopupPage(null);
         }
-        private void OnClose(string result)
+        private void ClosePopupPage(string result)
         {
             if (result != null)
             {
-                QuestionsAnswers cmment = new QuestionsAnswers();
-                cmment.AnswerUserInfo = new QuestionUserInfo()
+                if (questionsAnswers == null)
                 {
-                    UserID = UserSettings.Current.SpaceUserId,
-                    IconName = UserSettings.Current.Avatar,
-                    UCUserID = UserSettings.Current.UserId,
-                    UserName = UserSettings.Current.DisplayName,
-                    QScore = UserSettings.Current.Score
-                };
-                cmment.Answer = result;
-                cmment.DateAdded = DateTime.Now;
-                cmment.Qid = questionId;
-                this.result.Invoke(cmment);
+                    questionsAnswers = new QuestionsAnswers();
+                    questionsAnswers.AnswerUserInfo = new QuestionUserInfo()
+                    {
+                        UserID = UserSettings.Current.SpaceUserId,
+                        IconName = UserSettings.Current.Avatar,
+                        UCUserID = UserSettings.Current.UserId,
+                        UserName = UserSettings.Current.DisplayName,
+                        QScore = UserSettings.Current.Score
+                    };
+                    questionsAnswers.Qid = questions.Qid;
+                }
+                questionsAnswers.Answer = result;
+                questionsAnswers.DateAdded = DateTime.Now;
+                this.result.Invoke(questionsAnswers);
             }
             PopupNavigation.PopAsync();
         }
-        void OnSendComment(object sender, EventArgs args)
+        async void OnSendComment(object sender, EventArgs args)
         {
             var toast = DependencyService.Get<IToast>();
             var comment = this.Comment.Text;
@@ -62,7 +71,31 @@ namespace XamCnblogs.UI.Pages.New
             }
             else
             {
-                ViewModel.CommentCommand.Execute(comment);
+                SendButton.IsRunning = true;
+                if (questionsAnswers == null)
+                {
+                    if (await ViewModel.ExecuteCommentPostCommandAsync(questions.Qid, comment))
+                    {
+                        SendButton.IsRunning = false;
+                        ClosePopupPage(comment);
+                    }
+                    else
+                    {
+                        SendButton.IsRunning = false;
+                    }
+                }
+                else
+                {
+                    if (await ViewModel.ExecuteCommentEditCommandAsync(questions.Qid, questionsAnswers.AnswerID, questionsAnswers.UserID, comment))
+                    {
+                        SendButton.IsRunning = false;
+                        ClosePopupPage(comment);
+                    }
+                    else
+                    {
+                        SendButton.IsRunning = false;
+                    }
+                }
             }
         }
     }

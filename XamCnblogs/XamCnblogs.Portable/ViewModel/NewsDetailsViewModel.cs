@@ -166,26 +166,27 @@ namespace XamCnblogs.Portable.ViewModel
         public ICommand DeleteCommand =>
             deleteCommand ?? (deleteCommand = new Command<NewsComments>(async (comment) =>
             {
-                //var index = Bookmarks.IndexOf(bookmark);
-                //if (!Bookmarks[index].IsDelete)
-                //{
-                //    Bookmarks[index].IsDelete = true;
-                //    var result = await StoreManager.BookmarksService.DeleteBookmarkAsync(bookmark.WzLinkId);
-                //    if (result.Success)
-                //    {
-                //        await Task.Delay(1000);
-                //        index = Bookmarks.IndexOf(bookmark);
-                //        Bookmarks.RemoveAt(index);
-                //        if (Bookmarks.Count == 0)
-                //            LoadStatus = LoadMoreStatus.StausNodata;
-                //    }
-                //    else
-                //    {
-                //        index = Bookmarks.IndexOf(bookmark);
-                //        Bookmarks[index].IsDelete = false;
-                //        Toast.SendToast("删除失败");
-                //    }
-                //}
+                var index = NewsComments.IndexOf(comment);
+                if (!NewsComments[index].IsDelete)
+                {
+                    NewsComments[index].IsDelete = true;
+                    var result = await StoreManager.NewsDetailsService.DeleteCommentAsync(comment.CommentID);
+                    if (result.Success)
+                    {
+                        await Task.Delay(1000);
+                        index = NewsComments.IndexOf(comment);
+                        NewsComments.RemoveAt(index);
+                        if (NewsComments.Count == 0)
+                            LoadStatus = LoadMoreStatus.StausNodata;
+                        NewsDetails.CommentDisplay = (news.CommentCount - 1).ToString();
+                    }
+                    else
+                    {
+                        index = NewsComments.IndexOf(comment);
+                        NewsComments[index].IsDelete = false;
+                        Toast.SendToast("删除失败");
+                    }
+                }
             }));
         public class NewsDetailsModel : BaseViewModel
         {

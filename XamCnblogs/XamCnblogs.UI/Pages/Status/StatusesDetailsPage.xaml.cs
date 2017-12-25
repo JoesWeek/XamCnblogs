@@ -53,8 +53,8 @@ namespace XamCnblogs.UI.Pages.Status
         }
         void OnScrollComment(object sender, EventArgs args)
         {
-            if (ViewModel.Comments.Count > 0)
-                StatusesView.ScrollTo(ViewModel.Comments.First(), ScrollToPosition.Start, false);
+            if (ViewModel.StatusesComments.Count > 0)
+                StatusesView.ScrollTo(ViewModel.StatusesComments.First(), ScrollToPosition.Start, false);
         }
         async void OnShowComment(object sender, EventArgs args)
         {
@@ -64,7 +64,7 @@ namespace XamCnblogs.UI.Pages.Status
             }
             else
             {
-                var page = new StatusesCommentPopupPage(statuses.Id, new Action<StatusesComments>(OnResult));
+                var page = new StatusesCommentPopupPage(statuses, new Action<StatusesComments>(OnResult));
                 if (page != null && Navigation != null)
                     await Navigation.PushPopupAsync(page);
             }
@@ -74,7 +74,7 @@ namespace XamCnblogs.UI.Pages.Status
             if (result != null)
             {
                 ViewModel.AddComment(result);
-                StatusesView.ScrollTo(ViewModel.Comments.Last(), ScrollToPosition.Start, false);
+                StatusesView.ScrollTo(ViewModel.StatusesComments.Last(), ScrollToPosition.Start, false);
             }
         }
     }

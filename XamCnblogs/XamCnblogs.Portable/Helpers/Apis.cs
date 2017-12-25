@@ -46,7 +46,7 @@
         public const string QuestionsAnswers = Api + "/questions/{0}/answers";
         public const string QuestionsAnswerByUser = Api + "/questions/{0}?userId={1}";
         public const string QuestionsAnswerAdd = Api + "/questions/{0}/answers";
-        public const string QuestionsAnswerDelete = Api + "/questions/{0}/answers/{1}";
+        public const string QuestionsAnswerEdit = Api + "/questions/{0}/answers/{1}";
         public const string QuestionsAnswerComments = Api + "/questions/answers/{0}/comments";
         public const string QuestionsAnswerCommentsAdd = Api + "/questions/{0}/answers/{1}/comments";
         public const string QuestionsAnswerCommentsDelete = Api + "/questions/{0}/answers/{1}/comments/{2}";

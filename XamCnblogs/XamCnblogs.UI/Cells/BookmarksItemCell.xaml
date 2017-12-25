@@ -45,7 +45,8 @@
                Text="{Binding LinkUrl}"
                Style="{StaticResource SecondaryTextStyle}" />
         <StackLayout Grid.Row="2" Orientation="Horizontal"
-                HorizontalOptions="End">
+                HorizontalOptions="End"
+                Spacing="0">
             <controls:ActivityIndicatorButton
                 x:Name="DeleteButton"
                 WidthRequest="25"

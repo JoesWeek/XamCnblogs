@@ -28,9 +28,9 @@
                 IsEnabled="{Binding IsBusy, Converter={StaticResource OppositeConverter}}"
                 HeightRequest="100"/>
             <controls:ActivityIndicatorButton
-                        x:Name="DeleteButton"
-                        WidthRequest="45"
-                        HeightRequest="45"
+                        x:Name="SendButton"
+                        WidthRequest="30"
+                        HeightRequest="30"
                         IsRunning="False"
                         ImageSource="menu_send_p.png"
                         HorizontalOptions="EndAndExpand">

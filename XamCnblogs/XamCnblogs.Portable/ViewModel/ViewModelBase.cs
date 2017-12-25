@@ -29,7 +29,6 @@ namespace XamCnblogs.Portable.ViewModel
             DependencyService.Register<IStatusesCommentService, StatusesCommentService>();
             DependencyService.Register<IQuestionsService, QuestionsService>();
             DependencyService.Register<IQuestionsDetailsService, QuestionsDetailsService>();
-            DependencyService.Register<IQuestionsAnswersService, QuestionsAnswersService>();
             DependencyService.Register<IAnswersCommentService, AnswersCommentService>();
             DependencyService.Register<ICommentService, CommentService>();
             DependencyService.Register<IBlogsService, BlogsService>();

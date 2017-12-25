@@ -72,13 +72,25 @@ namespace XamCnblogs.Portable.Helpers
             switch (code)
             {
                 case HttpStatusCode.OK:
-                    return new ResponseMessage() { Success = true, Message = await response.Content.ReadAsStringAsync() };
+                    return new ResponseMessage() { Success = true, Code = HttpStatusCode.OK, Message = await response.Content.ReadAsStringAsync() };
                 case HttpStatusCode.Created:
-                    return new ResponseMessage() { Success = true, Message = await response.Content.ReadAsStringAsync() };
+                    return new ResponseMessage() { Success = true, Code = HttpStatusCode.Created, Message = await response.Content.ReadAsStringAsync() };
                 default:
                     var message = await response.Content.ReadAsStringAsync();
-                    return new ResponseMessage() { Success = false, Message = response.StatusCode };
+                    try
+                    {
+                        message = JsonConvert.DeserializeObject<Messages>(await response.Content.ReadAsStringAsync()).Message;
+                    }
+                    catch (Exception e)
+                    {
+                        message = response.StatusCode.ToString();
+                    }
+                    return new ResponseMessage() { Success = false, Code = response.StatusCode, Message = message };
             }
         }
+    }
+    public class Messages
+    {
+        public string Message { get; set; }
     }
 }

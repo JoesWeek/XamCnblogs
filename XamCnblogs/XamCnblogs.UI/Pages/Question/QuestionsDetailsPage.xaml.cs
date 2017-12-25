@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using XamCnblogs.Portable.Helpers;
@@ -44,7 +44,7 @@ namespace XamCnblogs.UI.Pages.Question
             base.OnAppearing();
             UpdatePage();
         }
-        
+
         private void UpdatePage()
         {
             bool forceRefresh = (DateTime.Now > (ViewModel?.NextRefreshTime ?? DateTime.Now));
@@ -77,7 +77,7 @@ namespace XamCnblogs.UI.Pages.Question
             }
             else
             {
-                var page = new QuestionsAnswersPopupPage(questions.Qid, new Action<QuestionsAnswers>(OnResult));
+                var page = new QuestionsAnswersPopupPage(questions, new Action<QuestionsAnswers>(OnResult));
                 if (page != null && Navigation != null)
                     await Navigation.PushPopupAsync(page);
             }
@@ -86,7 +86,7 @@ namespace XamCnblogs.UI.Pages.Question
         {
             if (result != null)
             {
-                ViewModel.AddComment(result);
+                ViewModel.EditComment(result);
                 QuestionsDetailsView.ScrollTo(ViewModel.QuestionAnswers.Last(), ScrollToPosition.Start, false);
             }
         }
@@ -100,6 +100,17 @@ namespace XamCnblogs.UI.Pages.Question
             {
                 var url = "https://q.cnblogs.com/q/" + questions.Qid + "/";
                 await NavigationService.PushAsync(Navigation, new BookmarksEditPage(new Bookmarks() { Title = questions.Title, LinkUrl = url, FromCNBlogs = true }));
+            }
+        }
+        public ICommand EditCommand
+        {
+            get
+            {
+                return new Command(async (e) =>
+                {
+                    var page = new QuestionsAnswersPopupPage(questions, new Action<QuestionsAnswers>(OnResult), e as QuestionsAnswers);
+                    await Navigation.PushPopupAsync(page);
+                });
             }
         }
     }

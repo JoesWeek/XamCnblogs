@@ -29,6 +29,10 @@ namespace XamCnblogs.UI.Pages.New
             this.result = result;
             InitializeComponent();
             BindingContext = new NewsDetailsViewModel(news);
+            if (comments != null)
+            {
+                this.Comment.Text = comments.CommentContent;
+            }
             this.Comment.Focus();
         }
         private void OnClose(object sender, EventArgs e)
@@ -71,9 +75,15 @@ namespace XamCnblogs.UI.Pages.New
             }
             else
             {
+                SendButton.IsRunning = true;
                 if (await ViewModel.ExecuteCommentEditCommandAsync(news.Id, comment, comments != null))
                 {
+                    SendButton.IsRunning = false;
                     ClosePopupPage(comment);
+                }
+                else
+                {
+                    SendButton.IsRunning = false;
                 }
             }
         }

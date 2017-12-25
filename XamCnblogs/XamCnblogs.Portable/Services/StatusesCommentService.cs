@@ -15,7 +15,7 @@ namespace XamCnblogs.Portable.Services
         public StatusesCommentService()
         {
         }
-        public async Task<ResponseMessage> GetStatusesCommentsAsync(int id)
+        public async Task<ResponseMessage> GetCommentsAsync(int id)
         {
             var url = string.Format(Apis.StatusComments, id);
             return await TokenHttpClient.Current.GetAsyn(url);
@@ -30,6 +30,12 @@ namespace XamCnblogs.Portable.Services
             parameters.Add("Content", content);
 
             return await UserHttpClient.Current.PostAsync(url, new StringContent(JsonConvert.SerializeObject(parameters), Encoding.UTF8, "application/json"));
+        }
+        public async Task<ResponseMessage> DeleteCommentAsync(int statusId, int id)
+        {
+            var url = string.Format(Apis.StatusCommentDelete, statusId, id);
+
+            return await UserHttpClient.Current.DeleteAsync(url);
         }
     }
 }

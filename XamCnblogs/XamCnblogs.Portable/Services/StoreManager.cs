@@ -59,9 +59,6 @@ namespace XamCnblogs.Portable.Services
         IQuestionsDetailsService questionsDetailsService;
         public IQuestionsDetailsService QuestionsDetailsService => questionsDetailsService ?? (questionsDetailsService = DependencyService.Get<IQuestionsDetailsService>());
 
-        IQuestionsAnswersService questionsAnswersService;
-        public IQuestionsAnswersService QuestionsAnswersService => questionsAnswersService ?? (questionsAnswersService = DependencyService.Get<IQuestionsAnswersService>());
-
         IAnswersCommentService answersCommentService;
         public IAnswersCommentService AnswersCommentService => answersCommentService ?? (answersCommentService = DependencyService.Get<IAnswersCommentService>());
 

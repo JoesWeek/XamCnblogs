@@ -18,7 +18,6 @@ namespace XamCnblogs.Portable.Interfaces
         IStatusesCommentService StatusesCommentsService { get; }
         IQuestionsService QuestionsService { get; }
         IQuestionsDetailsService QuestionsDetailsService { get; }
-        IQuestionsAnswersService QuestionsAnswersService { get; }
         IAnswersCommentService AnswersCommentService { get; }
         ICommentService CommentService { get; }
         IBlogsService BlogsService { get; }
