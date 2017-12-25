@@ -15,44 +15,49 @@ using XamCnblogs.Portable.ViewModel;
 
 namespace XamCnblogs.UI.Pages.New
 {
-	public partial class NewsCommentPopupPage : PopupPage
+    public partial class NewsCommentPopupPage : PopupPage
     {
-        NewsCommentViewModel ViewModel => vm ?? (vm = BindingContext as NewsCommentViewModel);
-        NewsCommentViewModel vm;
+        NewsDetailsViewModel ViewModel => vm ?? (vm = BindingContext as NewsDetailsViewModel);
+        NewsDetailsViewModel vm;
         Action<NewsComments> result;
-        int id;
-        public NewsCommentPopupPage(int id, Action<NewsComments> result)
+        News news;
+        NewsComments comments;
+        public NewsCommentPopupPage(News news, Action<NewsComments> result, NewsComments comments = null)
         {
-            this.id = id;
+            this.news = news;
+            this.comments = comments;
             this.result = result;
             InitializeComponent();
-            BindingContext = new NewsCommentViewModel(id, new Action<string>(OnClose));
+            BindingContext = new NewsDetailsViewModel(news);
             this.Comment.Focus();
         }
         private void OnClose(object sender, EventArgs e)
         {
-            OnClose(null);
+            ClosePopupPage(null);
         }
-        private void OnClose(string result)
+        private void ClosePopupPage(string result)
         {
             if (result != null)
             {
-                NewsComments cmment = new NewsComments();
-                cmment.UserName = UserSettings.Current.DisplayName;
-                cmment.FaceUrl = UserSettings.Current.Avatar;
-                cmment.CommentContent = result;
-                cmment.DateAdded = DateTime.Now;
-                cmment.Floor = 0;
-                cmment.CommentID = 0;
-                cmment.AgreeCount = 0;
-                cmment.AntiCount = 0;
-                cmment.ContentID = 0;
-                cmment.UserGuid = UserSettings.Current.UserId;
-                this.result.Invoke(cmment);
+                if (comments == null)
+                {
+                    comments = new NewsComments();
+                    comments.UserName = UserSettings.Current.DisplayName;
+                    comments.FaceUrl = UserSettings.Current.Avatar;
+                    comments.Floor = 0;
+                    comments.CommentID = 0;
+                    comments.AgreeCount = 0;
+                    comments.AntiCount = 0;
+                    comments.ContentID = 0;
+                    comments.UserGuid = UserSettings.Current.UserId;
+                }
+                comments.CommentContent = result;
+                comments.DateAdded = DateTime.Now;
+                this.result.Invoke(comments);
             }
             PopupNavigation.PopAsync();
         }
-        void OnSendComment(object sender, EventArgs args)
+        async void OnSendComment(object sender, EventArgs args)
         {
             var toast = DependencyService.Get<IToast>();
             var comment = this.Comment.Text;
@@ -66,7 +71,10 @@ namespace XamCnblogs.UI.Pages.New
             }
             else
             {
-                ViewModel.CommentCommand.Execute(comment);
+                if (await ViewModel.ExecuteCommentEditCommandAsync(news.Id, comment, comments != null))
+                {
+                    ClosePopupPage(comment);
+                }
             }
         }
     }

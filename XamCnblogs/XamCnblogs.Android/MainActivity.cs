@@ -26,7 +26,7 @@ namespace XamCnblogs.Droid
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             Toolkit.Init();
-            CachedImageRenderer.Init();
+            CachedImageRenderer.Init(true);
 
             LoadApplication(new UI.App());
         }

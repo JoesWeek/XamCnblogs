@@ -22,7 +22,6 @@ namespace XamCnblogs.UI.Pages.Article
         ArticlesDetailsViewModel ViewModel => vm ?? (vm = BindingContext as ArticlesDetailsViewModel);
         ArticlesDetailsViewModel vm;
         Articles articles;
-        ActivityIndicatorPopupPage popupPage;
         public ArticlesDetailsPage(Articles articles)
         {
             this.articles = articles;
@@ -90,21 +89,7 @@ namespace XamCnblogs.UI.Pages.Article
             }
             else
             {
-                if (popupPage == null)
-                {
-                    popupPage = new ActivityIndicatorPopupPage();
-                }
-                await Navigation.PushPopupAsync(popupPage);
-                if (await ViewModel.ExecuteBookmarkCommandAsync())
-                {
-                    await Navigation.RemovePopupPageAsync(popupPage);
-
-                    await NavigationService.PushAsync(Navigation, new BookmarksEditPage(new Bookmarks() { Title = articles.Title, LinkUrl = articles.Url, FromCNBlogs = true }));
-                }
-                else
-                {
-                    await Navigation.RemovePopupPageAsync(popupPage);
-                }
+                await NavigationService.PushAsync(Navigation, new BookmarksEditPage(new Bookmarks() { Title = articles.Title, LinkUrl = articles.Url, FromCNBlogs = true }));
             }
         }
     }

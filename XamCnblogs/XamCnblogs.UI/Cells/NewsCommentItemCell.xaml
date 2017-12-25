@@ -3,8 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
 	         xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             xmlns:converter="clr-namespace:XamCnblogs.UI.Converters;assembly=XamCnblogs.UI"
              xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
-             x:Class="XamCnblogs.UI.Cells.NewsCommentItemCell">
+             x:Class="XamCnblogs.UI.Cells.NewsCommentItemCell"
+             x:Name="NewsCommentItemCell">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:IsVisibleConverter x:Key="IsVisibleConverter" />
+            <converter:IsUserConverter x:Key="IsUserConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <Grid  
              x:Name="GridView"
              Padding="{StaticResource StandardPadding}" 
@@ -39,10 +47,38 @@
                 LineSpacing="1.3"
                 Text="{Binding CommentContent}"
                 Style="{StaticResource SecondaryTextStyle}"/>
-            <Label
-               Text="{Binding DateDisplay}"
-               Style="{StaticResource SecondaryTextStyle}" 
-               HorizontalOptions="EndAndExpand"/>
+            <StackLayout Orientation="Horizontal"
+                HorizontalOptions="End">
+                <StackLayout Orientation="Horizontal"
+                    HorizontalOptions="End"
+                    IsVisible="{Binding UserGuid, Converter={StaticResource IsUserConverter}}">
+                    <controls:ActivityIndicatorButton
+                        x:Name="DeleteButton"
+                        WidthRequest="25"
+                        HeightRequest="25"
+                        IsRunning="{Binding IsDelete}"
+                        ImageSource="ic_delete.png"
+                        VerticalOptions="CenterAndExpand"
+                        IsVisible="{Binding CommentID, Converter={StaticResource IsVisibleConverter}}">
+                        <controls:ActivityIndicatorButton.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Path=DeleteCommand, Source={x:Reference NewsCommentItemCell}}"
+                                          CommandParameter="{Binding .}"/>
+                        </controls:ActivityIndicatorButton.GestureRecognizers>
+                    </controls:ActivityIndicatorButton>
+                    <Image
+                        Source="ic_edit.png"
+                        VerticalOptions="CenterAndExpand"
+                        IsVisible="{Binding CommentID, Converter={StaticResource IsVisibleConverter}}"/>
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding Path=EditCommand, Source={x:Reference NewsCommentItemCell}}"
+                                          CommandParameter="{Binding .}"/>
+                    </Image.GestureRecognizers>
+                </StackLayout>
+                <Label
+                    Text="{Binding DateDisplay}"
+                    Style="{StaticResource SecondaryTextStyle}"
+                    VerticalOptions="CenterAndExpand"/>
+            </StackLayout>
         </StackLayout>
     </Grid>
 </ContentView>

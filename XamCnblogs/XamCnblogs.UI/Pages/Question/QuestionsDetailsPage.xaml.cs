@@ -11,6 +11,7 @@ using Xamarin.Forms.Xaml;
 using XamCnblogs.Portable.Helpers;
 using XamCnblogs.Portable.Model;
 using XamCnblogs.Portable.ViewModel;
+using XamCnblogs.UI.Pages.Account;
 using XamCnblogs.UI.Pages.New;
 
 namespace XamCnblogs.UI.Pages.Question
@@ -43,11 +44,7 @@ namespace XamCnblogs.UI.Pages.Question
             base.OnAppearing();
             UpdatePage();
         }
-
-        public void OnResume()
-        {
-            UpdatePage();
-        }
+        
         private void UpdatePage()
         {
             bool forceRefresh = (DateTime.Now > (ViewModel?.NextRefreshTime ?? DateTime.Now));
@@ -60,8 +57,7 @@ namespace XamCnblogs.UI.Pages.Question
             else
             {
                 //加载本地数据
-                if (ViewModel.QuestionAnswers.Count == 0)
-                    ViewModel.RefreshCommand.Execute(null);
+                ViewModel.RefreshCommand.Execute(null);
             }
         }
         void OnTapped(object sender, EventArgs args)
@@ -92,6 +88,18 @@ namespace XamCnblogs.UI.Pages.Question
             {
                 ViewModel.AddComment(result);
                 QuestionsDetailsView.ScrollTo(ViewModel.QuestionAnswers.Last(), ScrollToPosition.Start, false);
+            }
+        }
+        async void OnBookmarks(object sender, EventArgs args)
+        {
+            if (UserTokenSettings.Current.HasExpiresIn())
+            {
+                MessagingService.Current.SendMessage(MessageKeys.NavigateLogin);
+            }
+            else
+            {
+                var url = "https://q.cnblogs.com/q/" + questions.Qid + "/";
+                await NavigationService.PushAsync(Navigation, new BookmarksEditPage(new Bookmarks() { Title = questions.Title, LinkUrl = url, FromCNBlogs = true }));
             }
         }
     }

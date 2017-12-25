@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Rg.Plugins.Popup.Extensions;
 using System;
 
 using Xamarin.Forms;
@@ -9,6 +10,7 @@ namespace XamCnblogs.UI.Pages.Account
 {
     public partial class AuthorizePage : ContentPage
     {
+        ActivityIndicatorPopupPage popupPage;
         public AuthorizePage()
         {
             InitializeComponent();
@@ -25,18 +27,29 @@ namespace XamCnblogs.UI.Pages.Account
 
             if (Device.Android == Device.RuntimePlatform)
                 cancel.Icon = "toolbar_close.png";
-            
+
             FormsWebView.OnNavigationCompleted += OnNavigationCompleted;
+
+            FormsWebView.Source = string.Format(Apis.Authorize, TokenHttpClient.ClientId);
+
+            popupPage = new ActivityIndicatorPopupPage();
+
+            Navigation.PushPopupAsync(popupPage);
         }
-        
         private async void OnNavigationCompleted(object sender, string url)
         {
             if (url.IndexOf("https://passport.cnblogs.com/user/signin?returnUrl=") > -1)
             {
+                await Navigation.RemovePopupPageAsync(popupPage);
 
             }
             if (url.IndexOf("https://oauth.cnblogs.com/auth/callback#code=") > -1)
             {
+                if (popupPage == null)
+                {
+                    popupPage = new ActivityIndicatorPopupPage();
+                }
+                await Navigation.PushPopupAsync(popupPage);
                 try
                 {
                     FormsWebView.IsVisible = false;
@@ -79,12 +92,12 @@ namespace XamCnblogs.UI.Pages.Account
                 }
             }
         }
-
-        protected override void OnAppearing()
+        
+        protected async override void OnDisappearing()
         {
-            base.OnAppearing();
+            base.OnDisappearing();
 
-            FormsWebView.Source = string.Format(Apis.Authorize, TokenHttpClient.ClientId);
+            await Navigation.RemovePopupPageAsync(popupPage);
         }
     }
 }

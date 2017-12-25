@@ -107,7 +107,14 @@ namespace XamCnblogs.Portable.ViewModel
             var result = await StoreManager.BookmarksService.EditBookmarkAsync(bookmarks);
             if (!result.Success)
             {
-                Toast.SendToast(result.Message.ToString());
+                if (result.Message.ToString() == "Conflict")
+                {
+                    Toast.SendToast("收藏的网址已经存在了");
+                }
+                else
+                {
+                    Toast.SendToast(result.Message.ToString());
+                }
             }
             return result.Success;
         }
@@ -121,17 +128,38 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                book.Title = bookmark.Title;
-                book.LinkUrl = bookmark.LinkUrl;
-                book.Summary = bookmark.Summary;
-                book.Tags = bookmark.Tags;
-                book.DateAdded = bookmark.DateAdded;
-                book.FromCNBlogs = bookmark.FromCNBlogs;
-
-                Bookmarks.Replace(book);
+                var index = Bookmarks.IndexOf(book);
+                Bookmarks[index] = bookmark;
+                Bookmarks[index].TagsDisplay = bookmark.DateDisplay;
             }
             if (LoadStatus == LoadMoreStatus.StausNodata)
                 LoadStatus = LoadMoreStatus.StausEnd;
         }
+
+        ICommand deleteCommand;
+        public ICommand DeleteCommand =>
+            deleteCommand ?? (deleteCommand = new Command<Bookmarks>(async (bookmark) =>
+            {
+                var index = Bookmarks.IndexOf(bookmark);
+                if (!Bookmarks[index].IsDelete)
+                {
+                    Bookmarks[index].IsDelete = true;
+                    var result = await StoreManager.BookmarksService.DeleteBookmarkAsync(bookmark.WzLinkId);
+                    if (result.Success)
+                    {
+                        await Task.Delay(1000);
+                        index = Bookmarks.IndexOf(bookmark);
+                        Bookmarks.RemoveAt(index);
+                        if (Bookmarks.Count == 0)
+                            LoadStatus = LoadMoreStatus.StausNodata;
+                    }
+                    else
+                    {
+                        index = Bookmarks.IndexOf(bookmark);
+                        Bookmarks[index].IsDelete = false;
+                        Toast.SendToast("删除失败");
+                    }
+                }
+            }));
     }
 }

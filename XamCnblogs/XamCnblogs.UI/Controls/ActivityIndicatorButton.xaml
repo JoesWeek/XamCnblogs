@@ -19,11 +19,7 @@
             <Image
                 x:Name="Send"
                 VerticalOptions="CenterAndExpand"
-                HorizontalOptions="CenterAndExpand">
-                <Image.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnSend"/>
-                </Image.GestureRecognizers>
-            </Image>
+                HorizontalOptions="CenterAndExpand"/>
         </StackLayout>
     </ContentView.Content>
 </ContentView>

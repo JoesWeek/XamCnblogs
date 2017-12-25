@@ -25,12 +25,27 @@ namespace XamCnblogs.UI.Pages.Status
             this.statuses = statuses;
             InitializeComponent();
             Title = statuses.UserDisplayName + "的闪存";
-            BindingContext = new StatusesDetailsViewModel(statuses);            
+            BindingContext = new StatusesDetailsViewModel(statuses);
         }
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            ViewModel.RefreshCommand.Execute(null);
+            UpdatePage();
+        }
+        private void UpdatePage()
+        {
+            bool forceRefresh = (DateTime.Now > (ViewModel?.NextRefreshTime ?? DateTime.Now));
+
+            if (forceRefresh)
+            {
+                //刷新
+                ViewModel.RefreshCommand.Execute(null);
+            }
+            else
+            {
+                //加载本地数据
+                ViewModel.RefreshCommand.Execute(null);
+            }
         }
         void OnTapped(object sender, EventArgs args)
         {

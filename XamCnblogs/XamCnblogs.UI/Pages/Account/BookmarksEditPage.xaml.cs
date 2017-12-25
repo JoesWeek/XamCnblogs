@@ -86,7 +86,8 @@ namespace XamCnblogs.UI.Pages.Account
             else
             {
                 bookmarks.Title = title;
-                bookmarks.Tags = tags.Split(',').ToList();
+                if (tags != null)
+                    bookmarks.Tags = tags.Split(',').ToList();
                 bookmarks.LinkUrl = link;
                 bookmarks.Summary = summary;
                 bookmarks.DateAdded = DateTime.Now;
@@ -96,6 +97,7 @@ namespace XamCnblogs.UI.Pages.Account
                     popupPage = new ActivityIndicatorPopupPage();
                 }
                 await Navigation.PushPopupAsync(popupPage);
+                
                 if (await ViewModel.ExecuteBookmarkEditCommandAsync(bookmarks))
                 {
                     await Navigation.RemovePopupPageAsync(popupPage);

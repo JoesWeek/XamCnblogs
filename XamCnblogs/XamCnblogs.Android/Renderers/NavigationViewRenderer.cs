@@ -55,6 +55,12 @@ namespace XamCnblogs.Droid.Renderers
 
             navView.SetCheckedItem(Resource.Id.menu_blog);
         }
+        public override void OnViewRemoved(Android.Views.View child)
+        {
+            base.OnViewRemoved(child);
+            navView.NavigationItemSelected -= NavView_NavigationItemSelected;
+            UserSettings.Current.PropertyChanged -= SettingsPropertyChanged;
+        }
         IMenuItem previousItem;
 
         void NavView_NavigationItemSelected(object sender, NavigationView.NavigationItemSelectedEventArgs e)
@@ -127,7 +133,7 @@ namespace XamCnblogs.Droid.Renderers
             }
         }
 
-        async void NavigateToLogin()
+        void NavigateToLogin()
         {
             if (UserTokenSettings.Current.HasExpiresIn())
             {

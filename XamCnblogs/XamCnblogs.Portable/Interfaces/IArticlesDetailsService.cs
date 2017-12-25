@@ -7,6 +7,5 @@ namespace XamCnblogs.Portable.Interfaces
     public interface IArticlesDetailsService
     {
         Task<ResponseMessage> GetArticlesAsync(int id);
-        Task<ResponseMessage> HeadBookmarksAsync(string link);
     }
 }

@@ -14,6 +14,7 @@ namespace XamCnblogs.Portable.ViewModel
     {
         public ObservableRangeCollection<StatusesComments> Comments { get; } = new ObservableRangeCollection<StatusesComments>();
         Statuses statuses;
+        public DateTime NextRefreshTime { get; set; }
 
         public Statuses Statuses
         {
@@ -29,6 +30,7 @@ namespace XamCnblogs.Portable.ViewModel
         public StatusesDetailsViewModel(Statuses statuses)
         {
             this.statuses = statuses;
+            NextRefreshTime = DateTime.Now.AddMinutes(15);
             CanLoadMore = false;
             CommentDisplay = statuses.CommentCount > 0 ? statuses.CommentCount.ToString() : "回复";
         }
@@ -38,6 +40,7 @@ namespace XamCnblogs.Portable.ViewModel
             {
                 try
                 {
+                    NextRefreshTime = DateTime.Now.AddMinutes(15);
                     IsBusy = true;
                     var result = await StoreManager.StatusesCommentsService.GetStatusesCommentsAsync(statuses.Id);
                     if (result.Success)

@@ -1,9 +1,10 @@
 ﻿using System;
-
+using System.Windows.Input;
 using Xamarin.Forms;
 using XamCnblogs.Portable.Helpers;
 using XamCnblogs.Portable.Model;
 using XamCnblogs.Portable.ViewModel;
+using XamCnblogs.UI.Pages.Account;
 
 namespace XamCnblogs.UI.Pages.New
 {
@@ -32,10 +33,6 @@ namespace XamCnblogs.UI.Pages.New
         {
             base.OnAppearing();
 
-            UpdatePage();
-        }
-        public void OnResume()
-        {
             UpdatePage();
         }
         private void UpdatePage()

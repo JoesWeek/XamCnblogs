@@ -202,6 +202,9 @@
                 <StackLayout  Grid.Row="0" Grid.Column="1" Spacing="3" VerticalOptions="CenterAndExpand">
                     <Image Source="icon_bookmarks.png" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
                     <Label Text="收藏" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Style="{StaticResource MoreSecondaryStyle}"/>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnBookmarks"/>
+                    </StackLayout.GestureRecognizers>
                 </StackLayout>
                 <StackLayout  Grid.Row="0" Grid.Column="2" Spacing="3" VerticalOptions="CenterAndExpand">
                     <Image Source="icon_digg.png" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>

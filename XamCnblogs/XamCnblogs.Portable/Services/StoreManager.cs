@@ -40,10 +40,7 @@ namespace XamCnblogs.Portable.Services
 
         INewsDetailsService newsDetailsService;
         public INewsDetailsService NewsDetailsService => newsDetailsService ?? (newsDetailsService = DependencyService.Get<INewsDetailsService>());
-
-        INewsCommentService newsCommentService;
-        public INewsCommentService NewsCommentService => newsCommentService ?? (newsCommentService = DependencyService.Get<INewsCommentService>());
-
+        
         IKbArticlesService kbarticlesService;
         public IKbArticlesService KbArticlesService => kbarticlesService ?? (kbarticlesService = DependencyService.Get<IKbArticlesService>());
 

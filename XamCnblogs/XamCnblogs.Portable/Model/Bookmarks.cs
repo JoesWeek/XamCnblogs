@@ -1,4 +1,5 @@
 ﻿using Humanizer;
+using MvvmHelpers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -6,14 +7,44 @@ using System.Text;
 
 namespace XamCnblogs.Portable.Model
 {
-    public class Bookmarks
+    public class Bookmarks : BaseViewModel
     {
-        public int WzLinkId { get; set; }
-        public string Title { get; set; }
-        public string LinkUrl { get; set; }
-        public string Summary { get; set; }
-        public DateTime DateAdded { get; set; }
-        public List<string> Tags { get; set; }
+        private int wzLinkId;
+        public int WzLinkId
+        {
+            get { return wzLinkId; }
+            set { SetProperty(ref wzLinkId, value); }
+        }
+        private string title;
+        public new string Title
+        {
+            get { return title; }
+            set { SetProperty(ref title, value); }
+        }
+        private string linkUrl;
+        public string LinkUrl
+        {
+            get { return linkUrl; }
+            set { SetProperty(ref linkUrl, value); }
+        }
+        private string summary;
+        public string Summary
+        {
+            get { return summary; }
+            set { SetProperty(ref summary, value); }
+        }
+        private DateTime dateAdded;
+        public DateTime DateAdded
+        {
+            get { return dateAdded; }
+            set { SetProperty(ref dateAdded, value); }
+        }
+        private List<string> tags;
+        public List<string> Tags
+        {
+            get { return tags; }
+            set { SetProperty(ref tags, value); }
+        }
         private string tag;
         public string TagsDisplay
         {
@@ -30,10 +61,18 @@ namespace XamCnblogs.Portable.Model
                 }
                 return tag;
             }
-            set { tag = value; }
+            set { SetProperty(ref tag, value); }
         }
         public bool FromCNBlogs { get; set; }
         [JsonIgnore]
         public string DateDisplay { get { return DateAdded.ToUniversalTime().Humanize(); } }
+
+        private bool isDelete;
+        [JsonIgnore]
+        public bool IsDelete
+        {
+            get { return isDelete; }
+            set { SetProperty(ref isDelete, value); }
+        }
     }
 }

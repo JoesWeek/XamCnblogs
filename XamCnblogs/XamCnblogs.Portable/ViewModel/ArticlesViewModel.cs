@@ -100,7 +100,6 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Toast.SendToast(result.Message.ToString());
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
             }
         }

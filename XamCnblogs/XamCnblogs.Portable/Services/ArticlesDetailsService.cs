@@ -17,10 +17,5 @@ namespace XamCnblogs.Portable.Services
             var url = string.Format(Apis.ArticleBody, id);
             return await TokenHttpClient.Current.GetAsyn(url);
         }
-        public async Task<ResponseMessage> HeadBookmarksAsync(string link)
-        {
-            var url = string.Format(Apis.BookmarkHead, link);
-            return await UserHttpClient.Current.HeadAsyn(url);
-        }
     }
 }

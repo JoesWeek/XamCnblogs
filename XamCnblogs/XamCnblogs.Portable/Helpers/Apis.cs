@@ -26,7 +26,7 @@
         public const string NewsBody = Api + "/newsitems/{0}/body";
         public const string NewsComment = Api + "/news/{0}/comments?pageIndex={1}&pageSize={2}";
         public const string NewsCommentAdd = Api + "/news/{0}/comments";
-        public const string NewsCommentDelete = Api + "/newscomments/{0}";
+        public const string NewsCommentEdit = Api + "/newscomments/{0}";
 
         public const string KbArticles = Api + "/KbArticles?pageIndex={0}&pageSize={1}";
         public const string KbArticlesBody = Api + "/kbarticles/{0}/body";
@@ -53,7 +53,6 @@
 
         public const string Bookmarks = Api + "/Bookmarks?pageIndex={0}&pageSize={1}";
         public const string BookmarkHead = Api + "/Bookmarks?url={0}";
-        public const string BookmarkDelete = Api + "/bookmarks/{0}";
         public const string BookmarkEdit = Api + "/bookmarks/{0}";
         public const string BookmarkAdd = Api + "/Bookmarks";
     }

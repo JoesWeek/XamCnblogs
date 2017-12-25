@@ -12,7 +12,6 @@ namespace XamCnblogs.Portable.Interfaces
         IArticlesCommentService ArticlesCommentService { get; }
         INewsService NewsService { get; }
         INewsDetailsService NewsDetailsService { get; }
-        INewsCommentService NewsCommentService { get; }
         IKbArticlesService KbArticlesService { get; }
         IKbArticlesDetailsService KbArticlesDetailsService { get; }
         IStatusesService StatusesService { get; }

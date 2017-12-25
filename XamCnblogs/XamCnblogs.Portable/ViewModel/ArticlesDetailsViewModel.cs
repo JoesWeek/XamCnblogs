@@ -38,7 +38,7 @@ namespace XamCnblogs.Portable.ViewModel
             NextRefreshTime = DateTime.Now.AddMinutes(15);
             ArticlesDetails = new ArticlesDetailsModel()
             {
-                HasContent = false,
+                HasContent = false,                
                 DiggDisplay = articles.DiggCount > 0 ? articles.DiggCount.ToString() : "推荐",
                 CommentDisplay = articles.CommentCount > 0 ? articles.CommentCount.ToString() : "评论",
                 ViewDisplay = articles.ViewCount > 0 ? articles.ViewCount.ToString() : "阅读",
@@ -136,17 +136,7 @@ namespace XamCnblogs.Portable.ViewModel
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
             }
         }
-
-        public async Task<bool> ExecuteBookmarkCommandAsync()
-        {
-            var link = articles.Url;
-            var result = await StoreManager.ArticlesDetailsService.HeadBookmarksAsync(link);
-            if (!result.Success)
-            {
-                Toast.SendToast(result.Message.ToString());
-            }
-            return result.Success;
-        }
+        
         public void AddComment(ArticlesComments comment)
         {
             ArticlesComments.Add(comment);
@@ -209,6 +199,12 @@ namespace XamCnblogs.Portable.ViewModel
             {
                 get { return hasContent; }
                 set { SetProperty(ref hasContent, value); }
+            }
+            private bool isDelete;
+            public bool IsDelete
+            {
+                get { return isDelete; }
+                set { SetProperty(ref isDelete, value); }
             }
         }
     }

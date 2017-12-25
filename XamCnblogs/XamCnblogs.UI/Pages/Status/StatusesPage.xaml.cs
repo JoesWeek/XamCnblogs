@@ -39,10 +39,6 @@ namespace XamCnblogs.UI.Pages.Status
 
             UpdatePage();
         }
-        public void OnResume()
-        {
-            UpdatePage();
-        }
         private void UpdatePage()
         {
             bool forceRefresh = (DateTime.Now > (ViewModel?.NextRefreshTime ?? DateTime.Now));

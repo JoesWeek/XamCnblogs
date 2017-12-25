@@ -49,7 +49,22 @@ namespace XamCnblogs.UI.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value != null && (string)value != "";
+            if (value != null)
+            {
+                int i = 0;
+                if (int.TryParse(value.ToString(), out i))
+                {
+                    return i > 0;
+                }
+                else
+                {
+                    return (string)value != "";
+                }
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -73,7 +88,7 @@ namespace XamCnblogs.UI.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return ((Grid)value).Equals(UserSettings.Current.UserId);
+            return value.Equals(UserSettings.Current.UserId);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

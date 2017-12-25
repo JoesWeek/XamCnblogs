@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
              xmlns:converter="clr-namespace:XamCnblogs.UI.Converters;assembly=XamCnblogs.UI"
-             x:Class="XamCnblogs.UI.Cells.BookmarksItemCell">
+             x:Class="XamCnblogs.UI.Cells.BookmarksItemCellView"
+             x:Name="BookmarksItemCell">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converter:IsTagsConverter x:Key="IsTagsConverter" />
@@ -47,21 +48,25 @@
                 HorizontalOptions="End">
             <controls:ActivityIndicatorButton
                 x:Name="DeleteButton"
-                WidthRequest="20"
-                HeightRequest="20"
-                ActionID="{Binding WzLinkId}"
+                WidthRequest="25"
+                HeightRequest="25"
+                IsRunning="{Binding IsDelete}"
                 ImageSource="ic_delete.png"
-                VerticalOptions="CenterAndExpand"/>
-            <StackLayout
-                Spacing="0"
-                ClassId="{Binding WzLinkId}"
-                VerticalOptions="CenterAndExpand">
-                <Image
-                    Source="ic_edit.png"/>
-                <StackLayout.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnEdit"/>
-                </StackLayout.GestureRecognizers>
-            </StackLayout>
+                VerticalOptions="CenterAndExpand"
+                IsVisible="{Binding WzLinkId, Converter={StaticResource IsVisibleConverter}}">
+                <controls:ActivityIndicatorButton.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding Path=DeleteCommand, Source={x:Reference BookmarksItemCell}}"
+                                          CommandParameter="{Binding .}"/>
+                </controls:ActivityIndicatorButton.GestureRecognizers>
+            </controls:ActivityIndicatorButton>
+            <Image
+                Source="ic_edit.png"
+                VerticalOptions="CenterAndExpand"
+                IsVisible="{Binding WzLinkId, Converter={StaticResource IsVisibleConverter}}"/>
+            <Image.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding Path=EditCommand, Source={x:Reference BookmarksItemCell}}"
+                                          CommandParameter="{Binding .}"/>
+            </Image.GestureRecognizers>
             <Label
                 Text="{Binding DateDisplay}"
                 Style="{StaticResource SecondaryTextStyle}"

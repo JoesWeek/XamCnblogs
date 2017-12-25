@@ -17,6 +17,7 @@ namespace XamCnblogs.Portable.ViewModel
         private News news;
         public DateTime NextRefreshTime { get; set; }
         private int pageIndex = 1;
+        private int pageSize = 20;
 
         NewsDetailsModel newsDetailsModel;
         public NewsDetailsModel NewsDetails
@@ -89,7 +90,6 @@ namespace XamCnblogs.Portable.ViewModel
                     IsBusy = false;
                 }
             }));
-
         ICommand loadMoreCommand;
         public ICommand LoadMoreCommand =>
             loadMoreCommand ?? (loadMoreCommand = new Command(async () =>
@@ -110,8 +110,7 @@ namespace XamCnblogs.Portable.ViewModel
             }));
         async Task ExecuteCommentCommandAsync()
         {
-            await Task.Delay(2000);
-            var result = await StoreManager.NewsCommentService.GetCommentAsync(news.Id, pageIndex);
+            var result = await StoreManager.NewsDetailsService.GetCommentAsync(news.Id, pageIndex, pageSize);
             if (result.Success)
             {
                 var news = JsonConvert.DeserializeObject<List<NewsComments>>(result.Message.ToString());
@@ -121,8 +120,16 @@ namespace XamCnblogs.Portable.ViewModel
                         NewsComments.Clear();
                     NewsComments.AddRange(news);
                     pageIndex++;
-                    LoadStatus = LoadMoreStatus.StausDefault;
-                    CanLoadMore = true;
+                    if (NewsComments.Count >= pageSize)
+                    {
+                        LoadStatus = LoadMoreStatus.StausDefault;
+                        CanLoadMore = true;
+                    }
+                    else
+                    {
+                        LoadStatus = LoadMoreStatus.StausEnd;
+                        CanLoadMore = false;
+                    }
                 }
                 else
                 {
@@ -134,7 +141,19 @@ namespace XamCnblogs.Portable.ViewModel
             {
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
             }
-
+        }
+        public async Task<bool> ExecuteCommentEditCommandAsync(int id, string content, bool hasEdit = false)
+        {
+            var result = await StoreManager.NewsDetailsService.PostCommentAsync(id, content.ToString(), hasEdit);
+            if (result.Success)
+            {
+                Toast.SendToast(hasEdit ? "修改评论成功" : "评论成功");
+            }
+            else
+            {
+                Toast.SendToast(result.Message.ToString());
+            }
+            return result.Success;
         }
         public void AddComment(NewsComments comment)
         {
@@ -143,6 +162,31 @@ namespace XamCnblogs.Portable.ViewModel
                 LoadStatus = LoadMoreStatus.StausEnd;
             NewsDetails.CommentDisplay = (news.CommentCount + 1).ToString();
         }
+        ICommand deleteCommand;
+        public ICommand DeleteCommand =>
+            deleteCommand ?? (deleteCommand = new Command<NewsComments>(async (comment) =>
+            {
+                //var index = Bookmarks.IndexOf(bookmark);
+                //if (!Bookmarks[index].IsDelete)
+                //{
+                //    Bookmarks[index].IsDelete = true;
+                //    var result = await StoreManager.BookmarksService.DeleteBookmarkAsync(bookmark.WzLinkId);
+                //    if (result.Success)
+                //    {
+                //        await Task.Delay(1000);
+                //        index = Bookmarks.IndexOf(bookmark);
+                //        Bookmarks.RemoveAt(index);
+                //        if (Bookmarks.Count == 0)
+                //            LoadStatus = LoadMoreStatus.StausNodata;
+                //    }
+                //    else
+                //    {
+                //        index = Bookmarks.IndexOf(bookmark);
+                //        Bookmarks[index].IsDelete = false;
+                //        Toast.SendToast("删除失败");
+                //    }
+                //}
+            }));
         public class NewsDetailsModel : BaseViewModel
         {
             string diggDisplay;

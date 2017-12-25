@@ -38,10 +38,23 @@ namespace XamCnblogs.Portable.Helpers
             var response = await client.PostAsync(url, content);
             return await GetResultMessage(response);
         }
-        public async Task<ResponseMessage> HeadAsyn(string url)
+        public async Task<ResponseMessage> DeleteAsync(string url)
         {
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(UserTokenSettings.Current.UserTokenType, UserTokenSettings.Current.UserToken);
-            var response = await client.GetAsync(url);
+            var response = await client.DeleteAsync(url);
+            return await GetResultMessage(response);
+        }
+        public async Task<ResponseMessage> PatchAsync(string url, HttpContent content)
+        {
+            var method = new HttpMethod("PATCH");
+
+            var request = new HttpRequestMessage(method, url)
+            {
+                Content = content
+            };
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(UserTokenSettings.Current.UserTokenType, UserTokenSettings.Current.UserToken);
+            var response = await client.SendAsync(request);
             return await GetResultMessage(response);
         }
         private async Task<ResponseMessage> TokenAsync()

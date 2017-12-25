@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using XamCnblogs.Portable.Helpers;
@@ -54,10 +54,6 @@ namespace XamCnblogs.UI.Pages.Account
 
             UpdatePage();
         }
-        public void OnResume()
-        {
-            UpdatePage();
-        }
         private void UpdatePage()
         {
             bool forceRefresh = (DateTime.Now > (ViewModel?.NextRefreshTime ?? DateTime.Now));
@@ -80,6 +76,16 @@ namespace XamCnblogs.UI.Pages.Account
             {
                 ViewModel.EditBookmark(result);
                 BookmarksListView.ScrollTo(ViewModel.Bookmarks.FirstOrDefault(), ScrollToPosition.Start, false);
+            }
+        }
+        public ICommand EditCommand
+        {
+            get
+            {
+                return new Command(async (e) =>
+                {
+                    await NavigationService.PushAsync(Navigation, new BookmarksEditPage(e as Bookmarks, new Action<Bookmarks>(OnResult)));
+                });
             }
         }
     }
