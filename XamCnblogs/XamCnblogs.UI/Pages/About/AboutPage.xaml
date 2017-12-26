@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
+             x:Class="XamCnblogs.UI.Pages.About.AboutPage"
+             Title="关于">
+    <ContentPage.Content>
+        <StackLayout Spacing="0">
+            <StackLayout Padding="10" Spacing="10">
+                <Label 
+                            Text="当前版本"
+                            Style="{StaticResource PrimaryTextStyle}"/>
+                <Label 
+                            Text="1.1.0"
+                            Style="{StaticResource SecondaryTextStyle}"/>
+            </StackLayout>
+            <controls:HeaderDivider HorizontalOptions="FillAndExpand"/>
+            <StackLayout Padding="10" Spacing="10">
+                <Label 
+                            Text="项目开源主页"
+                            Style="{StaticResource PrimaryTextStyle}"/>
+                <Label 
+                            Text="https://github.com/JoesWeek/XamCnblogs"
+                            Style="{StaticResource SecondaryTextStyle}"/>
+            </StackLayout>
+            <controls:HeaderDivider HorizontalOptions="FillAndExpand"/>
+            <StackLayout Padding="10" Spacing="10">
+                <Label 
+                            Text="关于博客园"
+                            Style="{StaticResource PrimaryTextStyle}"/>
+                <Label 
+                            Text="https://www.cnblogs.com/AboutUS.aspx"
+                            Style="{StaticResource SecondaryTextStyle}"/>
+            </StackLayout>
+            <controls:HeaderDivider HorizontalOptions="FillAndExpand"/>
+            <StackLayout Padding="10" Spacing="10">
+                <Label 
+                            Text="意见反馈与交流"
+                            Style="{StaticResource PrimaryTextStyle}"/>
+                <Label 
+                            Text="欢迎加入QQ群：181050206"
+                            Style="{StaticResource SecondaryTextStyle}"/>
+            </StackLayout>
+            <controls:HeaderDivider HorizontalOptions="FillAndExpand"/>
+            <StackLayout Padding="10" Spacing="10" HorizontalOptions="CenterAndExpand">
+                <Label 
+                            Text="Copyright © 2017 JoesWeek"
+                            Style="{StaticResource SecondaryTextStyle}"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

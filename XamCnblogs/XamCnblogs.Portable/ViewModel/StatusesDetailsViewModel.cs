@@ -48,29 +48,32 @@ namespace XamCnblogs.Portable.ViewModel
                 {
                     NextRefreshTime = DateTime.Now.AddMinutes(15);
                     IsBusy = true;
-                    var result = await StoreManager.StatusesCommentsService.GetCommentsAsync(statuses.Id);
-                    if (result.Success)
+                    await Task.Run(async () =>
                     {
-                        var comments = JsonConvert.DeserializeObject<List<StatusesComments>>(result.Message.ToString());
-                        if (comments.Count > 0)
+                        var result = await StoreManager.StatusesCommentsService.GetCommentsAsync(statuses.Id);
+                        if (result.Success)
                         {
-                            if (StatusesComments.Count > 0)
-                                StatusesComments.Clear();
-                            StatusesComments.AddRange(comments);
-                            LoadStatus = LoadMoreStatus.StausEnd;
+                            var comments = JsonConvert.DeserializeObject<List<StatusesComments>>(result.Message.ToString());
+                            if (comments.Count > 0)
+                            {
+                                if (StatusesComments.Count > 0)
+                                    StatusesComments.Clear();
+                                StatusesComments.AddRange(comments);
+                                LoadStatus = LoadMoreStatus.StausEnd;
+                            }
+                            else
+                            {
+                                LoadStatus = LoadMoreStatus.StausNodata;
+                            }
                         }
                         else
                         {
-                            LoadStatus = LoadMoreStatus.StausNodata;
+                            LoadStatus = LoadMoreStatus.StausError;
+                            if (StatusesComments.Count > 0)
+                                StatusesComments.Clear();
                         }
-                    }
-                    else
-                    {
-                        LoadStatus = LoadMoreStatus.StausError;
-                        if (StatusesComments.Count > 0)
-                            StatusesComments.Clear();
-                    }
-                    CanLoadMore = false;
+                        CanLoadMore = false;
+                    });
                 }
                 catch (Exception ex)
                 {

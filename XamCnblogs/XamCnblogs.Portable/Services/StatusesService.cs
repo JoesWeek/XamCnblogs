@@ -64,7 +64,7 @@ namespace XamCnblogs.Portable.Services
         }
         public async Task<ResponseMessage> DeleteStatusesAsync(int id)
         {
-            var url = string.Format(Apis.StatusDelete);
+            var url = string.Format(Apis.StatusDelete, id);
             return await UserHttpClient.Current.DeleteAsync(url);
         }
 

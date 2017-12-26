@@ -15,6 +15,8 @@ namespace XamCnblogs.Portable.Model
         News,
         KbArticles,
         Statuses,
-        Questions
+        Questions,
+        Setting,
+        About
     }
 }

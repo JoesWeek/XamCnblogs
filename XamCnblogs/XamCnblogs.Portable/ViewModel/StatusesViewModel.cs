@@ -39,17 +39,20 @@ namespace XamCnblogs.Portable.ViewModel
                     IsBusy = true;
                     CanLoadMore = false;
                     pageIndex = 1;
-                    if (position > 0 && UserTokenSettings.Current.HasExpiresIn())
+                    await Task.Run(async () =>
                     {
-                        //判断有没有登录
-                        LoadStatus = LoadMoreStatus.StausNologin;
-                        if (Statuses.Count > 0)
-                            Statuses.Clear();
-                    }
-                    else
-                    {
-                        await ExecuteRefreshCommandAsync();
-                    }
+                        if (position > 0 && UserTokenSettings.Current.HasExpiresIn())
+                        {
+                            //判断有没有登录
+                            LoadStatus = LoadMoreStatus.StausNologin;
+                            if (Statuses.Count > 0)
+                                Statuses.Clear();
+                        }
+                        else
+                        {
+                            await ExecuteRefreshCommandAsync();
+                        }
+                    });
                 }
                 catch (Exception)
                 {

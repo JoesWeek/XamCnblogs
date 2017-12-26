@@ -53,6 +53,7 @@ namespace XamCnblogs.Portable.ViewModel
                 try
                 {
                     IsBusy = true;
+                    pageIndex = 1;
                     NextRefreshTime = DateTime.Now.AddMinutes(15);
                     await Task.Run(async () =>
                     {

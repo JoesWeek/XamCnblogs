@@ -17,25 +17,23 @@ namespace XamCnblogs.UI.Pages.Article
 {
     public partial class ArticlesCommentPopupPage : PopupPage
     {
-        ArticlesCommentViewModel ViewModel => vm ?? (vm = BindingContext as ArticlesCommentViewModel);
-        ArticlesCommentViewModel vm;
+        ArticlesDetailsViewModel ViewModel => vm ?? (vm = BindingContext as ArticlesDetailsViewModel);
+        ArticlesDetailsViewModel vm;
         Action<ArticlesComments> result;
-        int id;
-        string blogApp;
-        public ArticlesCommentPopupPage(string blogApp, int id, Action<ArticlesComments> result)
+        Articles articles;
+        public ArticlesCommentPopupPage(Articles articles, Action<ArticlesComments> result)
         {
-            this.blogApp = blogApp;
-            this.id = id;
+            this.articles = articles;
             this.result = result;
             InitializeComponent();
-            BindingContext = new ArticlesCommentViewModel(blogApp, id, new Action<string>(OnClose));
+            BindingContext = new ArticlesDetailsViewModel(articles);
             this.Comment.Focus();
         }
         private void OnClose(object sender, EventArgs e)
         {
-            OnClose(null);
+            ClosePopupPage(null);
         }
-        private void OnClose(string result)
+        private void ClosePopupPage(string result)
         {
             if (result != null)
             {
@@ -51,7 +49,7 @@ namespace XamCnblogs.UI.Pages.Article
             }
             PopupNavigation.PopAsync();
         }
-        void OnSendComment(object sender, EventArgs args)
+        async void OnSendComment(object sender, EventArgs args)
         {
             var toast = DependencyService.Get<IToast>();
             var comment = this.Comment.Text;
@@ -65,7 +63,16 @@ namespace XamCnblogs.UI.Pages.Article
             }
             else
             {
-                ViewModel.CommentCommand.Execute(comment);
+                SendButton.IsRunning = true;
+                if (await ViewModel.ExecuteCommentEditCommandAsync(articles.BlogApp, articles.Id, comment))
+                {
+                    SendButton.IsRunning = false;
+                    ClosePopupPage(comment);
+                }
+                else
+                {
+                    SendButton.IsRunning = false;
+                }
             }
         }
     }

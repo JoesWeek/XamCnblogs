@@ -9,7 +9,6 @@ namespace XamCnblogs.Portable.Interfaces
         Task InitializeAsync();
         IArticlesService ArticlesService { get; }
         IArticlesDetailsService ArticlesDetailsService { get; }
-        IArticlesCommentService ArticlesCommentService { get; }
         INewsService NewsService { get; }
         INewsDetailsService NewsDetailsService { get; }
         IKbArticlesService KbArticlesService { get; }

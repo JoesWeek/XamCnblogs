@@ -3,8 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
 	         xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             xmlns:converter="clr-namespace:XamCnblogs.UI.Converters;assembly=XamCnblogs.UI"
              xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
-             x:Class="XamCnblogs.UI.Cells.StatusesItemCell">
+             x:Class="XamCnblogs.UI.Cells.StatusesItemCell"
+             x:Name="StatusesItemCell">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:IsVisibleConverter x:Key="IsVisibleConverter" />
+            <converter:IsUserGuidConverter x:Key="IsUserGuidConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <Grid  
              x:Name="GridView"
              Padding="{StaticResource StandardPadding}" 
@@ -48,14 +56,35 @@
                LineSpacing="1.3"
                Text="{Binding Content}"
                Style="{StaticResource SecondaryTextStyle}" />
-        <StackLayout Grid.Row="2"
+        <StackLayout  Grid.Row="2"
                Grid.Column="1"
                Orientation="Horizontal"
-               HorizontalOptions="EndAndExpand" >
-            <Image Source="ic_reply.png"/>
-            <Label
-               Text="{Binding CommentValue}"
-               Style="{StaticResource SecondaryTextStyle}" />
+               HorizontalOptions="End">
+            <StackLayout Orientation="Horizontal"
+                    HorizontalOptions="End"
+                    IsVisible="{Binding UserGuid, Converter={StaticResource IsUserGuidConverter}}">
+                <controls:ActivityIndicatorButton
+                        x:Name="DeleteButton"
+                        WidthRequest="25"
+                        HeightRequest="25"
+                        IsRunning="{Binding IsDelete}"
+                        ImageSource="ic_delete.png"
+                        VerticalOptions="CenterAndExpand"
+                        IsVisible="{Binding Id, Converter={StaticResource IsVisibleConverter}}">
+                    <controls:ActivityIndicatorButton.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding Path=DeleteCommand, Source={x:Reference StatusesItemCell}}"
+                                          CommandParameter="{Binding .}"/>
+                    </controls:ActivityIndicatorButton.GestureRecognizers>
+                </controls:ActivityIndicatorButton>
+            </StackLayout>
+            <StackLayout
+                   Orientation="Horizontal"
+                   HorizontalOptions="EndAndExpand" >
+                <Image Source="ic_reply.png"/>
+                <Label
+                   Text="{Binding CommentValue}"
+                   Style="{StaticResource SecondaryTextStyle}" />
+            </StackLayout>
         </StackLayout>
     </Grid>
 </ContentView>

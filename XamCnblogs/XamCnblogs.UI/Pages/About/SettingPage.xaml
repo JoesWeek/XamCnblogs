@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
+             x:Class="XamCnblogs.UI.Pages.About.SettingPage"
+             Title="设置">
+    <ContentPage.Content>
+        <StackLayout Spacing="0">
+            <StackLayout Padding="20" Spacing="10">
+                <Label 
+                    Text="通知"
+                    Style="{StaticResource SecondaryTextStyle}"
+                    TextColor="{StaticResource Primary}"/>
+                <StackLayout Orientation="Horizontal" VerticalOptions="CenterAndExpand">
+                    <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" Spacing="10">
+                        <Label 
+                            Text="接收消息推送"
+                            Style="{StaticResource PrimaryTextStyle}"/>
+                        <Label 
+                            Text="开启也没用，压根没这个功能"
+                            Style="{StaticResource SecondaryTextStyle}"/>
+                    </StackLayout>
+                    <Switch 
+                        HorizontalOptions="End"
+                        VerticalOptions="CenterAndExpand"
+                        IsToggled="True"/>
+                </StackLayout>
+            </StackLayout>
+            <controls:HeaderDivider HorizontalOptions="FillAndExpand"/>
+            <StackLayout Padding="20" Spacing="10">
+                <Label 
+                    Text="小尾巴"
+                    Style="{StaticResource SecondaryTextStyle}"
+                    TextColor="{StaticResource Primary}"/>
+                <StackLayout Orientation="Horizontal" VerticalOptions="CenterAndExpand">
+                    <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" Spacing="10">
+                        <Label 
+                            Text="个性小尾巴"
+                            Style="{StaticResource PrimaryTextStyle}"/>
+                        <Label 
+                            Text="开启后可以自定义"
+                            Style="{StaticResource SecondaryTextStyle}"/>
+                    </StackLayout>
+                    <Switch 
+                        x:Name="WeibaSwitch"
+                        HorizontalOptions="End"
+                        VerticalOptions="CenterAndExpand"
+                        IsToggled="True"/>
+                </StackLayout>
+            </StackLayout>
+            <controls:HeaderDivider HorizontalOptions="FillAndExpand"/>
+            <StackLayout Padding="20" Spacing="10">
+                <Label 
+                    x:Name="WeibaButton"
+                    Text="设置小尾巴"
+                    Style="{StaticResource PrimaryTextStyle}" HorizontalOptions="FillAndExpand"/>
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnSettingWeiba"/>
+                </StackLayout.GestureRecognizers>
+            </StackLayout>
+            <controls:HeaderDivider HorizontalOptions="FillAndExpand"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

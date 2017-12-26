@@ -31,9 +31,7 @@ namespace XamCnblogs.Portable.Services
 
         IArticlesDetailsService articlesDetailsService;
         public IArticlesDetailsService ArticlesDetailsService => articlesDetailsService ?? (articlesDetailsService = DependencyService.Get<IArticlesDetailsService>());
-
-        IArticlesCommentService articlesCommentService;
-        public IArticlesCommentService ArticlesCommentService => articlesCommentService ?? (articlesCommentService = DependencyService.Get<IArticlesCommentService>());
+        
 
         INewsService newsService;
         public INewsService NewsService => newsService ?? (newsService = DependencyService.Get<INewsService>());

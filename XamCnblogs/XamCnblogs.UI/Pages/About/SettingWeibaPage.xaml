@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
+             x:Class="XamCnblogs.UI.Pages.About.SettingWeibaPage"
+             Title="设置小尾巴">
+    <ContentPage.Content>
+        <controls:XamEditor 
+            x:Name="editorContent"
+            VerticalOptions="FillAndExpand"
+            HorizontalOptions="FillAndExpand"
+            Placeholder="设置个性小尾巴"
+            Style="{StaticResource SecondaryTextStyle}"/>
+    </ContentPage.Content>
+</ContentPage>

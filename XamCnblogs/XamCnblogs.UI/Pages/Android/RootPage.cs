@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using XamCnblogs.Portable.Model;
 using XamCnblogs.UI.Controls;
+using XamCnblogs.UI.Pages.About;
 using XamCnblogs.UI.Pages.Article;
 using XamCnblogs.UI.Pages.KbArticle;
 using XamCnblogs.UI.Pages.New;
@@ -58,6 +59,12 @@ namespace XamCnblogs.UI.Pages.Android
                         break;
                     case (int)AppPage.Questions:
                         pages.Add(menuId, new XamNavigationPage(new QuestionsTopTabbedPage()));
+                        break;
+                    case (int)AppPage.Setting:
+                        pages.Add(menuId, new XamNavigationPage(new SettingPage()));
+                        break;
+                    case (int)AppPage.About:
+                        pages.Add(menuId, new XamNavigationPage(new AboutPage()));
                         break;
                 }
             }

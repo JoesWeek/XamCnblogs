@@ -68,7 +68,7 @@ namespace XamCnblogs.UI.Pages.Article
             }
             else
             {
-                var page = new ArticlesCommentPopupPage(articles.BlogApp, articles.Id, new Action<ArticlesComments>(OnResult));
+                var page = new ArticlesCommentPopupPage(articles, new Action<ArticlesComments>(OnResult));
                 if (page != null && Navigation != null)
                     await Navigation.PushPopupAsync(page);
             }

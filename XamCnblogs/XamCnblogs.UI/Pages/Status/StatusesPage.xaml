@@ -6,6 +6,7 @@
              xmlns:cells="clr-namespace:XamCnblogs.UI.Cells;assembly=XamCnblogs.UI"
 		     xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
              x:Class="XamCnblogs.UI.Pages.Status.StatusesPage"
+             x:Name="StatusesPage"
              Title="闪存">
     <controls:LoadMoreListView
             x:Name="StatusesListView"
@@ -22,7 +23,8 @@
         <controls:LoadMoreListView.ItemTemplate>
             <DataTemplate>
                 <ViewCell>
-                    <cells:StatusesItemCell/>
+                    <cells:StatusesItemCell
+                            DeleteCommand="{Binding Path=BindingContext.DeleteCommand, Source={x:Reference StatusesPage}}"/>
                 </ViewCell>
             </DataTemplate>
         </controls:LoadMoreListView.ItemTemplate>

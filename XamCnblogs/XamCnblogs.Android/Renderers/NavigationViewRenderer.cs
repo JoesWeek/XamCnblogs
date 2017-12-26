@@ -90,6 +90,12 @@ namespace XamCnblogs.Droid.Renderers
                 case Resource.Id.menu_question:
                     id = (int)AppPage.Questions;
                     break;
+                case Resource.Id.menu_setting:
+                    id = (int)AppPage.Setting;
+                    break;
+                case Resource.Id.menu_about:
+                    id = (int)AppPage.About;
+                    break;
             }
             this.Element.OnNavigationItemSelected(new XamCnblogs.UI.Controls.NavigationItemSelectedEventArgs
             {

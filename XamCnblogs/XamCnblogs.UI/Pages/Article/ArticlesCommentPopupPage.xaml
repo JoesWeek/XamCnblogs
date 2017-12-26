@@ -27,26 +27,17 @@
                 TextColor="{StaticResource PrimaryText}"
                 IsEnabled="{Binding IsBusy, Converter={StaticResource OppositeConverter}}"
                 HeightRequest="100"/>
-            <StackLayout 
-                 HeightRequest="30"
-                 Orientation="Horizontal"
-                 HorizontalOptions="EndAndExpand">
-                <ActivityIndicator
-                    IsRunning="{Binding IsBusy}"
-                    Color="{StaticResource SecondaryText}"
-                    WidthRequest="20"
-                    HeightRequest="20"
-                    VerticalOptions="CenterAndExpand"/>
-                <Image
-                    x:Name="Send"
-                    IsVisible="{Binding IsBusy, Converter={StaticResource OppositeConverter}}"
-                    Source="menu_send_p.png" 
-                    VerticalOptions="CenterAndExpand">
-                    <Image.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnSendComment"/>
-                    </Image.GestureRecognizers>
-                </Image>
-            </StackLayout>
+            <controls:ActivityIndicatorButton
+                        x:Name="SendButton"
+                        WidthRequest="30"
+                        HeightRequest="30"
+                        IsRunning="False"
+                        ImageSource="menu_send_p.png"
+                        HorizontalOptions="EndAndExpand">
+                <controls:ActivityIndicatorButton.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnSendComment"/>
+                </controls:ActivityIndicatorButton.GestureRecognizers>
+            </controls:ActivityIndicatorButton>
         </StackLayout>
     </StackLayout>
 </pages:PopupPage>

@@ -57,30 +57,33 @@ namespace XamCnblogs.Portable.ViewModel
                     IsBusy = true;
                     NextRefreshTime = DateTime.Now.AddMinutes(15);
 
-                    var result = await StoreManager.AnswersDetailsService.GetCommentAsync(answers.AnswerID);
-                    if (result.Success)
+                    await Task.Run(async () =>
                     {
-                        var comments = JsonConvert.DeserializeObject<List<AnswersComment>>(result.Message.ToString());
-                        if (comments.Count > 0)
+                        var result = await StoreManager.AnswersDetailsService.GetCommentAsync(answers.AnswerID);
+                        if (result.Success)
                         {
-                            if (AnswersComment.Count > 0)
-                                AnswersComment.Clear();
-                            AnswersComment.AddRange(comments);
-                            LoadStatus = LoadMoreStatus.StausEnd;
-                            CanLoadMore = false;
+                            var comments = JsonConvert.DeserializeObject<List<AnswersComment>>(result.Message.ToString());
+                            if (comments.Count > 0)
+                            {
+                                if (AnswersComment.Count > 0)
+                                    AnswersComment.Clear();
+                                AnswersComment.AddRange(comments);
+                                LoadStatus = LoadMoreStatus.StausEnd;
+                                CanLoadMore = false;
+                            }
+                            else
+                            {
+                                LoadStatus = LoadMoreStatus.StausNodata;
+                            }
                         }
                         else
                         {
-                            LoadStatus = LoadMoreStatus.StausNodata;
+                            LoadStatus = LoadMoreStatus.StausError;
+                            if (AnswersComment.Count > 0)
+                                AnswersComment.Clear();
                         }
-                    }
-                    else
-                    {
-                        LoadStatus = LoadMoreStatus.StausError;
-                        if (AnswersComment.Count > 0)
-                            AnswersComment.Clear();
-                    }
-                    CanLoadMore = false;
+                        CanLoadMore = false;
+                    });
                 }
                 catch (Exception ex)
                 {

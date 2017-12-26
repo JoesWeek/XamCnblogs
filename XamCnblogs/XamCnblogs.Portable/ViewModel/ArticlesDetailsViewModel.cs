@@ -19,6 +19,7 @@ namespace XamCnblogs.Portable.ViewModel
         private Articles articles;
         public DateTime NextRefreshTime { get; set; }
         private int pageIndex = 1;
+        private int pageSize = 20;
 
         ArticlesDetailsModel articlesDetailsModel;
         public ArticlesDetailsModel ArticlesDetails
@@ -40,7 +41,7 @@ namespace XamCnblogs.Portable.ViewModel
             NextRefreshTime = DateTime.Now.AddMinutes(15);
             ArticlesDetails = new ArticlesDetailsModel()
             {
-                HasContent = false,                
+                HasContent = false,
                 DiggDisplay = articles.DiggCount > 0 ? articles.DiggCount.ToString() : "推荐",
                 CommentDisplay = articles.CommentCount > 0 ? articles.CommentCount.ToString() : "评论",
                 ViewDisplay = articles.ViewCount > 0 ? articles.ViewCount.ToString() : "阅读",
@@ -54,6 +55,7 @@ namespace XamCnblogs.Portable.ViewModel
                 try
                 {
                     IsBusy = true;
+                    pageIndex = 1;
                     NextRefreshTime = DateTime.Now.AddMinutes(15);
                     await Task.Run(async () =>
                     {
@@ -69,7 +71,7 @@ namespace XamCnblogs.Portable.ViewModel
                             ArticlesDetails.DiggDisplay = articles.DiggCount > 0 ? articles.DiggCount.ToString() : "推荐";
                             ArticlesDetails.CommentDisplay = articles.CommentCount > 0 ? articles.CommentCount.ToString() : "评论";
                             ArticlesDetails.ViewDisplay = articles.ViewCount > 0 ? articles.ViewCount.ToString() : "阅读";
-                            ArticlesDetails.DateDisplay = "发布于 " + articles.DateDisplay + "     " + DateTime.Now.AddHours(-2).Humanize(false, null, new CultureInfo("zh-CN"));
+                            ArticlesDetails.DateDisplay = "发布于 " + articles.DateDisplay;
                             ArticlesDetails.HasError = false;
                             ArticlesDetails.HasContent = true;
 
@@ -114,7 +116,7 @@ namespace XamCnblogs.Portable.ViewModel
             }));
         async Task ExecuteCommentCommandAsync()
         {
-            var result = await StoreManager.ArticlesCommentService.GetCommentAsync(articles.BlogApp, articles.Id, pageIndex);
+            var result = await StoreManager.ArticlesDetailsService.GetCommentAsync(articles.BlogApp, articles.Id, pageIndex, pageSize);
             if (result.Success)
             {
                 var comments = JsonConvert.DeserializeObject<List<ArticlesComments>>(result.Message.ToString());
@@ -124,8 +126,16 @@ namespace XamCnblogs.Portable.ViewModel
                         ArticlesComments.Clear();
                     ArticlesComments.AddRange(comments);
                     pageIndex++;
-                    LoadStatus = LoadMoreStatus.StausDefault;
-                    CanLoadMore = true;
+                    if (ArticlesComments.Count >= pageSize)
+                    {
+                        LoadStatus = LoadMoreStatus.StausDefault;
+                        CanLoadMore = true;
+                    }
+                    else
+                    {
+                        LoadStatus = LoadMoreStatus.StausEnd;
+                        CanLoadMore = false;
+                    }
                 }
                 else
                 {
@@ -138,7 +148,24 @@ namespace XamCnblogs.Portable.ViewModel
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
             }
         }
-        
+
+        public async Task<bool> ExecuteCommentEditCommandAsync(string blogApp, int id, string content)
+        {
+            if (AboutSettings.Current.WeibaToggled)
+            {
+                content += "\n\n" + AboutSettings.Current.WeibaContent;
+            }
+            var result = await StoreManager.ArticlesDetailsService.PostCommentAsync(blogApp, id, content);
+            if (result.Success)
+            {
+                Toast.SendToast("评论成功");
+            }
+            else
+            {
+                Toast.SendToast(result.Message.ToString());
+            }
+            return result.Success;
+        }
         public void AddComment(ArticlesComments comment)
         {
             ArticlesComments.Add(comment);
