@@ -12,59 +12,89 @@ namespace XamCnblogs.UI.Pages.New
 {
     public partial class AnswersCommentPopupPage : PopupPage
     {
-        AnswersCommentViewModel ViewModel => vm ?? (vm = BindingContext as AnswersCommentViewModel);
-        AnswersCommentViewModel vm;
+        AnswersDetailsViewModel ViewModel => vm ?? (vm = BindingContext as AnswersDetailsViewModel);
+        AnswersDetailsViewModel vm;
         Action<AnswersComment> result;
-        int questionId;
-        int answerId;
-        public AnswersCommentPopupPage(int questionId, int answerId, Action<AnswersComment> result)
+        QuestionsAnswers answers;
+        AnswersComment answersComment;
+        public AnswersCommentPopupPage(QuestionsAnswers answers, Action<AnswersComment> result, AnswersComment answersComment = null)
         {
-            this.questionId = questionId;
-            this.answerId = answerId;
+            this.answers = answers;
             this.result = result;
+            this.answersComment = answersComment;
             InitializeComponent();
-            BindingContext = new AnswersCommentViewModel(questionId, answerId, new Action<string>(OnClose));
+            BindingContext = new AnswersDetailsViewModel(answers);
+            if (answersComment != null)
+            {
+                this.Comment.Text = answersComment.Content;
+            }
             this.Comment.Focus();
         }
         private void OnClose(object sender, EventArgs e)
         {
-            OnClose(null);
+            ClosePopupPage(null);
         }
-        private void OnClose(string result)
+        private void ClosePopupPage(string result)
         {
             if (result != null)
             {
-                AnswersComment cmment = new AnswersComment();
-                cmment.PostUserInfo = new QuestionUserInfo()
+                if (answersComment == null)
                 {
-                    UserID = UserSettings.Current.SpaceUserId,
-                    IconName = UserSettings.Current.Avatar,
-                    UCUserID = UserSettings.Current.UserId,
-                    UserName = UserSettings.Current.DisplayName,
-                    QScore = UserSettings.Current.Score
-                };
-                cmment.Content = result;
-                cmment.DateAdded = DateTime.Now;
-                cmment.CommentID = answerId;
-                this.result.Invoke(cmment);
+                    answersComment = new AnswersComment();
+                    answersComment.PostUserInfo = new QuestionUserInfo()
+                    {
+                        UserID = UserSettings.Current.SpaceUserId,
+                        IconName = UserSettings.Current.Avatar,
+                        UCUserID = UserSettings.Current.UserId,
+                        UserName = UserSettings.Current.DisplayName,
+                        QScore = UserSettings.Current.Score
+                    };
+                }
+                answersComment.Content = result;
+                answersComment.DateAdded = DateTime.Now;
+                this.result.Invoke(answersComment);
             }
             PopupNavigation.PopAsync();
         }
-        void OnSendComment(object sender, EventArgs args)
+        async void OnSendComment(object sender, EventArgs args)
         {
             var toast = DependencyService.Get<IToast>();
-            var comment = this.Comment.Text;
-            if (comment == null)
+            var content = this.Comment.Text;
+            if (content == null)
             {
                 toast.SendToast("说点什么吧.");
             }
-            else if (comment.Length < 5)
+            else if (content.Length < 5)
             {
                 toast.SendToast("多说一点吧.");
             }
             else
             {
-                ViewModel.CommentCommand.Execute(comment);
+                SendButton.IsRunning = true;
+                if (answersComment == null)
+                {
+                    if (await ViewModel.ExecuteCommentPostCommandAsync(answers.Qid, answers.AnswerID, content))
+                    {
+                        SendButton.IsRunning = false;
+                        ClosePopupPage(content);
+                    }
+                    else
+                    {
+                        SendButton.IsRunning = false;
+                    }
+                }
+                else
+                {
+                    if (await ViewModel.ExecuteCommentEditCommentAsync(answers.Qid, answers.AnswerID, answersComment.CommentID, answersComment.PostUserID, content))
+                    {
+                        SendButton.IsRunning = false;
+                        ClosePopupPage(content);
+                    }
+                    else
+                    {
+                        SendButton.IsRunning = false;
+                    }
+                }
             }
         }
     }

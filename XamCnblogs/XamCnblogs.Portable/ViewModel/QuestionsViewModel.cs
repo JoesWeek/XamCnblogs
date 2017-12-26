@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
+using System.Linq;
 
 namespace XamCnblogs.Portable.ViewModel
 {
@@ -15,8 +16,9 @@ namespace XamCnblogs.Portable.ViewModel
         public ObservableRangeCollection<Questions> Questions { get; } = new ObservableRangeCollection<Questions>();
         public DateTime NextRefreshTime { get; set; }
         private int pageIndex = 1;
+        private int pageSize = 20;
         private int position = 1;
-        public QuestionsViewModel(int position)
+        public QuestionsViewModel(int position = 0)
         {
             this.position = position;
             NextRefreshTime = DateTime.Now.AddMinutes(15);
@@ -61,7 +63,6 @@ namespace XamCnblogs.Portable.ViewModel
                 }
             }));
 
-
         LoadMoreStatus loadStatus;
         public LoadMoreStatus LoadStatus
         {
@@ -85,7 +86,7 @@ namespace XamCnblogs.Portable.ViewModel
             }));
         async Task ExecuteRefreshCommandAsync()
         {
-            var result = await StoreManager.QuestionsService.GetQuestionsAsync(position, pageIndex);
+            var result = await StoreManager.QuestionsService.GetQuestionsAsync(position, pageIndex, pageSize);
             if (result.Success)
             {
                 var questions = JsonConvert.DeserializeObject<List<Questions>>(result.Message.ToString());
@@ -95,8 +96,16 @@ namespace XamCnblogs.Portable.ViewModel
                         Questions.Clear();
                     Questions.AddRange(questions);
                     pageIndex++;
-                    LoadStatus = LoadMoreStatus.StausDefault;
-                    CanLoadMore = true;
+                    if (Questions.Count >= pageSize)
+                    {
+                        LoadStatus = LoadMoreStatus.StausDefault;
+                        CanLoadMore = true;
+                    }
+                    else
+                    {
+                        LoadStatus = LoadMoreStatus.StausEnd;
+                        CanLoadMore = false;
+                    }
                 }
                 else
                 {
@@ -110,5 +119,39 @@ namespace XamCnblogs.Portable.ViewModel
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
             }
         }
+        public async Task<bool> ExecuteQuestionsEditCommandAsync(Questions questions)
+        {
+            var result = await StoreManager.QuestionsService.EditQuestionsAsync(questions);
+            if (result.Success)
+            {
+                Toast.SendToast(questions.Qid > 0 ? "修改问题成功" : "提问成功");
+            }
+            else
+            {
+                Toast.SendToast(result.Message.ToString());
+            }
+            return result.Success;
+        }
+
+        public void EditQuestions(Questions questions)
+        {
+            var book = Questions.Where(b => b.Qid == questions.Qid).FirstOrDefault();
+            if (book == null)
+            {
+                if (position == 0 || position == 4)
+                {
+                    Questions.Insert(0, questions);
+                }
+            }
+            else
+            {
+                var index = Questions.IndexOf(book);
+                Questions[index] = questions;
+                Questions[index].TagsDisplay = questions.TagsDisplay;
+            }
+            if (LoadStatus == LoadMoreStatus.StausNodata)
+                LoadStatus = LoadMoreStatus.StausEnd;
+        }
+
     }
 }

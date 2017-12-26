@@ -162,8 +162,8 @@ namespace XamCnblogs.UI.Controls
             var nologinGestureRecognizer = new TapGestureRecognizer();
             nologinGestureRecognizer.Tapped += (s, e) =>
             {
-                //if (LoadStatus == LoadMoreStatus.StausNologin)
-                    //MessagingService.Current.SendMessage(MessageKeys.NavigateLogin);
+                if (LoadStatus == LoadMoreStatus.StausNologin)
+                    MessagingService.Current.SendMessage(MessageKeys.NavigateLogin);
             };
             nologinPage.GestureRecognizers.Add(nologinGestureRecognizer);
 

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
+using System.Linq;
 
 namespace XamCnblogs.Portable.ViewModel
 {
@@ -157,10 +158,19 @@ namespace XamCnblogs.Portable.ViewModel
         }
         public void AddComment(NewsComments comment)
         {
-            NewsComments.Add(comment);
+            var book = NewsComments.Where(b => b.CommentID == comment.CommentID).FirstOrDefault();
+            if (book == null)
+            {
+                NewsComments.Add(comment);
+                NewsDetails.CommentDisplay = (news.CommentCount + 1).ToString();
+            }
+            else
+            {
+                var index = NewsComments.IndexOf(book);
+                NewsComments[index] = comment;
+            }
             if (LoadStatus == LoadMoreStatus.StausNodata)
                 LoadStatus = LoadMoreStatus.StausEnd;
-            NewsDetails.CommentDisplay = (news.CommentCount + 1).ToString();
         }
         ICommand deleteCommand;
         public ICommand DeleteCommand =>

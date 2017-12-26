@@ -10,7 +10,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <converter:IsVisibleConverter x:Key="IsVisibleConverter" />
-            <converter:IsUserConverter x:Key="IsUserConverter" />
+            <converter:IsUserGuidConverter x:Key="IsUserGuidConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <Grid  
@@ -77,7 +77,7 @@
                     HorizontalOptions="End"
                     VerticalOptions="CenterAndExpand"
                     Spacing="0"
-                    IsVisible="{Binding UserGuid, Converter={StaticResource IsUserConverter}}">
+                    IsVisible="{Binding UserID, Converter={StaticResource IsUserGuidConverter}}">
                 <controls:ActivityIndicatorButton
                         x:Name="DeleteButton"
                         WidthRequest="25"

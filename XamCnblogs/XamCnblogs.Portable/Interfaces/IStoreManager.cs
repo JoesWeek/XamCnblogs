@@ -18,8 +18,7 @@ namespace XamCnblogs.Portable.Interfaces
         IStatusesCommentService StatusesCommentsService { get; }
         IQuestionsService QuestionsService { get; }
         IQuestionsDetailsService QuestionsDetailsService { get; }
-        IAnswersCommentService AnswersCommentService { get; }
-        ICommentService CommentService { get; }
+        IAnswersDetailsService AnswersDetailsService { get; }
         IBlogsService BlogsService { get; }
         IBookmarksService BookmarksService { get; }
         Task<bool> SyncAllAsync(bool syncUserSpecific);

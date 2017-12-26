@@ -43,13 +43,14 @@
         public const string QuestionsType = Api + "/questions/@{0}?pageIndex={1}&pageSize={2}";
         public const string QuestionADD = Api + "/questions";
         public const string QuestionDetails = Api + "/questions/{0}";
+        public const string QuestionEdit = Api + "/questions/{0}";
         public const string QuestionsAnswers = Api + "/questions/{0}/answers";
         public const string QuestionsAnswerByUser = Api + "/questions/{0}?userId={1}";
         public const string QuestionsAnswerAdd = Api + "/questions/{0}/answers";
         public const string QuestionsAnswerEdit = Api + "/questions/{0}/answers/{1}";
         public const string QuestionsAnswerComments = Api + "/questions/answers/{0}/comments";
         public const string QuestionsAnswerCommentsAdd = Api + "/questions/{0}/answers/{1}/comments";
-        public const string QuestionsAnswerCommentsDelete = Api + "/questions/{0}/answers/{1}/comments/{2}";
+        public const string QuestionsAnswerCommentsEdit = Api + "/questions/{0}/answers/{1}/comments/{2}";
 
         public const string Bookmarks = Api + "/Bookmarks?pageIndex={0}&pageSize={1}";
         public const string BookmarkHead = Api + "/Bookmarks?url={0}";

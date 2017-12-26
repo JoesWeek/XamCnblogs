@@ -5,11 +5,14 @@
 	         xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
              xmlns:converter="clr-namespace:XamCnblogs.UI.Converters;assembly=XamCnblogs.UI"
              xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
-             x:Class="XamCnblogs.UI.Cells.QuestionsItemCell">
+             x:Class="XamCnblogs.UI.Cells.QuestionsItemCell"
+             x:Name="QuestionsItemCell">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converter:IsGoldConverter x:Key="IsGoldConverter" />
             <converter:IsTagConverter x:Key="IsTagConverter" />
+            <converter:IsVisibleConverter x:Key="IsVisibleConverter" />
+            <converter:IsUserConverter x:Key="IsUserConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <Grid  
@@ -24,7 +27,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="150"/>
         </Grid.ColumnDefinitions>
         <StackLayout Grid.Row="0"
                Grid.Column="0"
@@ -81,8 +84,8 @@
                Grid.Column="0"
                Text="{Binding DiggValue}"
                Style="{StaticResource SecondaryTextStyle}" />
-        <Label Grid.Row="3"
-               Grid.Column="1"
+        <Label  Grid.Row="3"
+               Grid.Column="1" 
                Text="{Binding DateDisplay}"
                Style="{StaticResource SecondaryTextStyle}"
                HorizontalOptions="EndAndExpand"/>

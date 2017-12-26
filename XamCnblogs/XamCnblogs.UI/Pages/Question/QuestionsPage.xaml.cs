@@ -1,14 +1,17 @@
-﻿using System;
+﻿using FormsToolkit;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using XamCnblogs.Portable.Helpers;
 using XamCnblogs.Portable.Model;
 using XamCnblogs.Portable.ViewModel;
+using XamCnblogs.UI.Pages.Account;
+using XamCnblogs.UI.Pages.New;
 
 namespace XamCnblogs.UI.Pages.Question
 {
@@ -19,7 +22,30 @@ namespace XamCnblogs.UI.Pages.Question
         public QuestionsPage(int position = 0) : base()
         {
             InitializeComponent();
+
             BindingContext = new QuestionsViewModel(position);
+
+            var cancel = new ToolbarItem
+            {
+                Text = "添加",
+                Command = new Command(async () =>
+                {
+                    if (UserTokenSettings.Current.HasExpiresIn())
+                    {
+                        MessagingService.Current.SendMessage(MessageKeys.NavigateLogin);
+                    }
+                    else
+                    {
+                        await NavigationService.PushAsync(Navigation, new QuestionsEditPage(new Questions(), new Action<Questions>(OnResult)));
+                    }
+                })
+            };
+            ToolbarItems.Add(cancel);
+
+            if (Device.Android == Device.RuntimePlatform)
+                cancel.Icon = "toolbar_add.png";
+
+
             this.QuestionsListView.ItemSelected += async delegate
             {
                 var questions = QuestionsListView.SelectedItem as Questions;
@@ -53,6 +79,15 @@ namespace XamCnblogs.UI.Pages.Question
                 //加载本地数据
                 if (ViewModel.Questions.Count == 0)
                     ViewModel.RefreshCommand.Execute(null);
+            }
+        }
+
+        private void OnResult(Questions result)
+        {
+            if (result != null)
+            {
+                ViewModel.EditQuestions(result);
+                QuestionsListView.ScrollTo(ViewModel.Questions.FirstOrDefault(), ScrollToPosition.Start, false);
             }
         }
     }

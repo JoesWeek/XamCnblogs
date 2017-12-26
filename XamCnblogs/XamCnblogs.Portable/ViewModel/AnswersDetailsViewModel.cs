@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
+using System.Linq;
 
 namespace XamCnblogs.Portable.ViewModel
 {
@@ -56,7 +57,7 @@ namespace XamCnblogs.Portable.ViewModel
                     IsBusy = true;
                     NextRefreshTime = DateTime.Now.AddMinutes(15);
 
-                    var result = await StoreManager.AnswersCommentService.GetCommentAsync(answers.AnswerID);
+                    var result = await StoreManager.AnswersDetailsService.GetCommentAsync(answers.AnswerID);
                     if (result.Success)
                     {
                         var comments = JsonConvert.DeserializeObject<List<AnswersComment>>(result.Message.ToString());
@@ -66,6 +67,7 @@ namespace XamCnblogs.Portable.ViewModel
                                 AnswersComment.Clear();
                             AnswersComment.AddRange(comments);
                             LoadStatus = LoadMoreStatus.StausEnd;
+                            CanLoadMore = false;
                         }
                         else
                         {
@@ -89,12 +91,73 @@ namespace XamCnblogs.Portable.ViewModel
                 }
             }));
 
-        public void AddComment(AnswersComment comment)
+        public async Task<bool> ExecuteCommentPostCommandAsync(int questionId, int answerId, string content)
         {
-            AnswersComment.Add(comment);
+            var result = await StoreManager.AnswersDetailsService.PostCommentAsync(questionId, answerId, content);
+            if (result.Success)
+            {
+                Toast.SendToast("评论成功");
+            }
+            else
+            {
+                Toast.SendToast(result.Message.ToString());
+            }
+            return result.Success;
+        }
+        public async Task<bool> ExecuteCommentEditCommentAsync(int questionId, int answerId, int commentId, int userId, string content)
+        {
+            var result = await StoreManager.AnswersDetailsService.EditCommentAsync(questionId, answerId, commentId, userId, content);
+            if (result.Success)
+            {
+                Toast.SendToast("修改评论成功");
+            }
+            else
+            {
+                Toast.SendToast(result.Message.ToString());
+            }
+            return result.Success;
+        }
+        ICommand deleteCommand;
+        public ICommand DeleteCommand =>
+            deleteCommand ?? (deleteCommand = new Command<AnswersComment>(async (comment) =>
+            {
+                var index = AnswersComment.IndexOf(comment);
+                if (!AnswersComment[index].IsDelete)
+                {
+                    AnswersComment[index].IsDelete = true;
+                    var result = await StoreManager.AnswersDetailsService.DeleteCommentAsync(answers.Qid, answers.AnswerID, comment.CommentID);
+                    if (result.Success)
+                    {
+                        await Task.Delay(1000);
+                        index = AnswersComment.IndexOf(comment);
+                        AnswersComment.RemoveAt(index);
+                        if (AnswersComment.Count == 0)
+                            LoadStatus = LoadMoreStatus.StausNodata;
+                        AnswersDetails.CommentDisplay = (answers.CommentCounts - 1).ToString();
+                    }
+                    else
+                    {
+                        index = AnswersComment.IndexOf(comment);
+                        AnswersComment[index].IsDelete = false;
+                        Toast.SendToast("删除失败");
+                    }
+                }
+            }));
+        public void EditComment(AnswersComment comment)
+        {
+            var book = AnswersComment.Where(b => b.CommentID == comment.CommentID).FirstOrDefault();
+            if (book == null)
+            {
+                AnswersComment.Add(comment);
+                AnswersDetails.CommentDisplay = (answers.CommentCounts + 1).ToString();
+            }
+            else
+            {
+                var index = AnswersComment.IndexOf(book);
+                AnswersComment[index] = comment;
+            }
             if (LoadStatus == LoadMoreStatus.StausNodata)
                 LoadStatus = LoadMoreStatus.StausEnd;
-            AnswersDetails.CommentDisplay = (answers.CommentCounts + 1).ToString();
         }
         public class AnswersDetailsModel : BaseViewModel
         {

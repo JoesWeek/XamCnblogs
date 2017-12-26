@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FormsToolkit;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,7 @@ using Xamarin.Forms.Xaml;
 using XamCnblogs.Portable.Helpers;
 using XamCnblogs.Portable.Model;
 using XamCnblogs.Portable.ViewModel;
+using XamCnblogs.UI.Pages.Question;
 
 namespace XamCnblogs.UI.Pages.Status
 {
@@ -20,6 +22,27 @@ namespace XamCnblogs.UI.Pages.Status
         {
             InitializeComponent();
             BindingContext = new StatusesViewModel(position);
+
+            var cancel = new ToolbarItem
+            {
+                Text = "添加",
+                Command = new Command(async () =>
+                {
+                    if (UserTokenSettings.Current.HasExpiresIn())
+                    {
+                        MessagingService.Current.SendMessage(MessageKeys.NavigateLogin);
+                    }
+                    else
+                    {
+                        await NavigationService.PushAsync(Navigation, new StatusesEditPage(new Statuses(), new Action<Statuses>(OnResult)));
+                    }
+                })
+            };
+            ToolbarItems.Add(cancel);
+
+            if (Device.Android == Device.RuntimePlatform)
+                cancel.Icon = "toolbar_add.png";
+
             this.StatusesListView.ItemSelected += async delegate
             {
                 var statuses = StatusesListView.SelectedItem as Statuses;
@@ -27,8 +50,8 @@ namespace XamCnblogs.UI.Pages.Status
                     return;
 
                 var statusesDetails = new StatusesDetailsPage(statuses);
-
-                await NavigationService.PushAsync(Navigation, statusesDetails);
+                if (statuses.Id > 0)
+                    await NavigationService.PushAsync(Navigation, statusesDetails);
                 this.StatusesListView.SelectedItem = null;
             };
         }
@@ -53,6 +76,14 @@ namespace XamCnblogs.UI.Pages.Status
                 //加载本地数据
                 if (ViewModel.Statuses.Count == 0)
                     ViewModel.RefreshCommand.Execute(null);
+            }
+        }
+        private void OnResult(Statuses result)
+        {
+            if (result != null)
+            {
+                ViewModel.EditStatuses(result);
+                StatusesListView.ScrollTo(ViewModel.Statuses.FirstOrDefault(), ScrollToPosition.Start, false);
             }
         }
     }

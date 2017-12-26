@@ -201,7 +201,8 @@ namespace XamCnblogs.Portable.ViewModel
             var book = QuestionAnswers.Where(b => b.AnswerID == answers.AnswerID).FirstOrDefault();
             if (book == null)
             {
-                QuestionAnswers.Insert(0, answers);
+                QuestionAnswers.Add(answers);
+                QuestionsDetails.CommentDisplay = (questions.AnswerCount + 1).ToString();
             }
             else
             {
@@ -210,7 +211,6 @@ namespace XamCnblogs.Portable.ViewModel
             }
             if (LoadStatus == LoadMoreStatus.StausNodata)
                 LoadStatus = LoadMoreStatus.StausEnd;
-            QuestionsDetails.CommentDisplay = (questions.AnswerCount + 1).ToString();
         }
         public class QuestionsDetailsModel : BaseViewModel
         {

@@ -33,8 +33,8 @@ namespace XamCnblogs.UI.Pages.Question
                     return;
 
                 var answersDetails = new AnswersDetailsPage(answers);
-
-                await NavigationService.PushAsync(Navigation, answersDetails);
+                if (answers.AnswerID > 0)
+                    await NavigationService.PushAsync(Navigation, answersDetails);
                 this.QuestionsDetailsView.SelectedItem = null;
             };
         }
@@ -67,7 +67,7 @@ namespace XamCnblogs.UI.Pages.Question
         void OnScrollComment(object sender, EventArgs args)
         {
             if (ViewModel.QuestionAnswers.Count > 0)
-                QuestionsDetailsView.ScrollTo(ViewModel.QuestionAnswers.First(), ScrollToPosition.Start, false);
+                QuestionsDetailsView.ScrollTo(ViewModel.QuestionAnswers.Last(), ScrollToPosition.Start, false);
         }
         async void OnShowComment(object sender, EventArgs args)
         {

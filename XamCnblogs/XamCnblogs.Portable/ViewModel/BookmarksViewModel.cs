@@ -105,7 +105,11 @@ namespace XamCnblogs.Portable.ViewModel
         public async Task<bool> ExecuteBookmarkEditCommandAsync(Bookmarks bookmarks)
         {
             var result = await StoreManager.BookmarksService.EditBookmarkAsync(bookmarks);
-            if (!result.Success)
+            if (result.Success)
+            {
+                Toast.SendToast("收藏成功");
+            }
+            else
             {
                 if (result.Message.ToString() == "Conflict")
                 {

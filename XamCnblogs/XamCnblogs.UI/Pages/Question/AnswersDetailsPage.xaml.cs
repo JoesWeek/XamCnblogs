@@ -71,7 +71,7 @@ namespace XamCnblogs.UI.Pages.Question
             }
             else
             {
-                var page = new AnswersCommentPopupPage(answers.Qid, answers.AnswerID, new Action<AnswersComment>(OnResult));
+                var page = new AnswersCommentPopupPage(answers, new Action<AnswersComment>(OnResult));
                 if (page != null && Navigation != null)
                     await Navigation.PushPopupAsync(page);
             }
@@ -80,8 +80,19 @@ namespace XamCnblogs.UI.Pages.Question
         {
             if (result != null)
             {
-                ViewModel.AddComment(result);
+                ViewModel.EditComment(result);
                 QuestionsDetailsView.ScrollTo(ViewModel.AnswersComment.Last(), ScrollToPosition.Start, false);
+            }
+        }
+        public ICommand EditCommand
+        {
+            get
+            {
+                return new Command(async (e) =>
+                {
+                    var page = new AnswersCommentPopupPage(answers, new Action<AnswersComment>(OnResult), e as AnswersComment);
+                    await Navigation.PushPopupAsync(page);
+                });
             }
         }
     }

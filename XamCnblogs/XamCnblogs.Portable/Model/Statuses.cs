@@ -6,13 +6,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MvvmHelpers;
 
 namespace XamCnblogs.Portable.Model
 {
-    public class Statuses
+    public class Statuses : BaseViewModel
     {
         public int Id { get; set; }
-        public string Content { get; set; }
+        private string content;
+        public string Content
+        {
+            get { return content; }
+            set { SetProperty(ref content, value); }
+        }
         public bool IsPrivate { get; set; }
         public bool IsLucky { get; set; }
         public int CommentCount { get; set; }
@@ -34,5 +40,13 @@ namespace XamCnblogs.Portable.Model
         public string DateDisplay { get { return DateAdded.ToUniversalTime().Humanize(); } }
         [JsonIgnore]
         public List<StatusesComments> Comments { get; set; } = new List<StatusesComments>();
+
+        private bool isDelete;
+        [JsonIgnore]
+        public bool IsDelete
+        {
+            get { return isDelete; }
+            set { SetProperty(ref isDelete, value); }
+        }
     }
 }

@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
+using Humanizer;
+using System.Globalization;
 
 namespace XamCnblogs.Portable.ViewModel
 {
@@ -67,7 +69,7 @@ namespace XamCnblogs.Portable.ViewModel
                             ArticlesDetails.DiggDisplay = articles.DiggCount > 0 ? articles.DiggCount.ToString() : "推荐";
                             ArticlesDetails.CommentDisplay = articles.CommentCount > 0 ? articles.CommentCount.ToString() : "评论";
                             ArticlesDetails.ViewDisplay = articles.ViewCount > 0 ? articles.ViewCount.ToString() : "阅读";
-                            ArticlesDetails.DateDisplay = "发布于 " + articles.DateDisplay;
+                            ArticlesDetails.DateDisplay = "发布于 " + articles.DateDisplay + "     " + DateTime.Now.AddHours(-2).Humanize(false, null, new CultureInfo("zh-CN"));
                             ArticlesDetails.HasError = false;
                             ArticlesDetails.HasContent = true;
 

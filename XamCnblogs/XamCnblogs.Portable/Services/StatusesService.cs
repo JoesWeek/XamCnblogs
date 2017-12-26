@@ -3,17 +3,17 @@ using XamCnblogs.Portable.Interfaces;
 using XamCnblogs.Portable.Helpers;
 using XamCnblogs.Portable.Model;
 using System.Threading.Tasks;
-
+using System.Collections.Generic;
+using System.Net.Http;
 
 namespace XamCnblogs.Portable.Services
 {
     public class StatusesService : IStatusesService
     {
-        private int pageSize = 10;
         public StatusesService()
         {
         }
-        public async Task<ResponseMessage> GetStatusesAsync(int position, int pageIndex = 1)
+        public async Task<ResponseMessage> GetStatusesAsync(int position, int pageIndex = 1, int pageSize = 20)
         {
             string statusType = "all";
             switch (position)
@@ -53,5 +53,20 @@ namespace XamCnblogs.Portable.Services
                 return await TokenHttpClient.Current.GetAsyn(url);
             }
         }
+        public async Task<ResponseMessage> EditStatusesAsync(Statuses statuses)
+        {
+            var url = string.Format(Apis.StatusADD);
+            var parameters = new Dictionary<string, string>();
+            parameters.Add("IsPrivate", "false");
+            parameters.Add("Content", statuses.Content);
+
+            return await UserHttpClient.Current.PostAsync(url, new FormUrlEncodedContent(parameters));
+        }
+        public async Task<ResponseMessage> DeleteStatusesAsync(int id)
+        {
+            var url = string.Format(Apis.StatusDelete);
+            return await UserHttpClient.Current.DeleteAsync(url);
+        }
+
     }
 }

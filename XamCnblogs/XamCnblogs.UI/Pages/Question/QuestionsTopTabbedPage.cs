@@ -1,5 +1,9 @@
 ﻿using Naxam.Controls.Forms;
+using System;
 using Xamarin.Forms;
+using XamCnblogs.Portable.Helpers;
+using XamCnblogs.Portable.Model;
+using XamCnblogs.UI.Pages.Account;
 
 namespace XamCnblogs.UI.Pages.Question
 {
@@ -13,7 +17,7 @@ namespace XamCnblogs.UI.Pages.Question
 
             Title = "博问";
             Icon = "menu_question.png";
-
+            
             this.Children.Add(new QuestionsPage() { Title = "待解决" });
             this.Children.Add(new QuestionsPage(1) { Title = "高分" });
             this.Children.Add(new QuestionsPage(2) { Title = "没有答案" });

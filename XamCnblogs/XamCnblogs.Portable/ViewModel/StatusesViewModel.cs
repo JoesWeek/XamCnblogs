@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
+using System.Linq;
 
 namespace XamCnblogs.Portable.ViewModel
 {
@@ -15,8 +16,9 @@ namespace XamCnblogs.Portable.ViewModel
         public ObservableRangeCollection<Statuses> Statuses { get; } = new ObservableRangeCollection<Statuses>();
         public DateTime NextRefreshTime { get; set; }
         private int pageIndex = 1;
+        private int pageSize = 20;
         private int position = 0;
-        public StatusesViewModel(int position)
+        public StatusesViewModel(int position = 0)
         {
             this.position = position;
             NextRefreshTime = DateTime.Now.AddMinutes(15);
@@ -61,7 +63,6 @@ namespace XamCnblogs.Portable.ViewModel
                 }
             }));
 
-
         LoadMoreStatus loadStatus;
         public LoadMoreStatus LoadStatus
         {
@@ -84,7 +85,7 @@ namespace XamCnblogs.Portable.ViewModel
             }));
         async Task ExecuteRefreshCommandAsync()
         {
-            var result = await StoreManager.StatusesService.GetStatusesAsync(position, pageIndex);
+            var result = await StoreManager.StatusesService.GetStatusesAsync(position, pageIndex, pageSize);
             if (result.Success)
             {
                 var statuses = JsonConvert.DeserializeObject<List<Statuses>>(result.Message.ToString());
@@ -94,8 +95,16 @@ namespace XamCnblogs.Portable.ViewModel
                         Statuses.Clear();
                     Statuses.AddRange(statuses);
                     pageIndex++;
-                    LoadStatus = LoadMoreStatus.StausDefault;
-                    CanLoadMore = true;
+                    if (Statuses.Count >= pageSize)
+                    {
+                        LoadStatus = LoadMoreStatus.StausDefault;
+                        CanLoadMore = true;
+                    }
+                    else
+                    {
+                        LoadStatus = LoadMoreStatus.StausEnd;
+                        CanLoadMore = false;
+                    }
                 }
                 else
                 {
@@ -109,5 +118,62 @@ namespace XamCnblogs.Portable.ViewModel
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
             }
         }
+
+        public async Task<bool> ExecuteStatusesEditCommandAsync(Statuses statuses)
+        {
+            var result = await StoreManager.StatusesService.EditStatusesAsync(statuses);
+            if (result.Success)
+            {
+                Toast.SendToast(statuses.Id > 0 ? "修改闪存成功" : "发布成功");
+            }
+            else
+            {
+                Toast.SendToast(result.Message.ToString());
+            }
+            return result.Success;
+        }
+        public void EditStatuses(Statuses statuses)
+        {
+            var book = Statuses.Where(b => b.Id == statuses.Id).FirstOrDefault();
+            if (book == null)
+            {
+                if (position == 0 || position == 2)
+                {
+                    Statuses.Insert(0, statuses);
+                }
+            }
+            else
+            {
+                var index = Statuses.IndexOf(book);
+                Statuses[index] = statuses;
+            }
+            if (LoadStatus == LoadMoreStatus.StausNodata)
+                LoadStatus = LoadMoreStatus.StausEnd;
+        }
+        ICommand deleteCommand;
+        public ICommand DeleteCommand =>
+            deleteCommand ?? (deleteCommand = new Command<Statuses>(async (statuses) =>
+            {
+                var index = Statuses.IndexOf(statuses);
+                if (!Statuses[index].IsDelete)
+                {
+                    Statuses[index].IsDelete = true;
+                    var result = await StoreManager.StatusesService.DeleteStatusesAsync(statuses.Id);
+                    if (result.Success)
+                    {
+                        await Task.Delay(1000);
+                        index = Statuses.IndexOf(statuses);
+                        Statuses.RemoveAt(index);
+                        if (Statuses.Count == 0)
+                            LoadStatus = LoadMoreStatus.StausNodata;
+                    }
+                    else
+                    {
+                        index = Statuses.IndexOf(statuses);
+                        Statuses[index].IsDelete = false;
+                        Toast.SendToast("删除失败");
+                    }
+                }
+            }));
     }
 }

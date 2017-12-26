@@ -84,11 +84,23 @@ namespace XamCnblogs.UI.Converters
             throw new NotImplementedException();
         }
     }
-    class IsUserConverter : IValueConverter
+    class IsUserGuidConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return value.Equals(UserSettings.Current.UserId);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    class IsUserConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value.Equals(UserSettings.Current.SpaceUserId);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

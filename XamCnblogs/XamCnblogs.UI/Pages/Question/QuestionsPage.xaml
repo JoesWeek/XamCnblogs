@@ -4,6 +4,7 @@
              xmlns:cells="clr-namespace:XamCnblogs.UI.Cells;assembly=XamCnblogs.UI"
 		     xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
              x:Class="XamCnblogs.UI.Pages.Question.QuestionsPage"
+             x:Name="QuestionsPage"
              Title="博问">
     <controls:LoadMoreListView
             x:Name="QuestionsListView"
