@@ -79,11 +79,22 @@ namespace XamCnblogs.Portable.Helpers
                     OnPropertyChanged();
             }
         }
+        const string UserRefreshTokenKey = "user_refresh_token";
+        public string UserRefreshToken
+        {
+            get { return AppSettings.GetValueOrDefault(UserRefreshTokenKey, null); }
+            set
+            {
+                if (AppSettings.AddOrUpdateValue(UserRefreshTokenKey, value))
+                    OnPropertyChanged();
+            }
+        }
         public void UpdateUserToken(Token token)
         {
             UserToken = token.AccessToken;
             UserExpiresIn = token.ExpiresIn;
             UserTokenType = token.TokenType;
+            UserRefreshToken = token.RefreshToken;
             UserTokenRefreshTime = token.RefreshTime;
         }
 

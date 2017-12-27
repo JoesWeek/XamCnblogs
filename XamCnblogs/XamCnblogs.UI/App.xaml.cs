@@ -1,7 +1,7 @@
 ﻿using FormsToolkit;
 using Newtonsoft.Json;
 using System;
-
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using XamCnblogs.Portable.Helpers;
 using XamCnblogs.Portable.Model;
@@ -22,7 +22,6 @@ namespace XamCnblogs.UI
             {
                 case Device.Android:
                     MainPage = new Pages.Android.RootPage();
-                    //MainPage = new NavigationPage(new Page1());
                     break;
                 case Device.iOS:
                     break;
@@ -32,14 +31,15 @@ namespace XamCnblogs.UI
         {
             OnResume();
         }
-
         public void SecondOnResume()
         {
             OnResume();
         }
         bool registered;
-        protected override void OnResume()
+        protected async override void OnResume()
         {
+            await RefreshUserTokenAsync();
+
             if (registered)
                 return;
             registered = true;
@@ -96,7 +96,30 @@ namespace XamCnblogs.UI
             registered = false;
             MessagingService.Current.Unsubscribe(MessageKeys.NavigateLogin);
             MessagingService.Current.Unsubscribe(MessageKeys.NavigateToken);
+            MessagingService.Current.Unsubscribe(MessageKeys.NavigateAccount);
         }
 
+        private async Task RefreshUserTokenAsync()
+        {
+            if (UserTokenSettings.Current.UserRefreshToken != null)
+            {
+                var result = await UserHttpClient.Current.RefreshTokenAsync();
+                if (result.Success)
+                {
+                    var token = JsonConvert.DeserializeObject<Token>(result.Message.ToString());
+                    token.RefreshTime = DateTime.Now;
+                    UserTokenSettings.Current.UpdateUserToken(token);
+
+                    var userResult = await UserHttpClient.Current.GetAsyn(Apis.Users);
+                    if (userResult.Success)
+                    {
+                        var user = JsonConvert.DeserializeObject<User>(userResult.Message.ToString());
+
+                        UserSettings.Current.UpdateUser(user);
+
+                    }
+                }
+            }
+        }
     }
 }

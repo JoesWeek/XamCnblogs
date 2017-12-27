@@ -22,6 +22,11 @@
                 <Label 
                             Text="https://github.com/JoesWeek/XamCnblogs"
                             Style="{StaticResource SecondaryTextStyle}"/>
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer 
+                            Command="{Binding LaunchBrowserCommand}" 
+                            CommandParameter="https://github.com/JoesWeek/XamCnblogs"/>
+                </StackLayout.GestureRecognizers>
             </StackLayout>
             <controls:HeaderDivider HorizontalOptions="FillAndExpand"/>
             <StackLayout Padding="10" Spacing="10">
@@ -31,6 +36,11 @@
                 <Label 
                             Text="https://www.cnblogs.com/AboutUS.aspx"
                             Style="{StaticResource SecondaryTextStyle}"/>
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer 
+                            Command="{Binding LaunchBrowserCommand}" 
+                            CommandParameter="https://www.cnblogs.com/AboutUS.aspx"/>
+                </StackLayout.GestureRecognizers>
             </StackLayout>
             <controls:HeaderDivider HorizontalOptions="FillAndExpand"/>
             <StackLayout Padding="10" Spacing="10">
@@ -40,6 +50,11 @@
                 <Label 
                             Text="欢迎加入QQ群：181050206"
                             Style="{StaticResource SecondaryTextStyle}"/>
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer 
+                            Command="{Binding LaunchBrowserCommand}" 
+                            CommandParameter="http://shang.qq.com/wpa/qunwpa?idkey=5c281d37638467fb0f411484dcd513b89ba82b58decb8518cc2523b95232dd9b"/>
+                </StackLayout.GestureRecognizers>
             </StackLayout>
             <controls:HeaderDivider HorizontalOptions="FillAndExpand"/>
             <StackLayout Padding="10" Spacing="10" HorizontalOptions="CenterAndExpand">

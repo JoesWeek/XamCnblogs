@@ -154,6 +154,7 @@
                                 <Label
                                         Text="重新加载"
                                         Style="{StaticResource SecondaryTextStyle}"
+                                        TextColor="{StaticResource Primary}"
                                         HorizontalOptions="CenterAndExpand">
                                     <Label.GestureRecognizers>
                                         <TapGestureRecognizer Tapped="OnTapped"/>

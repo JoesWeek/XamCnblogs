@@ -6,15 +6,17 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using XamCnblogs.Portable.ViewModel;
 
 namespace XamCnblogs.UI.Pages.About
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class AboutPage : ContentPage
-	{
-		public AboutPage ()
+    {
+        AboutViewModel vm;
+        public AboutPage ()
 		{
 			InitializeComponent ();
-		}
+            BindingContext = vm = new AboutViewModel();
+        }
 	}
 }

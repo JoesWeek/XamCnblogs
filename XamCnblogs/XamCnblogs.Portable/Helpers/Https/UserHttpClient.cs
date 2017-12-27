@@ -57,10 +57,11 @@ namespace XamCnblogs.Portable.Helpers
             var response = await client.SendAsync(request);
             return await GetResultMessage(response);
         }
-        private async Task<ResponseMessage> TokenAsync()
+        public async Task<ResponseMessage> RefreshTokenAsync()
         {
             var parameters = new Dictionary<string, string>();
-            parameters.Add("grant_type", "client_credentials");
+            parameters.Add("grant_type", "refresh_token");
+            parameters.Add("refresh_token", UserTokenSettings.Current.UserRefreshToken);
             var basic = Convert.ToBase64String(Encoding.UTF8.GetBytes(ClientId + ":" + ClientSercret));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", basic);
             var response = await client.PostAsync(Apis.Token, new FormUrlEncodedContent(parameters));

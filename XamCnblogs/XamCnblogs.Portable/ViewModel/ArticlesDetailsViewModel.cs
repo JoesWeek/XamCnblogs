@@ -151,10 +151,6 @@ namespace XamCnblogs.Portable.ViewModel
 
         public async Task<bool> ExecuteCommentEditCommandAsync(string blogApp, int id, string content)
         {
-            if (AboutSettings.Current.WeibaToggled)
-            {
-                content += "\n\n" + AboutSettings.Current.WeibaContent;
-            }
             var result = await StoreManager.ArticlesDetailsService.PostCommentAsync(blogApp, id, content);
             if (result.Success)
             {

@@ -83,6 +83,7 @@ namespace XamCnblogs.UI.Controls
                             {
                                 Text = "重新加载",
                                 Style = Application.Current.Resources["SecondaryTextStyle"] as Style,
+                                TextColor=(Color)Application.Current.Resources["Primary"],
                                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                             }
                         }
@@ -153,6 +154,7 @@ namespace XamCnblogs.UI.Controls
                             {
                                 Text = "马上登录",
                                 Style = Application.Current.Resources["SecondaryTextStyle"] as Style,
+                                TextColor=(Color)Application.Current.Resources["Primary"],
                                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                             }
                         }
@@ -218,7 +220,6 @@ namespace XamCnblogs.UI.Controls
         {
             var lv = (LoadMoreListView)bindable;
             lv.NotifyLoadStatus((LoadMoreStatus)newValue);
-            //lv.OnHeaderOrFooterChanged(ref lv._footerElement, "FooterElement", newValue, lv.FooterTemplate, false);
         }
         public void NotifyLoadStatus(LoadMoreStatus loadStatus)
         {

@@ -38,7 +38,7 @@
                             Text="个性小尾巴"
                             Style="{StaticResource PrimaryTextStyle}"/>
                         <Label 
-                            Text="开启后可以自定义"
+                            Text="开启后可以自定义，这个也没有用"
                             Style="{StaticResource SecondaryTextStyle}"/>
                     </StackLayout>
                     <Switch 
