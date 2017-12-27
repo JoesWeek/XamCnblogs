@@ -55,7 +55,7 @@ namespace XamCnblogs.Droid.Renderers
                         if (newContentHeight == 0) return;
                         var element = customWebViewRenderer.Element;
                         element.HeightRequest = newContentHeight;
-                    }, 300);
+                    }, 225);
                 }
                 base.OnProgressChanged(view, newProgress);
             }

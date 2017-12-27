@@ -41,7 +41,7 @@
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <EnableProguard>false</EnableProguard>
     <AotAssemblies>true</AotAssemblies>
-    <EnableLLVM>true</EnableLLVM>
+    <EnableLLVM>false</EnableLLVM>
     <AndroidEnableSGenConcurrent>false</AndroidEnableSGenConcurrent>
     <AndroidSupportedAbis />
   </PropertyGroup>
@@ -54,6 +54,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Bugly">
+      <Version>3.1.3.67</Version>
+    </PackageReference>
     <PackageReference Include="FormsToolkit">
       <Version>1.1.18</Version>
     </PackageReference>
@@ -88,10 +91,10 @@
       <Version>26.1.0.1</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.FFImageLoading.Forms">
-      <Version>2.3.1</Version>
+      <Version>2.3.2</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.FFImageLoading.Transformations">
-      <Version>2.3.1</Version>
+      <Version>2.3.2</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="2.5.0.121934" />
     <PackageReference Include="Xamarin.Android.Support.Design" Version="26.1.0.1" />
@@ -102,8 +105,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\Settings.cs" />
+    <Compile Include="Helpers\Logger.cs" />
     <Compile Include="Helpers\Toaster.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="MainApplication.cs" />
     <Compile Include="Renderers\XamEditorRenderer.cs" />
     <Compile Include="Renderers\XamEntryRenderer.cs" />
     <Compile Include="Renderers\CommentEditorRenderer.cs" />
@@ -124,7 +129,9 @@
     <AndroidResource Include="Resources\layout\NavView.axml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\AndroidManifest.xml" />
+    <None Include="Properties\AndroidManifest.xml">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Tabbar.axml" />
@@ -266,5 +273,6 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\menu_about.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

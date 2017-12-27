@@ -92,6 +92,7 @@ namespace XamCnblogs.Portable.ViewModel
                         }
                         else
                         {
+                            Log.SendLog("QuestionsDetailsViewModel.GetQuestionsAsync:" + result.Message);
                             QuestionsDetails.HasError = true;
                             QuestionsDetails.HasContent = false;
                             LoadStatus = LoadMoreStatus.StausDefault;
@@ -103,6 +104,7 @@ namespace XamCnblogs.Portable.ViewModel
                 }
                 catch (Exception ex)
                 {
+                    Log.SendLog("QuestionsDetailsViewModel.RefreshCommand:" + ex.Message);
                 }
                 finally
                 {
@@ -141,6 +143,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
+                Log.SendLog("QuestionsDetailsViewModel.GetAnswersAsync:" + result.Message);
                 LoadStatus = LoadMoreStatus.StausError;
             }
         }
@@ -154,6 +157,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
+                Log.SendLog("QuestionsDetailsViewModel.PostAnswerAsync:" + result.Message);
                 Toast.SendToast(result.Message.ToString());
             }
             return result.Success;
@@ -167,6 +171,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
+                Log.SendLog("QuestionsDetailsViewModel.EditAnswerAsync:" + result.Message);
                 Toast.SendToast(result.Message.ToString());
             }
             return result.Success;
@@ -191,6 +196,7 @@ namespace XamCnblogs.Portable.ViewModel
                     }
                     else
                     {
+                        Log.SendLog("QuestionsDetailsViewModel.DeleteAnswerAsync:" + result.Message);
                         index = QuestionAnswers.IndexOf(comment);
                         QuestionAnswers[index].IsDelete = false;
                         Toast.SendToast("删除失败");

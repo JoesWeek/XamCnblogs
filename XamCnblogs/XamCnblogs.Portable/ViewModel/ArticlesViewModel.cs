@@ -40,6 +40,7 @@ namespace XamCnblogs.Portable.ViewModel
                 }
                 catch (Exception ex)
                 {
+                    Log.SendLog("ArticlesViewModel.RefreshCommand:" + ex.Message);
                     LoadStatus = LoadMoreStatus.StausFail;
                 }
                 finally
@@ -62,8 +63,9 @@ namespace XamCnblogs.Portable.ViewModel
                 {
                     await ExecuteRefreshCommandAsync();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Log.SendLog("ArticlesViewModel.LoadMoreCommand:" + ex.Message);
                     LoadStatus = LoadMoreStatus.StausError;
                 }
             }));
@@ -100,6 +102,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
+                Log.SendLog("ArticlesViewModel.GetArticlesAsync:" + result.Message);
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
             }
         }

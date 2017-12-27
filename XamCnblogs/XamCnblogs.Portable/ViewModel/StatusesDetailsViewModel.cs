@@ -68,6 +68,7 @@ namespace XamCnblogs.Portable.ViewModel
                         }
                         else
                         {
+                            Log.SendLog("StatusesDetailsViewModel.GetCommentsAsync:" + result.Message);
                             LoadStatus = LoadMoreStatus.StausError;
                             if (StatusesComments.Count > 0)
                                 StatusesComments.Clear();
@@ -77,6 +78,7 @@ namespace XamCnblogs.Portable.ViewModel
                 }
                 catch (Exception ex)
                 {
+                    Log.SendLog("StatusesDetailsViewModel.RefreshCommand:" + ex.Message);
                 }
                 finally
                 {
@@ -92,6 +94,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
+                Log.SendLog("StatusesDetailsViewModel.PostCommentAsync:" + result.Message);
                 Toast.SendToast(result.Message.ToString());
             }
             return result.Success;
@@ -116,6 +119,7 @@ namespace XamCnblogs.Portable.ViewModel
                     }
                     else
                     {
+                        Log.SendLog("StatusesDetailsViewModel.DeleteCommentAsync:" + result.Message);
                         index = StatusesComments.IndexOf(comment);
                         StatusesComments[index].IsDelete = false;
                         Toast.SendToast("删除失败");

@@ -36,8 +36,6 @@ namespace XamCnblogs.Portable.ViewModel
             DependencyService.Register<IAnswersDetailsService, AnswersDetailsService>();
             DependencyService.Register<IBlogsService, BlogsService>();
             DependencyService.Register<IBookmarksService, BookmarksService>();
-
-
         }
 
         public AccessTokenSettings Settings
@@ -47,6 +45,7 @@ namespace XamCnblogs.Portable.ViewModel
 
         protected IStoreManager StoreManager { get; } = DependencyService.Get<IStoreManager>();
         protected IToast Toast { get; } = DependencyService.Get<IToast>();
+        protected ILog Log { get; } = DependencyService.Get<ILog>();
 
         ICommand launchBrowserCommand;
         public ICommand LaunchBrowserCommand =>
@@ -78,8 +77,9 @@ namespace XamCnblogs.Portable.ViewModel
                     UseSafariWebViewController = true
                 });
             }
-            catch
+            catch(Exception ex)
             {
+                Log.SendLog("LaunchBrowserCommand:" + ex.Message);
             }
         }
 

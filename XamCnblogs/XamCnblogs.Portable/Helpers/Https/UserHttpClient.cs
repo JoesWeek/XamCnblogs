@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
+using XamCnblogs.Portable.Interfaces;
 using XamCnblogs.Portable.Model;
 
 namespace XamCnblogs.Portable.Helpers
@@ -80,6 +82,7 @@ namespace XamCnblogs.Portable.Helpers
                     var message = await response.Content.ReadAsStringAsync();
                     try
                     {
+                        DependencyService.Get<ILog>().SendLog("UserHttpClient:" + message);
                         message = JsonConvert.DeserializeObject<Messages>(await response.Content.ReadAsStringAsync()).Message;
                     }
                     catch (Exception e)

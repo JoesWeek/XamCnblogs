@@ -79,6 +79,7 @@ namespace XamCnblogs.Portable.ViewModel
                         }
                         else
                         {
+                            Log.SendLog("ArticlesDetailsViewModel.GetArticlesAsync:" + result.Message);
                             ArticlesDetails.HasError = true;
                             ArticlesDetails.HasContent = false;
                             LoadStatus = LoadMoreStatus.StausDefault;
@@ -90,6 +91,7 @@ namespace XamCnblogs.Portable.ViewModel
                 }
                 catch (Exception ex)
                 {
+                    Log.SendLog("ArticlesDetailsViewModel.RefreshCommand:" + ex.Message);
                 }
                 finally
                 {
@@ -109,8 +111,9 @@ namespace XamCnblogs.Portable.ViewModel
                         await ExecuteCommentCommandAsync();
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Log.SendLog("ArticlesDetailsViewModel.LoadMoreCommand:" + ex.Message);
                     LoadStatus = LoadMoreStatus.StausError;
                 }
             }));
@@ -145,6 +148,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
+                Log.SendLog("ArticlesDetailsViewModel.GetCommentAsync:" + result.Message);
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
             }
         }
@@ -158,6 +162,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
+                Log.SendLog("ArticlesDetailsViewModel.PostCommentAsync:" + result.Message);
                 Toast.SendToast(result.Message.ToString());
             }
             return result.Success;

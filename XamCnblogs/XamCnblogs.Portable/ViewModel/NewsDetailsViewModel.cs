@@ -75,6 +75,7 @@ namespace XamCnblogs.Portable.ViewModel
                         }
                         else
                         {
+                            Log.SendLog("NewsDetailsViewModel.GetNewsAsync:" + result.Message);
                             NewsDetails.HasError = true;
                             NewsDetails.HasContent = false;
                             LoadStatus = LoadMoreStatus.StausDefault;
@@ -84,8 +85,9 @@ namespace XamCnblogs.Portable.ViewModel
                         }
                     });
                 }
-                catch
+                catch(Exception ex)
                 {
+                    Log.SendLog("NewsDetailsViewModel.RefreshCommand:" + ex.Message);
                 }
                 finally
                 {
@@ -141,6 +143,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
+                Log.SendLog("NewsDetailsViewModel.GetCommentAsync:" + result.Message);
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
             }
         }
@@ -153,6 +156,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
+                Log.SendLog("NewsDetailsViewModel.PostCommentAsync:" + result.Message);
                 Toast.SendToast(result.Message.ToString());
             }
             return result.Success;
@@ -193,6 +197,7 @@ namespace XamCnblogs.Portable.ViewModel
                     }
                     else
                     {
+                        Log.SendLog("NewsDetailsViewModel.DeleteCommentAsync:" + result.Message);
                         index = NewsComments.IndexOf(comment);
                         NewsComments[index].IsDelete = false;
                         Toast.SendToast("删除失败");

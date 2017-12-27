@@ -54,8 +54,9 @@ namespace XamCnblogs.Portable.ViewModel
                         }
                     });
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Log.SendLog("QuestionsViewModel.RefreshCommand:" + ex.Message);
                     if (Questions.Count > 0)
                         Questions.Clear();
                     LoadStatus = LoadMoreStatus.StausFail;
@@ -118,7 +119,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Toast.SendToast(result.Message.ToString());
+                Log.SendLog("QuestionsViewModel.GetQuestionsAsync:" + result.Message);
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
             }
         }
@@ -131,6 +132,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
+                Log.SendLog("QuestionsViewModel.EditQuestionsAsync:" + result.Message);
                 Toast.SendToast(result.Message.ToString());
             }
             return result.Success;

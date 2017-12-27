@@ -38,6 +38,7 @@ namespace XamCnblogs.Portable.ViewModel
                 }
                 catch (Exception ex)
                 {
+                    Log.SendLog("BookmarksViewModel.RefreshCommand:" + ex.Message);
                     LoadStatus = LoadMoreStatus.StausFail;
                 }
                 finally
@@ -97,7 +98,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Toast.SendToast(result.Message.ToString());
+                Log.SendLog("BookmarksViewModel.GetBookmarksAsync:" + result.Message);
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausEnd : LoadMoreStatus.StausNodata;
             }
         }
@@ -111,6 +112,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
+                Log.SendLog("BookmarksViewModel.EditBookmarkAsync:" + result.Message);
                 if (result.Message.ToString() == "Conflict")
                 {
                     Toast.SendToast("收藏的网址已经存在了");
@@ -159,6 +161,7 @@ namespace XamCnblogs.Portable.ViewModel
                     }
                     else
                     {
+                        Log.SendLog("BookmarksViewModel.DeleteBookmarkAsync:" + result.Message);
                         index = Bookmarks.IndexOf(bookmark);
                         Bookmarks[index].IsDelete = false;
                         Toast.SendToast("删除失败");

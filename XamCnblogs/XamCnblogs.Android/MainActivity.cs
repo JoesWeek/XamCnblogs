@@ -28,7 +28,10 @@ namespace XamCnblogs.Droid
             Toolkit.Init();
             CachedImageRenderer.Init(true);
 
+            Com.Chteam.Agent.BuglyAgentHelper.CheckUpgrade();
+
             LoadApplication(new UI.App());
+
         }
     }
 }

@@ -36,8 +36,9 @@ namespace XamCnblogs.Portable.ViewModel
                         await ExecuteRefreshCommandAsync();
                     });
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Log.SendLog("KbArticlesViewModel.RefreshCommand:" + ex.Message);
                     if (KbArticles.Count > 0)
                         KbArticles.Clear();
                     LoadStatus = LoadMoreStatus.StausFail;
@@ -92,7 +93,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Toast.SendToast(result.Message.ToString());
+                Log.SendLog("KbArticlesViewModel.GetKbArticlesAsync:" + result.Message);
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
             }
         }

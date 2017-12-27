@@ -54,8 +54,9 @@ namespace XamCnblogs.Portable.ViewModel
                         }
                     });
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Log.SendLog("StatusesViewModel.RefreshCommand:" + ex.Message);
                     if (Statuses.Count > 0)
                         Statuses.Clear();
                     LoadStatus = LoadMoreStatus.StausFail;
@@ -117,7 +118,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Toast.SendToast(result.Message.ToString());
+                Log.SendLog("StatusesViewModel.GetStatusesAsync:" + result.Message);
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
             }
         }
@@ -131,6 +132,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
+                Log.SendLog("StatusesViewModel.EditStatusesAsync:" + result.Message);
                 Toast.SendToast(result.Message.ToString());
             }
             return result.Success;
@@ -172,6 +174,7 @@ namespace XamCnblogs.Portable.ViewModel
                     }
                     else
                     {
+                        Log.SendLog("StatusesViewModel.DeleteStatusesAsync:" + result.Message);
                         index = Statuses.IndexOf(statuses);
                         Statuses[index].IsDelete = false;
                         Toast.SendToast("删除失败");

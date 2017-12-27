@@ -78,6 +78,7 @@ namespace XamCnblogs.Portable.ViewModel
                         }
                         else
                         {
+                            Log.SendLog("AnswersDetailsViewModel.GetCommentAsync:" + result.Message);
                             LoadStatus = LoadMoreStatus.StausError;
                             if (AnswersComment.Count > 0)
                                 AnswersComment.Clear();
@@ -87,6 +88,7 @@ namespace XamCnblogs.Portable.ViewModel
                 }
                 catch (Exception ex)
                 {
+                    Log.SendLog("AnswersDetailsViewModel.RefreshCommand:" + ex.Message);
                 }
                 finally
                 {
@@ -103,6 +105,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
+                Log.SendLog("AnswersDetailsViewModel.PostCommentAsync:" + result.Message);
                 Toast.SendToast(result.Message.ToString());
             }
             return result.Success;
@@ -116,6 +119,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
+                Log.SendLog("AnswersDetailsViewModel.EditCommentAsync:" + result.Message);
                 Toast.SendToast(result.Message.ToString());
             }
             return result.Success;
@@ -140,6 +144,7 @@ namespace XamCnblogs.Portable.ViewModel
                     }
                     else
                     {
+                        Log.SendLog("AnswersDetailsViewModel.DeleteCommentAsync:" + result.Message);
                         index = AnswersComment.IndexOf(comment);
                         AnswersComment[index].IsDelete = false;
                         Toast.SendToast("删除失败");

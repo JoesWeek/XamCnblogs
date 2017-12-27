@@ -62,6 +62,7 @@ namespace XamCnblogs.Portable.ViewModel
                         }
                         else
                         {
+                            Log.SendLog("KbArticlesDetailsViewModel.GetKbArticlesAsync:" + result.Message);
                             KbArticlesDetails.HasError = true;
                             KbArticlesDetails.HasContent = false;
                         }
@@ -69,6 +70,7 @@ namespace XamCnblogs.Portable.ViewModel
                 }
                 catch (Exception ex)
                 {
+                    Log.SendLog("KbArticlesDetailsViewModel.RefreshCommand:" + ex.Message);
                 }
                 finally
                 {
