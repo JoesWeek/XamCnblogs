@@ -8,6 +8,7 @@ using Com.Umeng.Socialize;
 using FFImageLoading.Forms.Droid;
 using FormsToolkit.Droid;
 using Xam.Plugin.WebView.Droid;
+using XamCnblogs.Droid.Helpers;
 
 namespace XamCnblogs.Droid
 {
@@ -31,6 +32,7 @@ namespace XamCnblogs.Droid
             Toolkit.Init();
             CachedImageRenderer.Init(true);
 
+            Shares.Init(this);
 
             LoadApplication(new UI.App());
 

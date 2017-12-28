@@ -7,15 +7,28 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using XamCnblogs.Portable.Helpers;
+using XamCnblogs.Portable.Interfaces;
 
 namespace XamCnblogs.UI.Pages.About
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SettingPage : ContentPage
     {
         public SettingPage()
         {
             InitializeComponent();
+
+            var cancel = new ToolbarItem
+            {
+                Text = "分享",
+                Command = new Command(() =>
+                {
+                    DependencyService.Get<IShares>().Shares("https://github.com/JoesWeek/XamCnblogs", "博客园第三方客户端，Xamarin.Forms App，支持IOS，Android");
+                })
+            };
+            ToolbarItems.Add(cancel);
+
+            if (Device.Android == Device.RuntimePlatform)
+                cancel.Icon = "toolbar_share.png";
 
             WeibaSwitchToggled(AboutSettings.Current.WeibaToggled);
 

@@ -42,9 +42,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
-    <Reference Include="UMeng.Android.Shares">
-      <HintPath>..\..\..\Cnblogs\Cnblogs.Droid\bin\Debug\UMeng.Android.Shares.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\Resource.Designer.cs" />

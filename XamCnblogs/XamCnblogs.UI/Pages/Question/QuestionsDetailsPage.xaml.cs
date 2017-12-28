@@ -9,6 +9,7 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using XamCnblogs.Portable.Helpers;
+using XamCnblogs.Portable.Interfaces;
 using XamCnblogs.Portable.Model;
 using XamCnblogs.Portable.ViewModel;
 using XamCnblogs.UI.Pages.Account;
@@ -26,6 +27,20 @@ namespace XamCnblogs.UI.Pages.Question
             this.questions = questions;
             InitializeComponent();
             BindingContext = new QuestionsDetailsViewModel(questions);
+
+            var cancel = new ToolbarItem
+            {
+                Text = "分享",
+                Command = new Command(() =>
+                {
+                    DependencyService.Get<IShares>().Shares("https://q.cnblogs.com/q/" + questions.Qid + "/", questions.Title);
+                })
+            };
+            ToolbarItems.Add(cancel);
+
+            if (Device.Android == Device.RuntimePlatform)
+                cancel.Icon = "toolbar_share.png";
+
             this.QuestionsDetailsView.ItemSelected += async delegate
             {
                 var answers = QuestionsDetailsView.SelectedItem as QuestionsAnswers;

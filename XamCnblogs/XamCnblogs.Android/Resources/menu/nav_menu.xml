@@ -36,11 +36,6 @@
           android:icon="@drawable/menu_about"
           android:title="关于"
           android:checkable="true" />
-      <item
-          android:id="@+id/menu_share"
-          android:icon="@drawable/menu_share"
-          android:title="分享"
-          android:checkable="true" />
     </menu>
   </item>
 </menu>

@@ -9,6 +9,7 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using XamCnblogs.Portable.Helpers;
+using XamCnblogs.Portable.Interfaces;
 using XamCnblogs.Portable.Model;
 using XamCnblogs.Portable.ViewModel;
 using XamCnblogs.UI.Pages.Account;
@@ -25,6 +26,20 @@ namespace XamCnblogs.UI.Pages.New
             this.news = news;
             InitializeComponent();
             BindingContext = new NewsDetailsViewModel(news);
+
+            var cancel = new ToolbarItem
+            {
+                Text = "分享",
+                Command = new Command(() =>
+                {
+                    DependencyService.Get<IShares>().SharesIcon("https://news.cnblogs.com/n/" + news.Id + "/", news.Title, news.TopicIcon);
+                })
+            };
+            ToolbarItems.Add(cancel);
+
+            if (Device.Android == Device.RuntimePlatform)
+                cancel.Icon = "toolbar_share.png";
+
         }
 
         protected override void OnAppearing()

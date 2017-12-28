@@ -3,6 +3,7 @@ using System;
 
 using Xamarin.Forms;
 using XamCnblogs.Portable.Helpers;
+using XamCnblogs.Portable.Interfaces;
 using XamCnblogs.Portable.Model;
 using XamCnblogs.Portable.ViewModel;
 using XamCnblogs.UI.Pages.Account;
@@ -19,6 +20,19 @@ namespace XamCnblogs.UI.Pages.KbArticle
             this.kbArticles = kbArticles;
             InitializeComponent();
             BindingContext = new KbArticlesDetailsViewModel(kbArticles);
+
+            var cancel = new ToolbarItem
+            {
+                Text = "分享",
+                Command = new Command(() =>
+                {
+                    DependencyService.Get<IShares>().Shares("http://kb.cnblogs.com/page/" + kbArticles.Id + "/", kbArticles.Title);
+                })
+            };
+            ToolbarItems.Add(cancel);
+
+            if (Device.Android == Device.RuntimePlatform)
+                cancel.Icon = "toolbar_share.png";
         }
 
         protected override void OnAppearing()

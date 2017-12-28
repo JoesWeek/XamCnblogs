@@ -46,6 +46,7 @@ namespace XamCnblogs.Portable.ViewModel
         protected IStoreManager StoreManager { get; } = DependencyService.Get<IStoreManager>();
         protected IToast Toast { get; } = DependencyService.Get<IToast>();
         protected ILog Log { get; } = DependencyService.Get<ILog>();
+        protected IShares Shares { get; } = DependencyService.Get<IShares>();
 
         ICommand launchBrowserCommand;
         public ICommand LaunchBrowserCommand =>
@@ -77,7 +78,7 @@ namespace XamCnblogs.Portable.ViewModel
                     UseSafariWebViewController = true
                 });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.SendLog("LaunchBrowserCommand:" + ex.Message);
             }

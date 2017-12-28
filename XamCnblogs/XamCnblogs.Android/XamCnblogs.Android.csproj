@@ -53,7 +53,7 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
     <Reference Include="UMeng.Android.Shares">
-      <HintPath>..\..\..\Cnblogs\Cnblogs.Droid\bin\Debug\UMeng.Android.Shares.dll</HintPath>
+      <HintPath>..\..\..\..\Work\XamarinSDK\UMeng.Android.Shares\bin\Release\UMeng.Android.Shares.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -196,9 +196,6 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\menu_setting.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\menu_share.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\menu_statuses.png" />
   </ItemGroup>
   <ItemGroup>
@@ -290,6 +287,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\strings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\toolbar_share.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>
