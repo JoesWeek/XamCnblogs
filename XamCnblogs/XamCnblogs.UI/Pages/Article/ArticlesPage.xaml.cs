@@ -3,6 +3,7 @@ using Rg.Plugins.Popup.Extensions;
 using System;
 using Xamarin.Forms;
 using XamCnblogs.Portable.Helpers;
+using XamCnblogs.Portable.Interfaces;
 using XamCnblogs.Portable.Model;
 using XamCnblogs.Portable.ViewModel;
 

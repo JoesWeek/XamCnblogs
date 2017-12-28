@@ -18,7 +18,7 @@ namespace XamCnblogs.Droid
         public override void OnCreate()
         {
             base.OnCreate();
-            Com.Chteam.Agent.BuglyAgentHelper.Init(this.ApplicationContext);
+            Com.Chteam.Agent.BuglyAgentHelper.Init(this.ApplicationContext, "e2fab3d122");
         }
     }
 }

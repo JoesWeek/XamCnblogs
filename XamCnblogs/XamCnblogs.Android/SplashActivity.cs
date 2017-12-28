@@ -6,7 +6,7 @@ using Android.Support.V7.App;
 
 namespace XamCnblogs.Droid
 {
-    [Activity(Label = "XamCnblogs", Icon = "@drawable/ic_launcher", Theme = "@style/SplashTheme", MainLauncher = true)]
+    [Activity(Label = "@string/AppName", Icon = "@drawable/ic_launcher", Theme = "@style/SplashTheme", MainLauncher = true)]
     public class SplashActivity : AppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)

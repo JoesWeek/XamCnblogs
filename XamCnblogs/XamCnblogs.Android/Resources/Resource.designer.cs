@@ -4125,6 +4125,9 @@ namespace XamCnblogs.Droid
 		public partial class String
 		{
 			
+			// aapt resource value: 0x7f0a0057
+			public const int AppName = 2131361879;
+			
 			// aapt resource value: 0x7f0a0015
 			public const int abc_action_bar_home_description = 2131361813;
 			

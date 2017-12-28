@@ -8,7 +8,7 @@ using Xam.Plugin.WebView.Droid;
 
 namespace XamCnblogs.Droid
 {
-    [Activity(Label = "XamCnblogs",
+    [Activity(Label = "@string/AppName",
         Exported = true,
         Icon = "@drawable/ic_launcher",
         LaunchMode = LaunchMode.SingleTask,
@@ -28,7 +28,6 @@ namespace XamCnblogs.Droid
             Toolkit.Init();
             CachedImageRenderer.Init(true);
 
-            Com.Chteam.Agent.BuglyAgentHelper.CheckUpgrade();
 
             LoadApplication(new UI.App());
 

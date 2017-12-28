@@ -1,21 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="3.0.0" package="com.cnblogs.android.p" android:installLocation="auto">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="11" android:versionName="2.0.0" package="com.cnblogs.android.p" android:installLocation="auto">
   <uses-sdk android:minSdkVersion="19" android:targetSdkVersion="26" />
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
   <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-  <application android:theme="@style/MainTheme" android:label="XamCnblogs" android:icon="@drawable/ic_launcher" >
+  <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+  <uses-permission android:name="android.permission.READ_LOGS" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  
+  <application android:theme="@style/MainTheme" android:label="@string/AppName" android:icon="@drawable/ic_launcher" >
     <activity
-        android:name="com.tencent.bugly.beta.ui.BetaActivity"
-        android:configChanges="keyboardHidden|orientation|screenSize|locale"
-        android:theme="@android:style/Theme.Translucent" />
-    <!-- 配置APP ID -->
-    <meta-data  android:name="BUGLY_APPID"  android:value="e2fab3d122" />
-    <!-- 配置APP版本号 -->
-    <meta-data    android:name="BUGLY_APP_VERSION" android:value="3.0.0" />
-    <!-- 配置APP渠道号 -->
-    <meta-data  android:name="BUGLY_APP_CHANNEL"  android:value="*" />
-    <!-- 配置Bugly调试模式（true或者false）-->
-    <meta-data  android:name="BUGLY_ENABLE_DEBUG" android:value="true" />
+      android:name="com.tencent.bugly.beta.ui.BetaActivity"
+      android:configChanges="keyboardHidden|orientation|screenSize|locale"
+      android:theme="@android:style/Theme.Translucent" />
   </application>
 </manifest>
