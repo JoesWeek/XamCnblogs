@@ -52,6 +52,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
+    <Reference Include="UMeng.Android.Shares">
+      <HintPath>..\..\..\Cnblogs\Cnblogs.Droid\bin\Debug\UMeng.Android.Shares.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Bugly">
@@ -106,6 +109,8 @@
   <ItemGroup>
     <Compile Include="Helpers\Settings.cs" />
     <Compile Include="Helpers\Logger.cs" />
+    <Compile Include="Helpers\Shares.cs" />
+    <Compile Include="Helpers\SharesWidget.cs" />
     <Compile Include="Helpers\Toaster.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MainApplication.cs" />
@@ -121,6 +126,7 @@
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SplashActivity.cs" />
+    <Compile Include="wxapi\WXEntryActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -143,6 +149,10 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\UMeng.Share.Android\UMeng.Share.Android.csproj">
+      <Project>{8c040830-7344-45d8-b709-3af778a52bad}</Project>
+      <Name>UMeng.Share.Android</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XamCnblogs.Portable\XamCnblogs.Portable.csproj">
       <Project>{dd091a87-a806-40c9-89f9-010916cc82d3}</Project>
       <Name>XamCnblogs.Portable</Name>

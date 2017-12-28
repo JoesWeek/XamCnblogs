@@ -1,7 +1,10 @@
 ﻿
 using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Runtime;
+using Com.Umeng.Socialize;
 using FFImageLoading.Forms.Droid;
 using FormsToolkit.Droid;
 using Xam.Plugin.WebView.Droid;
@@ -31,6 +34,11 @@ namespace XamCnblogs.Droid
 
             LoadApplication(new UI.App());
 
+        }
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            UMShareAPI.Get(this).OnActivityResult(requestCode, (int)resultCode, data);
         }
     }
 }
