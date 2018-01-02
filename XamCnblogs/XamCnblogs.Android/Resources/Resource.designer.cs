@@ -2543,26 +2543,26 @@ namespace XamCnblogs.Droid
 			// aapt resource value: 0x7f020054
 			public const int avd_hide_password = 2130837588;
 			
-			// aapt resource value: 0x7f020164
-			public const int avd_hide_password_1 = 2130837860;
-			
 			// aapt resource value: 0x7f020165
-			public const int avd_hide_password_2 = 2130837861;
+			public const int avd_hide_password_1 = 2130837861;
 			
 			// aapt resource value: 0x7f020166
-			public const int avd_hide_password_3 = 2130837862;
+			public const int avd_hide_password_2 = 2130837862;
+			
+			// aapt resource value: 0x7f020167
+			public const int avd_hide_password_3 = 2130837863;
 			
 			// aapt resource value: 0x7f020055
 			public const int avd_show_password = 2130837589;
 			
-			// aapt resource value: 0x7f020167
-			public const int avd_show_password_1 = 2130837863;
-			
 			// aapt resource value: 0x7f020168
-			public const int avd_show_password_2 = 2130837864;
+			public const int avd_show_password_1 = 2130837864;
 			
 			// aapt resource value: 0x7f020169
-			public const int avd_show_password_3 = 2130837865;
+			public const int avd_show_password_2 = 2130837865;
+			
+			// aapt resource value: 0x7f02016a
+			public const int avd_show_password_3 = 2130837866;
 			
 			// aapt resource value: 0x7f020056
 			public const int background_splash = 2130837590;
@@ -3290,11 +3290,11 @@ namespace XamCnblogs.Droid
 			// aapt resource value: 0x7f020147
 			public const int notification_icon_background = 2130837831;
 			
-			// aapt resource value: 0x7f020162
-			public const int notification_template_icon_bg = 2130837858;
-			
 			// aapt resource value: 0x7f020163
-			public const int notification_template_icon_low_bg = 2130837859;
+			public const int notification_template_icon_bg = 2130837859;
+			
+			// aapt resource value: 0x7f020164
+			public const int notification_template_icon_low_bg = 2130837860;
 			
 			// aapt resource value: 0x7f020148
 			public const int notification_tile_bg = 2130837832;
@@ -3312,67 +3312,70 @@ namespace XamCnblogs.Droid
 			public const int toolbar_close = 2130837836;
 			
 			// aapt resource value: 0x7f02014d
-			public const int toolbar_share = 2130837837;
+			public const int toolbar_search = 2130837837;
 			
 			// aapt resource value: 0x7f02014e
-			public const int tooltip_frame_dark = 2130837838;
+			public const int toolbar_share = 2130837838;
 			
 			// aapt resource value: 0x7f02014f
-			public const int tooltip_frame_light = 2130837839;
+			public const int tooltip_frame_dark = 2130837839;
 			
 			// aapt resource value: 0x7f020150
-			public const int umeng_socialize_back_icon = 2130837840;
+			public const int tooltip_frame_light = 2130837840;
 			
 			// aapt resource value: 0x7f020151
-			public const int umeng_socialize_btn_bg = 2130837841;
+			public const int umeng_socialize_back_icon = 2130837841;
 			
 			// aapt resource value: 0x7f020152
-			public const int umeng_socialize_copy = 2130837842;
+			public const int umeng_socialize_btn_bg = 2130837842;
 			
 			// aapt resource value: 0x7f020153
-			public const int umeng_socialize_copyurl = 2130837843;
+			public const int umeng_socialize_copy = 2130837843;
 			
 			// aapt resource value: 0x7f020154
-			public const int umeng_socialize_delete = 2130837844;
+			public const int umeng_socialize_copyurl = 2130837844;
 			
 			// aapt resource value: 0x7f020155
-			public const int umeng_socialize_edit_bg = 2130837845;
+			public const int umeng_socialize_delete = 2130837845;
 			
 			// aapt resource value: 0x7f020156
-			public const int umeng_socialize_fav = 2130837846;
+			public const int umeng_socialize_edit_bg = 2130837846;
 			
 			// aapt resource value: 0x7f020157
-			public const int umeng_socialize_menu_default = 2130837847;
+			public const int umeng_socialize_fav = 2130837847;
 			
 			// aapt resource value: 0x7f020158
-			public const int umeng_socialize_more = 2130837848;
+			public const int umeng_socialize_menu_default = 2130837848;
 			
 			// aapt resource value: 0x7f020159
-			public const int umeng_socialize_qq = 2130837849;
+			public const int umeng_socialize_more = 2130837849;
 			
 			// aapt resource value: 0x7f02015a
-			public const int umeng_socialize_qzone = 2130837850;
+			public const int umeng_socialize_qq = 2130837850;
 			
 			// aapt resource value: 0x7f02015b
-			public const int umeng_socialize_share = 2130837851;
+			public const int umeng_socialize_qzone = 2130837851;
 			
 			// aapt resource value: 0x7f02015c
-			public const int umeng_socialize_share_music = 2130837852;
+			public const int umeng_socialize_share = 2130837852;
 			
 			// aapt resource value: 0x7f02015d
-			public const int umeng_socialize_share_video = 2130837853;
+			public const int umeng_socialize_share_music = 2130837853;
 			
 			// aapt resource value: 0x7f02015e
-			public const int umeng_socialize_share_web = 2130837854;
+			public const int umeng_socialize_share_video = 2130837854;
 			
 			// aapt resource value: 0x7f02015f
-			public const int umeng_socialize_sina = 2130837855;
+			public const int umeng_socialize_share_web = 2130837855;
 			
 			// aapt resource value: 0x7f020160
-			public const int umeng_socialize_wechat = 2130837856;
+			public const int umeng_socialize_sina = 2130837856;
 			
 			// aapt resource value: 0x7f020161
-			public const int umeng_socialize_wxcircle = 2130837857;
+			public const int umeng_socialize_wechat = 2130837857;
+			
+			// aapt resource value: 0x7f020162
+			public const int umeng_socialize_wxcircle = 2130837858;
 			
 			static Drawable()
 			{
@@ -3660,35 +3663,35 @@ namespace XamCnblogs.Droid
 			// aapt resource value: 0x7f090060
 			public const int list_item = 2131296352;
 			
-			// aapt resource value: 0x7f0900d7
-			public const int masked = 2131296471;
+			// aapt resource value: 0x7f0900d8
+			public const int masked = 2131296472;
 			
 			// aapt resource value: 0x7f0900bc
 			public const int media_actions = 2131296444;
 			
-			// aapt resource value: 0x7f0900e8
-			public const int menu_about = 2131296488;
-			
-			// aapt resource value: 0x7f0900e2
-			public const int menu_blog = 2131296482;
-			
-			// aapt resource value: 0x7f0900e4
-			public const int menu_kbarticles = 2131296484;
+			// aapt resource value: 0x7f0900e9
+			public const int menu_about = 2131296489;
 			
 			// aapt resource value: 0x7f0900e3
-			public const int menu_news = 2131296483;
-			
-			// aapt resource value: 0x7f0900e6
-			public const int menu_question = 2131296486;
-			
-			// aapt resource value: 0x7f0900e7
-			public const int menu_setting = 2131296487;
+			public const int menu_blog = 2131296483;
 			
 			// aapt resource value: 0x7f0900e5
-			public const int menu_statuses = 2131296485;
+			public const int menu_kbarticles = 2131296485;
 			
-			// aapt resource value: 0x7f0900cd
-			public const int message = 2131296461;
+			// aapt resource value: 0x7f0900e4
+			public const int menu_news = 2131296484;
+			
+			// aapt resource value: 0x7f0900e7
+			public const int menu_question = 2131296487;
+			
+			// aapt resource value: 0x7f0900e8
+			public const int menu_setting = 2131296488;
+			
+			// aapt resource value: 0x7f0900e6
+			public const int menu_statuses = 2131296486;
+			
+			// aapt resource value: 0x7f0900ce
+			public const int message = 2131296462;
 			
 			// aapt resource value: 0x7f090030
 			public const int middle = 2131296304;
@@ -3774,8 +3777,8 @@ namespace XamCnblogs.Droid
 			// aapt resource value: 0x7f090026
 			public const int multiply = 2131296294;
 			
-			// aapt resource value: 0x7f0900e1
-			public const int nav_section_main = 2131296481;
+			// aapt resource value: 0x7f0900e2
+			public const int nav_section_main = 2131296482;
 			
 			// aapt resource value: 0x7f090092
 			public const int navigation_header_container = 2131296402;
@@ -3810,8 +3813,8 @@ namespace XamCnblogs.Droid
 			// aapt resource value: 0x7f09004c
 			public const int pin = 2131296332;
 			
-			// aapt resource value: 0x7f0900d5
-			public const int progress_bar_parent = 2131296469;
+			// aapt resource value: 0x7f0900d6
+			public const int progress_bar_parent = 2131296470;
 			
 			// aapt resource value: 0x7f090006
 			public const int progress_circular = 2131296262;
@@ -3831,8 +3834,8 @@ namespace XamCnblogs.Droid
 			// aapt resource value: 0x7f0900c0
 			public const int right_side = 2131296448;
 			
-			// aapt resource value: 0x7f0900d8
-			public const int root = 2131296472;
+			// aapt resource value: 0x7f0900d9
+			public const int root = 2131296473;
 			
 			// aapt resource value: 0x7f09000c
 			public const int save_image_matrix = 2131296268;
@@ -3860,6 +3863,9 @@ namespace XamCnblogs.Droid
 			
 			// aapt resource value: 0x7f090054
 			public const int scrollable = 2131296340;
+			
+			// aapt resource value: 0x7f0900cd
+			public const int searchView = 2131296461;
 			
 			// aapt resource value: 0x7f09007f
 			public const int search_badge = 2131296383;
@@ -4017,47 +4023,47 @@ namespace XamCnblogs.Droid
 			// aapt resource value: 0x7f090013
 			public const int transition_transform = 2131296275;
 			
-			// aapt resource value: 0x7f0900d0
-			public const int umeng_back = 2131296464;
-			
-			// aapt resource value: 0x7f0900e0
-			public const int umeng_del = 2131296480;
-			
-			// aapt resource value: 0x7f0900dd
-			public const int umeng_image_edge = 2131296477;
-			
 			// aapt resource value: 0x7f0900d1
-			public const int umeng_share_btn = 2131296465;
+			public const int umeng_back = 2131296465;
+			
+			// aapt resource value: 0x7f0900e1
+			public const int umeng_del = 2131296481;
 			
 			// aapt resource value: 0x7f0900de
-			public const int umeng_share_icon = 2131296478;
+			public const int umeng_image_edge = 2131296478;
 			
 			// aapt resource value: 0x7f0900d2
-			public const int umeng_socialize_follow = 2131296466;
-			
-			// aapt resource value: 0x7f0900d3
-			public const int umeng_socialize_follow_check = 2131296467;
-			
-			// aapt resource value: 0x7f0900dc
-			public const int umeng_socialize_share_bottom_area = 2131296476;
-			
-			// aapt resource value: 0x7f0900da
-			public const int umeng_socialize_share_edittext = 2131296474;
-			
-			// aapt resource value: 0x7f0900d9
-			public const int umeng_socialize_share_titlebar = 2131296473;
-			
-			// aapt resource value: 0x7f0900db
-			public const int umeng_socialize_share_word_num = 2131296475;
-			
-			// aapt resource value: 0x7f0900ce
-			public const int umeng_socialize_titlebar = 2131296462;
-			
-			// aapt resource value: 0x7f0900cf
-			public const int umeng_title = 2131296463;
+			public const int umeng_share_btn = 2131296466;
 			
 			// aapt resource value: 0x7f0900df
-			public const int umeng_web_title = 2131296479;
+			public const int umeng_share_icon = 2131296479;
+			
+			// aapt resource value: 0x7f0900d3
+			public const int umeng_socialize_follow = 2131296467;
+			
+			// aapt resource value: 0x7f0900d4
+			public const int umeng_socialize_follow_check = 2131296468;
+			
+			// aapt resource value: 0x7f0900dd
+			public const int umeng_socialize_share_bottom_area = 2131296477;
+			
+			// aapt resource value: 0x7f0900db
+			public const int umeng_socialize_share_edittext = 2131296475;
+			
+			// aapt resource value: 0x7f0900da
+			public const int umeng_socialize_share_titlebar = 2131296474;
+			
+			// aapt resource value: 0x7f0900dc
+			public const int umeng_socialize_share_word_num = 2131296476;
+			
+			// aapt resource value: 0x7f0900cf
+			public const int umeng_socialize_titlebar = 2131296463;
+			
+			// aapt resource value: 0x7f0900d0
+			public const int umeng_title = 2131296464;
+			
+			// aapt resource value: 0x7f0900e0
+			public const int umeng_web_title = 2131296480;
 			
 			// aapt resource value: 0x7f09002c
 			public const int uniform = 2131296300;
@@ -4071,14 +4077,14 @@ namespace XamCnblogs.Droid
 			// aapt resource value: 0x7f090016
 			public const int view_offset_helper = 2131296278;
 			
-			// aapt resource value: 0x7f0900d6
-			public const int visible = 2131296470;
+			// aapt resource value: 0x7f0900d7
+			public const int visible = 2131296471;
 			
 			// aapt resource value: 0x7f0900ad
 			public const int volume_item_container = 2131296429;
 			
-			// aapt resource value: 0x7f0900d4
-			public const int webView = 2131296468;
+			// aapt resource value: 0x7f0900d5
+			public const int webView = 2131296469;
 			
 			// aapt resource value: 0x7f09003b
 			public const int withText = 2131296315;
