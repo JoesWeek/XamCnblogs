@@ -56,5 +56,8 @@
         public const string BookmarkHead = Api + "/Bookmarks?url={0}";
         public const string BookmarkEdit = Api + "/bookmarks/{0}";
         public const string BookmarkAdd = Api + "/Bookmarks";
+
+        public const string Search = Host + Api + "/ZzkDocuments/{0}?keyWords={1}&pageIndex={2}&startDate=&endDate=&viewTimesAtLeast=0";
+
     }
 }

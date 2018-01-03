@@ -28,11 +28,26 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Cells\SearchItemCell.xaml.cs">
+      <DependentUpon>SearchItemCell.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Pages\Account\ArticlesPage.xaml.cs">
       <DependentUpon>ArticlesPage.xaml</DependentUpon>
     </Compile>
     <Compile Update="Pages\ActivityIndicatorPopupPage.xaml.cs">
       <DependentUpon>ActivityIndicatorPopupPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Article\ArticlesSearchPage.xaml.cs">
+      <DependentUpon>ArticlesSearchPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\KbArticle\KbArticlesSearchPage.xaml.cs">
+      <DependentUpon>KbArticlesSearchPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\New\NewsSearchPage.xaml.cs">
+      <DependentUpon>NewsSearchPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\Question\QuestionsSearchPage.xaml.cs">
+      <DependentUpon>QuestionsSearchPage.xaml</DependentUpon>
     </Compile>
     <Compile Update="Pages\Question\QuestionsAnswersPopupPage.xaml.cs">
       <DependentUpon>QuestionsAnswersPopupPage.xaml</DependentUpon>
@@ -91,7 +106,7 @@
     <EmbeddedResource Update="Pages\About\AboutPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Pages\About\SearchPage.xaml">
+    <EmbeddedResource Update="Pages\Article\ArticlesSearchPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Pages\About\SettingPage.xaml">

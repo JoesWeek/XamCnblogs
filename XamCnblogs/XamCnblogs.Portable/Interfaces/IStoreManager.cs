@@ -20,6 +20,7 @@ namespace XamCnblogs.Portable.Interfaces
         IAnswersDetailsService AnswersDetailsService { get; }
         IBlogsService BlogsService { get; }
         IBookmarksService BookmarksService { get; }
+        ISearchService SearchService { get; }
         Task<bool> SyncAllAsync(bool syncUserSpecific);
         Task DropEverythingAsync();
     }

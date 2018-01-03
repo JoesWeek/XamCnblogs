@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+		     xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
+             xmlns:cells="clr-namespace:XamCnblogs.UI.Cells;assembly=XamCnblogs.UI"
+             x:Class="XamCnblogs.UI.Pages.Question.QuestionsSearchPage"
+             Title="搜索博问">
+    <ContentPage.Content>
+        <Grid RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <SearchBar Grid.Row="0"
+                       Text="{Binding KeyWords, Mode=TwoWay}" 
+                       Placeholder="搜索你想知道的"
+                       SearchCommand="{Binding FilterSessionsCommand}"
+                       FontSize="Small" >
+                <SearchBar.PlaceholderColor>
+                    <OnPlatform x:TypeArguments="Color" Android="White"/>
+                </SearchBar.PlaceholderColor>
+                <SearchBar.BackgroundColor>
+                    <OnPlatform x:TypeArguments="Color" Android="{StaticResource Primary}"/>
+                </SearchBar.BackgroundColor>
+                <SearchBar.TextColor>
+                    <OnPlatform x:TypeArguments="Color" Android="White"/>
+                </SearchBar.TextColor>
+                <SearchBar.CancelButtonColor>
+                    <OnPlatform x:TypeArguments="Color" Android="White" iOS="{StaticResource Primary}"/>
+                </SearchBar.CancelButtonColor>
+            </SearchBar>
+            <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Grid.Row="1">
+                <controls:LoadMoreListView 
+                    x:Name="SearchsListView"
+                    ItemsSource="{Binding Searchs}"
+                    RefreshCommand="{Binding RefreshCommand}"
+                    IsRefreshing="{Binding IsBusy}"
+                    HasUnevenRows="True"
+                    IsPullToRefreshEnabled="True"
+                    LoadMoreCommand="{Binding LoadMoreCommand}"
+                    LoadStatus="{Binding LoadStatus}"
+                    CanLoadMore="{Binding CanLoadMore}"
+                    BackgroundColor="White"
+                    SeparatorColor="{StaticResource Divider}"
+                    AbsoluteLayout.LayoutFlags="All" 
+                    AbsoluteLayout.LayoutBounds="0,0,1,1">
+                    <controls:LoadMoreListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <cells:SearchItemCell/>
+                            </ViewCell>
+                        </DataTemplate>
+                    </controls:LoadMoreListView.ItemTemplate>
+                </controls:LoadMoreListView>
+            </AbsoluteLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

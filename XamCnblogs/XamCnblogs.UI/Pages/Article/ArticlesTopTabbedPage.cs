@@ -25,7 +25,7 @@ namespace XamCnblogs.UI.Pages.Article
                 Text = "搜索",
                 Command = new Command(async () =>
                 {
-                    await NavigationService.PushAsync(Navigation, new SearchPage());
+                    await NavigationService.PushAsync(Navigation, new ArticlesSearchPage());
                 })
             };
             ToolbarItems.Add(cancel);

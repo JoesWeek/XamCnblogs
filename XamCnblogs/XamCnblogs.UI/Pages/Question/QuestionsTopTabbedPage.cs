@@ -23,6 +23,19 @@ namespace XamCnblogs.UI.Pages.Question
             this.Children.Add(new QuestionsPage(2) { Title = "没有答案" });
             this.Children.Add(new QuestionsPage(3) { Title = "已解决" });
             this.Children.Add(new QuestionsPage(4) { Title = "我的问题" });
+
+            var cancel = new ToolbarItem
+            {
+                Text = "搜索",
+                Command = new Command(async () =>
+                {
+                    await NavigationService.PushAsync(Navigation, new QuestionsSearchPage());
+                })
+            };
+            ToolbarItems.Add(cancel);
+
+            if (Device.Android == Device.RuntimePlatform)
+                cancel.Icon = "toolbar_search.png";
         }
     }
 }

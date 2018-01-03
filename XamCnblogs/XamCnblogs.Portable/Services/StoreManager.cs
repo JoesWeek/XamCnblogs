@@ -66,5 +66,8 @@ namespace XamCnblogs.Portable.Services
         IBookmarksService bookmarksService;
         public IBookmarksService BookmarksService => bookmarksService ?? (bookmarksService = DependencyService.Get<IBookmarksService>());
 
+        ISearchService searchService;
+        public ISearchService SearchService => searchService ?? (searchService = DependencyService.Get<ISearchService>());
+
     }
 }

@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+	         xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             xmlns:converter="clr-namespace:XamCnblogs.UI.Converters;assembly=XamCnblogs.UI"
+             xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
+             x:Class="XamCnblogs.UI.Cells.SearchItemCell">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:IsVisibleConverter x:Key="IsVisibleConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid
+             x:Name="GridView"
+             Padding="{StaticResource  StandardPadding}"
+             BackgroundColor="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="100"/>
+        </Grid.ColumnDefinitions>
+        <StackLayout Grid.Row="0"
+               Grid.ColumnSpan="2"
+               Orientation="Horizontal"
+               IsVisible="{Binding UserName, Converter={StaticResource IsVisibleConverter}}">
+            <Image 
+                HorizontalOptions="Center" 
+                VerticalOptions="Center"
+			    WidthRequest="20" 
+                HeightRequest="20"
+                Source="avatar_placeholder.png"/>
+            <Label
+               Text="{Binding UserName}" 
+               Style="{StaticResource SecondaryTextStyle}"/>
+        </StackLayout>
+        <controls:ItemLabel Grid.Row="1"
+               Grid.ColumnSpan="2"
+               LineSpacing="1.3"
+               MaxLines="1"
+               Text="{Binding Title}"
+               Style="{StaticResource PrimaryTextStyle}" />
+        <controls:ItemLabel Grid.Row="2"
+               Grid.ColumnSpan="2"
+               LineSpacing="1.3"
+               MaxLines="3"
+               Text="{Binding Content}"
+               Style="{StaticResource SecondaryTextStyle}" />
+        <Label Grid.Row="3"
+               Grid.Column="0"
+               Text="{Binding DiggValue}"
+               Style="{StaticResource SecondaryTextStyle}" />
+        <Label Grid.Row="3"
+               Grid.Column="1"
+               Text="{Binding DateDisplay}"
+               Style="{StaticResource SecondaryTextStyle}"
+               HorizontalOptions="EndAndExpand"/>
+    </Grid>
+</ContentView>
