@@ -43,7 +43,7 @@
             <Label
                Text="{Binding UserName}"
                 Style="{StaticResource PrimaryTextStyle}" />
-            <controls:CommentItemLabel
+            <controls:ItemLabel
                 LineSpacing="1.3"
                 Text="{Binding CommentContent}"
                 Style="{StaticResource SecondaryTextStyle}"/>

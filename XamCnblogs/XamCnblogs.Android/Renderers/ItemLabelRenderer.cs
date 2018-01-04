@@ -1,6 +1,7 @@
 ﻿using Android.Content;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
+using XamCnblogs.Droid.Helpers;
 using XamCnblogs.Droid.Renderers;
 
 [assembly: ExportRenderer(typeof(XamCnblogs.UI.Controls.ItemLabel), typeof(ItemLabelRenderer))]
@@ -18,6 +19,8 @@ namespace XamCnblogs.Droid.Renderers
             base.OnElementChanged(e);
             if (e.NewElement != null)
             {
+                this.Control.SetText(HtmlUtils.GetHtml(Element.Text),Android.Widget.TextView.BufferType.Editable);
+
                 var itemLabel = (XamCnblogs.UI.Controls.ItemLabel)Element;
                 var lineSpacing = itemLabel.LineSpacing;
                 var maxLines = itemLabel.MaxLines;

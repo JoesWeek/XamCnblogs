@@ -107,6 +107,7 @@
     <PackageReference Include="Xamarin.Android.Support.v7.MediaRouter" Version="26.1.0.1" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\HtmlUtils.cs" />
     <Compile Include="Helpers\Settings.cs" />
     <Compile Include="Helpers\Logger.cs" />
     <Compile Include="Helpers\Shares.cs" />
@@ -117,7 +118,6 @@
     <Compile Include="Renderers\XamEditorRenderer.cs" />
     <Compile Include="Renderers\XamEntryRenderer.cs" />
     <Compile Include="Renderers\CommentEditorRenderer.cs" />
-    <Compile Include="Renderers\CommentItemLabelRenderer.cs" />
     <Compile Include="Renderers\DetailsPageWebViewRenderer.cs" />
     <Compile Include="Renderers\AuthorizeWebViewRenderer.cs" />
     <Compile Include="Renderers\ItemLabelRenderer.cs" />
