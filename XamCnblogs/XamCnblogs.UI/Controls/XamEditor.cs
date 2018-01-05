@@ -7,7 +7,7 @@ namespace XamCnblogs.UI.Controls
 {
     public class XamEditor : Editor
     {
-        public static readonly BindableProperty PlaceholderProperty = BindableProperty.Create(propertyName: "Placeholder",
+        public static readonly BindableProperty PlaceholderProperty = BindableProperty.Create(propertyName: nameof(Placeholder),
                 returnType: typeof(string),
                 declaringType: typeof(CommentEditor),
                 defaultValue: default(string));

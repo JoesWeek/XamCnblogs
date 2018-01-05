@@ -15,7 +15,7 @@ namespace XamCnblogs.UI.Pages
 		public Page1 ()
 		{
 			InitializeComponent ();
-            this.ItemLabel.Text = "图片测试<img src='https://www.cnblogs.com/images/logo_small.gif' alt='博客园Logo' width='142' height='55'>";
+            this.HtmlTextView.Text = "图片测试<img src='https://www.cnblogs.com/images/logo_small.gif' alt='博客园Logo'>";
 
         }
 	}

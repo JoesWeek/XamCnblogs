@@ -115,6 +115,7 @@
     <Compile Include="Helpers\Toaster.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MainApplication.cs" />
+    <Compile Include="Renderers\HtmlTextViewRenderer.cs" />
     <Compile Include="Renderers\XamEditorRenderer.cs" />
     <Compile Include="Renderers\XamEntryRenderer.cs" />
     <Compile Include="Renderers\CommentEditorRenderer.cs" />
@@ -151,6 +152,10 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Binding_HtmlTextView\Binding_HtmlTextView.csproj">
+      <Project>{d284235c-c135-4b0f-89a4-6af74791dd6e}</Project>
+      <Name>Binding_HtmlTextView</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UMeng.Share.Android\UMeng.Share.Android.csproj">
       <Project>{8c040830-7344-45d8-b709-3af778a52bad}</Project>
       <Name>UMeng.Share.Android</Name>

@@ -19,7 +19,7 @@ using XamCnblogs.UI.Pages.Account;
 [assembly: ExportRenderer(typeof(XamCnblogs.UI.Controls.NavigationView), typeof(NavigationViewRenderer))]
 namespace XamCnblogs.Droid.Renderers
 {
-    public class NavigationViewRenderer : ViewRenderer<UI.Controls.NavigationView, NavigationView>
+    public class NavigationViewRenderer :ViewRenderer<UI.Controls.NavigationView, NavigationView>
     {
         NavigationView navView;
         private ImageViewAsync avatar;

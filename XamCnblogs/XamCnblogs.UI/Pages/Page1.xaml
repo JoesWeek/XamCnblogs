@@ -5,8 +5,8 @@
              x:Class="XamCnblogs.UI.Pages.Page1">
     <ContentPage.Content>
         <StackLayout>
-            <controls:ItemLabel
-                x:Name="ItemLabel"
+            <controls:HtmlTextView
+                x:Name="HtmlTextView"
                 Style="{StaticResource SecondaryTextStyle}"/>
         </StackLayout>
     </ContentPage.Content>
