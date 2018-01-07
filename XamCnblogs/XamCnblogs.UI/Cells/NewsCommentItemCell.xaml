@@ -43,10 +43,11 @@
             <Label
                Text="{Binding UserName}"
                 Style="{StaticResource PrimaryTextStyle}" />
-            <controls:ItemLabel
+            <controls:HtmlTextView
                 LineSpacing="1.3"
                 Text="{Binding CommentContent}"
-                Style="{StaticResource SecondaryTextStyle}"/>
+               FontSize="{StaticResource SecondaryTextSize}"
+               TextColor="{StaticResource SecondaryText}" />
             <StackLayout Orientation="Horizontal"
                 HorizontalOptions="End">
                 <StackLayout Orientation="Horizontal"

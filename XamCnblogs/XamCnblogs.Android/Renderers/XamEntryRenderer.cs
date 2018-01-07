@@ -16,7 +16,6 @@ namespace XamCnblogs.Droid.Renderers
         public XamEntryRenderer(Context context) : base(context)
         {
         }
-        protected ItemLabel ItemLabel { get; private set; }
         protected override void OnElementChanged(ElementChangedEventArgs<Entry> e)
         {
             base.OnElementChanged(e);

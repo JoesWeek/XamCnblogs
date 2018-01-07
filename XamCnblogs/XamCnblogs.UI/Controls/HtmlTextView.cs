@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace XamCnblogs.UI.Controls
 {
-    public class HtmlTextView : View
+    public class HtmlTextView : Label
     {
         public double LineSpacing { get; set; }
         public int MaxLines { get; set; }

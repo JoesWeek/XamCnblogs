@@ -22,8 +22,8 @@ namespace XamCnblogs.UI
             switch (Device.RuntimePlatform)
             {
                 case Device.Android:
-                    //MainPage = new Pages.Android.RootPage();
-                    MainPage = new Page1();
+                    MainPage = new Pages.Android.RootPage();
+                    //MainPage = new Page1();
                     break;
                 case Device.iOS:
                     break;

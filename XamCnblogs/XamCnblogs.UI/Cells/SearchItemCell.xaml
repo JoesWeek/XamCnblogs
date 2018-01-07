@@ -44,13 +44,14 @@
                LineSpacing="1.3"
                MaxLines="1"
                Text="{Binding Title}"
-               Style="{StaticResource PrimaryTextStyle}" />
-        <controls:ItemLabel Grid.Row="2"
+               Style="{StaticResource SecondaryTextStyle}"     />
+        <controls:HtmlTextView Grid.Row="2"
                Grid.ColumnSpan="2"
                LineSpacing="1.3"
                MaxLines="3"
                Text="{Binding Content}"
-               Style="{StaticResource SecondaryTextStyle}" />
+               FontSize="{StaticResource SecondaryTextSize}"
+               TextColor="{StaticResource SecondaryText}"  />
         <Label Grid.Row="3"
                Grid.Column="0"
                Text="{Binding DiggValue}"

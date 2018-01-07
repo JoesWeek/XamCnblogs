@@ -35,10 +35,11 @@
             <Label
                Text="{Binding Author}"
                 Style="{StaticResource PrimaryTextStyle}" />
-            <controls:ItemLabel
+            <controls:HtmlTextView
                LineSpacing="1.3"
                Text="{Binding Body}"
-               Style="{DynamicResource SecondaryTextStyle}" />
+               FontSize="{StaticResource SecondaryTextSize}"
+               TextColor="{StaticResource SecondaryText}"  />
             <Label
                Text="{Binding DateDisplay}"
                Style="{StaticResource SecondaryTextStyle}" 

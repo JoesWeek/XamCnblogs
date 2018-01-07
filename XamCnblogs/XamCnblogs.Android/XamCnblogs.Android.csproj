@@ -116,12 +116,12 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="MainApplication.cs" />
     <Compile Include="Renderers\HtmlTextViewRenderer.cs" />
+    <Compile Include="Renderers\ItemLabelRenderer.cs" />
     <Compile Include="Renderers\XamEditorRenderer.cs" />
     <Compile Include="Renderers\XamEntryRenderer.cs" />
     <Compile Include="Renderers\CommentEditorRenderer.cs" />
     <Compile Include="Renderers\DetailsPageWebViewRenderer.cs" />
     <Compile Include="Renderers\AuthorizeWebViewRenderer.cs" />
-    <Compile Include="Renderers\ItemLabelRenderer.cs" />
     <Compile Include="Renderers\ListViewRenderer.cs" />
     <Compile Include="Renderers\NavigationViewRenderer.cs" />
     <Compile Include="Renderers\XamSearchBarRenderer.cs" />

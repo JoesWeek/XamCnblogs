@@ -17,7 +17,6 @@ namespace XamCnblogs.Droid.Renderers
         {
 
         }
-        protected ItemLabel ItemLabel { get; private set; }
         protected override void OnElementChanged(ElementChangedEventArgs<Editor> e)
         {
             base.OnElementChanged(e);

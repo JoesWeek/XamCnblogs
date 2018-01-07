@@ -25,7 +25,7 @@
                LineSpacing="1.3"
                MaxLines="3"
                Text="{Binding Summary}"
-               Style="{StaticResource SecondaryTextStyle}" />
+               Style="{StaticResource SecondaryTextStyle}"   />
         <Label Grid.Row="2"
                Grid.Column="0"
                Text="{Binding DiggValue}"

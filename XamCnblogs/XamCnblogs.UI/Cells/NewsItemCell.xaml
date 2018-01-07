@@ -40,7 +40,7 @@
                MaxLines="4"
                 VerticalOptions="CenterAndExpand"
                Text="{Binding Summary}"
-               Style="{StaticResource SecondaryTextStyle}" />
+               Style="{StaticResource SecondaryTextStyle}"   />
         </StackLayout>
         <Label Grid.Row="2"
                Grid.Column="0"
