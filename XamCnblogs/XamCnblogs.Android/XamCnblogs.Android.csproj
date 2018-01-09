@@ -60,9 +60,6 @@
     <PackageReference Include="FormsToolkit">
       <Version>1.1.18</Version>
     </PackageReference>
-    <PackageReference Include="HtmlTextViewBinding">
-      <Version>3.5.2</Version>
-    </PackageReference>
     <PackageReference Include="Humanizer">
       <Version>2.2.0</Version>
     </PackageReference>
@@ -166,6 +163,10 @@
     <ProjectReference Include="..\XamCnblogs.UI\XamCnblogs.UI.csproj">
       <Project>{796ea191-8cca-4bf7-b48c-2d74b2da568e}</Project>
       <Name>XamCnblogs.UI</Name>
+    </ProjectReference>
+    <ProjectReference Include="AndroidBindings\Binding_HtmlTextView\Binding_HtmlTextView.csproj">
+      <Project>{E966C799-1338-4AE0-8908-F3BA5E51FA4A}</Project>
+      <Name>Binding_HtmlTextView</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
