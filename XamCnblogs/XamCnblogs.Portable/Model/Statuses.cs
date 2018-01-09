@@ -16,7 +16,7 @@ namespace XamCnblogs.Portable.Model
         private string content;
         public string Content
         {
-            get { return IsLucky ? content + "<img src='https://github.com/JoesWeek/XamCnblogs/blob/master/XamCnblogs/XamCnblogs.Android/Assets/lucky-star.png' />" : content; }
+            get { return IsLucky ? content + "<img src='https://raw.githubusercontent.com/JoesWeek/XamCnblogs/master/XamCnblogs/XamCnblogs.Android/Assets/lucky-star.png' />" : content; }
             set { SetProperty(ref content, value); }
         }
         public bool IsPrivate { get; set; }
