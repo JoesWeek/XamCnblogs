@@ -11,12 +11,12 @@ using XamCnblogs.Portable.ViewModel;
 
 namespace XamCnblogs.UI.Pages.About
 {
-	public partial class AboutPage : ContentPage
+    public partial class AboutPage : ContentPage
     {
         AboutViewModel vm;
-        public AboutPage ()
-		{
-			InitializeComponent ();
+        public AboutPage()
+        {
+            InitializeComponent();
             BindingContext = vm = new AboutViewModel();
             var cancel = new ToolbarItem
             {
@@ -30,6 +30,8 @@ namespace XamCnblogs.UI.Pages.About
 
             if (Device.Android == Device.RuntimePlatform)
                 cancel.Icon = "toolbar_share.png";
+
+            this.VersionName.Text = DependencyService.Get<IVersionName>().GetVersionName();
         }
-	}
+    }
 }

@@ -69,8 +69,7 @@ namespace XamCnblogs.Portable.ViewModel
                     LoadStatus = LoadMoreStatus.StausError;
                 }
             }));
-
-
+        
         async Task ExecuteRefreshCommandAsync()
         {
             var result = await StoreManager.ArticlesService.GetArticlesAsync(position, pageIndex, pageSize);

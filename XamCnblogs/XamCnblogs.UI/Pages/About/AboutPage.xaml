@@ -11,6 +11,7 @@
                             Text="当前版本"
                             Style="{StaticResource PrimaryTextStyle}"/>
                 <Label 
+                    x:Name="VersionName"
                             Text="2.0.0"
                             Style="{StaticResource SecondaryTextStyle}"/>
             </StackLayout>

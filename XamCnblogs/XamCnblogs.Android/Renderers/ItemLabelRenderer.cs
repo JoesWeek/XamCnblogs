@@ -19,7 +19,7 @@ namespace XamCnblogs.Droid.Renderers
             base.OnElementChanged(e);
             if (e.NewElement != null)
             {
-                this.Control.SetText(HtmlUtils.GetHtml(Element.Text), Android.Widget.TextView.BufferType.Editable);
+                this.Control.SetText(HtmlUtils.GetHtml(Element.Text), Android.Widget.TextView.BufferType.Normal);
 
                 var itemLabel = (XamCnblogs.UI.Controls.ItemLabel)Element;
                 var lineSpacing = itemLabel.LineSpacing;

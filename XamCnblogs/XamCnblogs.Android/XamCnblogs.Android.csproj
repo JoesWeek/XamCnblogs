@@ -112,6 +112,7 @@
     <Compile Include="Helpers\Logger.cs" />
     <Compile Include="Helpers\Shares.cs" />
     <Compile Include="Helpers\SharesWidget.cs" />
+    <Compile Include="Helpers\VersionNameer.cs" />
     <Compile Include="Helpers\Toaster.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MainApplication.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SplashActivity.cs" />
+    <Compile Include="WBShareActivity.cs" />
     <Compile Include="wxapi\WXEntryActivity.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -303,6 +305,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\search_cursor.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\lucky-star.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

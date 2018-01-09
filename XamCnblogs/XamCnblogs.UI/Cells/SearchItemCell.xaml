@@ -44,7 +44,7 @@
                LineSpacing="1.3"
                MaxLines="1"
                Text="{Binding Title}"
-               Style="{StaticResource SecondaryTextStyle}"     />
+               Style="{StaticResource PrimaryTextStyle}"     />
         <controls:HtmlTextView Grid.Row="2"
                Grid.ColumnSpan="2"
                LineSpacing="1.3"

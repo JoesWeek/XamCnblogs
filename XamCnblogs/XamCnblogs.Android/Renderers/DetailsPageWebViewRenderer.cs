@@ -6,6 +6,7 @@ using Xam.Plugin.WebView.Abstractions;
 using Xam.Plugin.WebView.Droid;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
+using XamCnblogs.Droid.Helpers;
 using XamCnblogs.Droid.Renderers;
 
 [assembly: ExportRenderer(typeof(XamCnblogs.UI.Controls.DetailsPageWebView), typeof(DetailsPageWebViewRenderer))]
@@ -27,7 +28,7 @@ namespace XamCnblogs.Droid.Renderers
 
                 if (Build.VERSION.SdkInt < BuildVersionCodes.Lollipop)
                     Control.Settings.UseWideViewPort = true;
-                
+
                 LoadData();
             }
         }
@@ -36,7 +37,7 @@ namespace XamCnblogs.Droid.Renderers
             var chrome = new HtmlWebChromeClient(this);
             Control.SetWebChromeClient(chrome);
         }
-        
+
         public class HtmlWebChromeClient : WebChromeClient
         {
             DetailsPageWebViewRenderer customWebViewRenderer;
@@ -48,13 +49,20 @@ namespace XamCnblogs.Droid.Renderers
             {
                 if (newProgress == 100)
                 {
-                    new Handler().PostDelayed(() =>
+                    new Android.OS.Handler().PostDelayed(() =>
                     {
-                        var newContentHeight = view.ContentHeight;
+                        try
+                        {
+                            var newContentHeight = view.ContentHeight;
 
-                        if (newContentHeight == 0) return;
-                        var element = customWebViewRenderer.Element;
-                        element.HeightRequest = newContentHeight;
+                            if (newContentHeight == 0) return;
+                            var element = customWebViewRenderer.Element;
+                            element.HeightRequest = newContentHeight;
+                        }
+                        catch (System.Exception ex)
+                        {
+                            new Logger().SendLog("HtmlWebChromeClient：" + ex.Message);
+                        }
                     }, 225);
                 }
                 base.OnProgressChanged(view, newProgress);

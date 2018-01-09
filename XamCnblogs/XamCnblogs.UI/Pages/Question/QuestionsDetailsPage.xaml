@@ -144,7 +144,6 @@
                                HeightRequest="300"
                                IsVisible="{Binding HasError}">
                             <StackLayout
-                                   BackgroundColor="Red"
                                    HorizontalOptions="CenterAndExpand"
                                    VerticalOptions="EndAndExpand">
                                 <Label
