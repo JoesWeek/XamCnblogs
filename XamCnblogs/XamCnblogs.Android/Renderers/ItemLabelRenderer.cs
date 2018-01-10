@@ -3,6 +3,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using XamCnblogs.Droid.Helpers;
 using XamCnblogs.Droid.Renderers;
+using XamCnblogs.Portable.Interfaces;
 
 [assembly: ExportRenderer(typeof(XamCnblogs.UI.Controls.ItemLabel), typeof(ItemLabelRenderer))]
 
@@ -19,7 +20,16 @@ namespace XamCnblogs.Droid.Renderers
             base.OnElementChanged(e);
             if (e.NewElement != null)
             {
-                this.Control.SetText(HtmlUtils.GetHtml(Element.Text), Android.Widget.TextView.BufferType.Normal);
+                try
+                {
+
+                    this.Control.SetText(HtmlUtils.GetHtml(Element.Text), Android.Widget.TextView.BufferType.Normal);
+                }
+                catch (System.Exception ex)
+                {
+                    this.Control.Text = Element.Text;
+                    DependencyService.Get<ILog>().SendLog("ItemLabelRenderer：" + ex.Message);
+                }
 
                 var itemLabel = (XamCnblogs.UI.Controls.ItemLabel)Element;
                 var lineSpacing = itemLabel.LineSpacing;

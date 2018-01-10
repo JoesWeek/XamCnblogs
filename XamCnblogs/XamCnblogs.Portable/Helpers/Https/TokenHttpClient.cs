@@ -90,7 +90,7 @@ namespace XamCnblogs.Portable.Helpers
                 {
                     message.Success = false;
                     message.Message = ex.Message;
-
+                    DependencyService.Get<ILog>().SendLog("CheckTokenAsync:" + ex.Message);
                     return message;
                 }
             }
@@ -102,12 +102,24 @@ namespace XamCnblogs.Portable.Helpers
         }
         private async Task<ResponseMessage> TokenAsync()
         {
-            var parameters = new Dictionary<string, string>();
-            parameters.Add("grant_type", "client_credentials");
-            var basic = Convert.ToBase64String(Encoding.UTF8.GetBytes(ClientId + ":" + ClientSercret));
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", basic);
-            var response = await client.PostAsync(Apis.Token, new FormUrlEncodedContent(parameters));
-            return await GetResultMessage(response);
+            try
+            {
+                var parameters = new Dictionary<string, string>();
+                parameters.Add("grant_type", "client_credentials");
+                var basic = Convert.ToBase64String(Encoding.UTF8.GetBytes(ClientId + ":" + ClientSercret));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", basic);
+                var response = await client.PostAsync(Apis.Token, new FormUrlEncodedContent(parameters));
+                return await GetResultMessage(response);
+            }
+            catch (Exception ex)
+            {
+                var result = new ResponseMessage();
+                result.Success = false;
+                result.Message = ex.Message;
+                DependencyService.Get<ILog>().SendLog("TokenAsync:" + ex.Message);
+                return result;
+                throw;
+            }
         }
         private async Task<ResponseMessage> GetResultMessage(HttpResponseMessage response)
         {

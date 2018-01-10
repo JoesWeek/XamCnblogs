@@ -8,6 +8,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using XamCnblogs.Droid.Helpers;
 using XamCnblogs.Droid.Renderers;
+using XamCnblogs.Portable.Interfaces;
 
 [assembly: ExportRenderer(typeof(XamCnblogs.UI.Controls.DetailsPageWebView), typeof(DetailsPageWebViewRenderer))]
 namespace XamCnblogs.Droid.Renderers
@@ -34,8 +35,16 @@ namespace XamCnblogs.Droid.Renderers
         }
         private void LoadData()
         {
-            var chrome = new HtmlWebChromeClient(this);
-            Control.SetWebChromeClient(chrome);
+            try
+            {
+                var chrome = new HtmlWebChromeClient(this);
+                Control.SetWebChromeClient(chrome);
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
         }
 
         public class HtmlWebChromeClient : WebChromeClient
@@ -55,13 +64,13 @@ namespace XamCnblogs.Droid.Renderers
                         {
                             var newContentHeight = view.ContentHeight;
 
-                            if (newContentHeight == 0) return;
+                            if (newContentHeight == 0 || customWebViewRenderer == null) return;
                             var element = customWebViewRenderer.Element;
                             element.HeightRequest = newContentHeight;
                         }
                         catch (System.Exception ex)
                         {
-                            new Logger().SendLog("HtmlWebChromeClient：" + ex.Message);
+                            DependencyService.Get<ILog>().SendLog("HtmlWebChromeClient：" + ex.Message);
                         }
                     }, 225);
                 }

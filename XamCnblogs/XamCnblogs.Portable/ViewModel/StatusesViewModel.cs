@@ -45,7 +45,7 @@ namespace XamCnblogs.Portable.ViewModel
                         {
                             //判断有没有登录
                             LoadStatus = LoadMoreStatus.StausNologin;
-                            if (Statuses.Count > 0)
+                            if (Statuses != null && Statuses.Count > 0)
                                 Statuses.Clear();
                         }
                         else
@@ -57,7 +57,7 @@ namespace XamCnblogs.Portable.ViewModel
                 catch (Exception ex)
                 {
                     Log.SendLog("StatusesViewModel.RefreshCommand:" + ex.Message);
-                    if (Statuses.Count > 0)
+                    if (Statuses != null && Statuses.Count > 0)
                         Statuses.Clear();
                     LoadStatus = LoadMoreStatus.StausFail;
                 }

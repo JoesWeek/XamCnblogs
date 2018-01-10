@@ -9,6 +9,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using XamCnblogs.Droid.Helpers;
 using XamCnblogs.Droid.Renderers;
+using XamCnblogs.Portable.Interfaces;
 
 [assembly: ExportRenderer(typeof(XamCnblogs.UI.Controls.HtmlTextView), typeof(HtmlTextViewRenderer))]
 
@@ -29,7 +30,7 @@ namespace XamCnblogs.Droid.Renderers
                 try
                 {
                     if (htmlTextView == null)
-                        htmlTextView = new Org.Sufficientlysecure.Htmltextview.HtmlTextView(this.Context);
+                        htmlTextView = new Org.Sufficientlysecure.Htmltextview.HtmlTextView(Android.App.Application.Context);
                     if (this.Element.FontSize > 0)
                         htmlTextView.TextSize = float.Parse(this.Element.FontSize.ToString());
                     if (this.Element.TextColor != new Color())
@@ -38,8 +39,10 @@ namespace XamCnblogs.Droid.Renderers
                     var textView = (XamCnblogs.UI.Controls.HtmlTextView)Element;
                     var lineSpacing = textView.LineSpacing;
                     var maxLines = textView.MaxLines;
-
-                    htmlTextView.SetLineSpacing(1f, (float)lineSpacing);
+                    if (lineSpacing != 1)
+                    {
+                        htmlTextView.SetLineSpacing(1f, (float)lineSpacing);
+                    }
                     if (maxLines > 1)
                     {
                         htmlTextView.SetMaxLines(maxLines);
@@ -50,7 +53,7 @@ namespace XamCnblogs.Droid.Renderers
                 }
                 catch (System.Exception ex)
                 {
-                    new Logger().SendLog("HtmlTextViewRenderer：" + ex.Message);
+                    DependencyService.Get<ILog>().SendLog("HtmlTextViewRenderer：" + ex.Message);
                 }
             }
         }
@@ -65,7 +68,7 @@ namespace XamCnblogs.Droid.Renderers
         }
         private void UpdateNativeControl()
         {
-            if (htmlTextView != null)
+            if (htmlTextView != null && this.Element.Text != null)
                 htmlTextView.SetHtml(this.Element.Text, new Org.Sufficientlysecure.Htmltextview.HtmlHttpImageGetter(htmlTextView));
         }
     }

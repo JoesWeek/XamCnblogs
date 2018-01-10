@@ -3,7 +3,7 @@ using XamCnblogs.Portable.Interfaces;
 using XamCnblogs.Portable.Helpers;
 using XamCnblogs.Portable.Model;
 using System.Threading.Tasks;
-
+using Xamarin.Forms;
 
 namespace XamCnblogs.Portable.Services
 {
@@ -24,7 +24,18 @@ namespace XamCnblogs.Portable.Services
                     url = string.Format(Apis.ArticleHome, pageIndex, pageSize);
                     break;
             }
-            return await TokenHttpClient.Current.GetAsyn(url);
+            try
+            {
+                return await TokenHttpClient.Current.GetAsyn(url);
+            }
+            catch (System.Exception ex)
+            {
+                var result = new ResponseMessage();
+                result.Success = false;
+                result.Message = ex.Message;
+                DependencyService.Get<ILog>().SendLog("ArticlesService.GetArticlesAsync:" + ex.Message);
+                return result;
+            }
         }
     }
 }
