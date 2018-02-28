@@ -53,7 +53,7 @@ namespace XamCnblogs.Droid.Renderers
                 }
                 catch (System.Exception ex)
                 {
-                    DependencyService.Get<ILog>().SendLog("HtmlTextViewRenderer：" + ex.Message);
+                    DependencyService.Get<ILog>().SaveLog("HtmlTextViewRenderer" , ex);
                 }
             }
         }

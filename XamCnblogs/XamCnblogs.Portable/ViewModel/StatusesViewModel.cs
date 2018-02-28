@@ -39,26 +39,20 @@ namespace XamCnblogs.Portable.ViewModel
                     IsBusy = true;
                     CanLoadMore = false;
                     pageIndex = 1;
-                    await Task.Run(async () =>
+                    if (position > 0 && UserTokenSettings.Current.HasExpiresIn())
                     {
-                        if (position > 0 && UserTokenSettings.Current.HasExpiresIn())
-                        {
-                            //判断有没有登录
-                            LoadStatus = LoadMoreStatus.StausNologin;
-                            if (Statuses != null && Statuses.Count > 0)
-                                Statuses.Clear();
-                        }
-                        else
-                        {
-                            await ExecuteRefreshCommandAsync();
-                        }
-                    });
+                        //判断有没有登录
+                        LoadStatus = LoadMoreStatus.StausNologin;
+                        Statuses.Clear();
+                    }
+                    else
+                    {
+                        await ExecuteRefreshCommandAsync();
+                    }
                 }
                 catch (Exception ex)
                 {
-                    Log.SendLog("StatusesViewModel.RefreshCommand:" + ex.Message);
-                    if (Statuses != null && Statuses.Count > 0)
-                        Statuses.Clear();
+                    Log.SaveLog("StatusesViewModel.RefreshCommand", ex);
                     LoadStatus = LoadMoreStatus.StausFail;
                 }
                 finally
@@ -118,7 +112,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SendLog("StatusesViewModel.GetStatusesAsync:" + result.Message);
+                Log.SaveLog("StatusesViewModel.GetStatusesAsync", new Exception() { Source = result.Message });
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
             }
         }
@@ -132,7 +126,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SendLog("StatusesViewModel.EditStatusesAsync:" + result.Message);
+                Log.SaveLog("StatusesViewModel.EditStatusesAsync", new Exception() { Source = result.Message });
                 Toast.SendToast(result.Message.ToString());
             }
             return result.Success;
@@ -174,7 +168,7 @@ namespace XamCnblogs.Portable.ViewModel
                     }
                     else
                     {
-                        Log.SendLog("StatusesViewModel.DeleteStatusesAsync:" + result.Message);
+                        Log.SaveLog("StatusesViewModel.DeleteStatusesAsync", new Exception() { Source = result.Message });
                         index = Statuses.IndexOf(statuses);
                         Statuses[index].IsDelete = false;
                         Toast.SendToast("删除失败");

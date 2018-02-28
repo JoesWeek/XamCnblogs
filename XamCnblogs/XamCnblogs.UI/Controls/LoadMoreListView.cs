@@ -247,6 +247,6 @@ namespace XamCnblogs.UI.Controls
                     this.Footer = loadingPage;
                     break;
             }
-        }
+        }        
     }
 }

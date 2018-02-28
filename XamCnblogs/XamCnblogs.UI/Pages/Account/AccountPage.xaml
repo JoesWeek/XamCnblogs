@@ -80,6 +80,53 @@
                 </StackLayout>
             </Grid>
         </Frame>
+        <Frame Padding="0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="50" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Image Grid.Row="0" Grid.Column="0" Source="menu_setting.png" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+                <StackLayout   Grid.Row="0" Grid.Column="1"
+                    VerticalOptions="CenterAndExpand">
+                    <Label
+                                   Text="设置"
+                                   Style="{StaticResource PrimaryTextStyle}" VerticalOptions="CenterAndExpand"/>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnSetting"/>
+                    </StackLayout.GestureRecognizers>
+                </StackLayout>
+                <controls:HeaderDivider  Grid.Row="1" Grid.Column="1"/>
+                <Image Grid.Row="2" Grid.Column="0" Source="menu_about.png" VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand"/>
+                <StackLayout Grid.Row="2" Grid.Column="1"
+                    VerticalOptions="CenterAndExpand">
+                    <Label
+                                   Text="关于"
+                                   Style="{StaticResource PrimaryTextStyle}" VerticalOptions="CenterAndExpand"/>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnAbout"/>
+                    </StackLayout.GestureRecognizers>
+                </StackLayout>
+                <controls:HeaderDivider  Grid.Row="3" Grid.Column="1"/>
+                <Image Grid.Row="4" Grid.Column="0" Source="menu_email.png" VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand"/>
+                <StackLayout Grid.Row="4" Grid.Column="1"
+                    VerticalOptions="CenterAndExpand">
+                    <Label
+                                   Text="意见反馈"
+                                   Style="{StaticResource PrimaryTextStyle}" VerticalOptions="CenterAndExpand"/>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnEmail"/>
+                    </StackLayout.GestureRecognizers>
+                </StackLayout>
+            </Grid>
+        </Frame>
         <StackLayout
                     x:Name="LogoutLayout"
                     HorizontalOptions="CenterAndExpand"

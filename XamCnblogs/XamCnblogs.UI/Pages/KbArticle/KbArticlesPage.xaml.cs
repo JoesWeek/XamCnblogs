@@ -21,18 +21,21 @@ namespace XamCnblogs.UI.Pages.KbArticle
             InitializeComponent();
             BindingContext = new KbArticlesViewModel();
 
-            var cancel = new ToolbarItem
-            {
-                Text = "搜索",
-                Command = new Command(async () =>
-                {
-                    await NavigationService.PushAsync(Navigation, new KbArticlesSearchPage());
-                })
-            };
-            ToolbarItems.Add(cancel);
+            Title = "知识库";
+            //Icon = "menu_kbarticles.png";
 
-            if (Device.Android == Device.RuntimePlatform)
-                cancel.Icon = "toolbar_search.png";
+            //var cancel = new ToolbarItem
+            //{
+            //    Text = "搜索",
+            //    Command = new Command(async () =>
+            //    {
+            //        await NavigationService.PushAsync(Navigation, new KbArticlesSearchPage());
+            //    })
+            //};
+            //ToolbarItems.Add(cancel);
+
+            //if (Device.Android == Device.RuntimePlatform)
+            //    cancel.Icon = "toolbar_search.png";
 
             this.KbArticlesListView.ItemSelected += async delegate
             {

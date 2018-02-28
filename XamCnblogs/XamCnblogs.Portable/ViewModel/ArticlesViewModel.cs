@@ -33,14 +33,11 @@ namespace XamCnblogs.Portable.ViewModel
                     IsBusy = true;
                     CanLoadMore = false;
                     pageIndex = 1;
-                    await Task.Run(async () =>
-                    {
-                        await ExecuteRefreshCommandAsync();
-                    });
+                    await ExecuteRefreshCommandAsync();
                 }
                 catch (Exception ex)
                 {
-                    Log.SendLog("ArticlesViewModel.RefreshCommand:" + ex.Message);
+                    Log.SaveLog("ArticlesViewModel.RefreshCommand", ex);
                     LoadStatus = LoadMoreStatus.StausFail;
                 }
                 finally
@@ -59,15 +56,7 @@ namespace XamCnblogs.Portable.ViewModel
         ICommand loadMoreCommand;
         public ICommand LoadMoreCommand => loadMoreCommand ?? (loadMoreCommand = new Command(async () =>
             {
-                try
-                {
-                    await ExecuteRefreshCommandAsync();
-                }
-                catch (Exception ex)
-                {
-                    Log.SendLog("ArticlesViewModel.LoadMoreCommand:" + ex.Message);
-                    LoadStatus = LoadMoreStatus.StausError;
-                }
+                await ExecuteRefreshCommandAsync();
             }));
 
         async Task ExecuteRefreshCommandAsync()
@@ -78,17 +67,10 @@ namespace XamCnblogs.Portable.ViewModel
                 var articles = JsonConvert.DeserializeObject<List<Articles>>(result.Message.ToString());
                 if (articles.Count > 0)
                 {
-                    try
-                    {
-                        if (pageIndex == 1 && Articles.Count > 0)
-                            Articles.Clear();
-                        Articles.AddRange(articles);
-                        pageIndex++;
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.SendLog("ArticlesViewModel.ExecuteRefreshCommandAsync:" + ex.Message);
-                    }
+                    if (pageIndex == 1 && Articles.Count > 0)
+                        Articles.Clear();
+                    Articles.AddRange(articles);
+                    pageIndex++;
                     if (Articles.Count >= pageSize)
                     {
                         LoadStatus = LoadMoreStatus.StausDefault;
@@ -108,7 +90,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SendLog("ArticlesViewModel.GetArticlesAsync:" + result.Message);
+                Log.SaveLog("ArticlesViewModel.GetArticlesAsync", new Exception() { Source = result.Message });
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
             }
         }

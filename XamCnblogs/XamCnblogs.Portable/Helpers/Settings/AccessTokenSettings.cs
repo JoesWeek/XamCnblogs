@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
+using XamCnblogs.Portable.Model;
 
 namespace XamCnblogs.Portable.Helpers
 {
@@ -74,5 +75,13 @@ namespace XamCnblogs.Portable.Helpers
 
         public event PropertyChangedEventHandler PropertyChanged;
         void OnPropertyChanged([CallerMemberName]string name = "") => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        
+        public static void UpdateToken(Token token)
+        {
+            AccessTokenSettings.Current.AccessToken = token.AccessToken;
+            AccessTokenSettings.Current.ExpiresIn = token.ExpiresIn;
+            AccessTokenSettings.Current.TokenType = token.TokenType;
+            AccessTokenSettings.Current.TokenRefreshTime = DateTime.Now;
+        }
     }
 }

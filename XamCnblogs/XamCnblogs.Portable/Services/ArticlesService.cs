@@ -33,7 +33,7 @@ namespace XamCnblogs.Portable.Services
                 var result = new ResponseMessage();
                 result.Success = false;
                 result.Message = ex.Message;
-                DependencyService.Get<ILog>().SendLog("ArticlesService.GetArticlesAsync:" + ex.Message);
+                DependencyService.Get<ILog>().SaveLog("ArticlesService.GetArticlesAsync", ex);
                 return result;
             }
         }

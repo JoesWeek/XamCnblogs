@@ -57,38 +57,33 @@ namespace XamCnblogs.Portable.ViewModel
                     IsBusy = true;
                     NextRefreshTime = DateTime.Now.AddMinutes(15);
 
-                    await Task.Run(async () =>
+                    var result = await StoreManager.AnswersDetailsService.GetCommentAsync(answers.AnswerID);
+                    if (result.Success)
                     {
-                        var result = await StoreManager.AnswersDetailsService.GetCommentAsync(answers.AnswerID);
-                        if (result.Success)
+                        var comments = JsonConvert.DeserializeObject<List<AnswersComment>>(result.Message.ToString());
+                        if (comments.Count > 0)
                         {
-                            var comments = JsonConvert.DeserializeObject<List<AnswersComment>>(result.Message.ToString());
-                            if (comments.Count > 0)
-                            {
-                                if (AnswersComment.Count > 0)
-                                    AnswersComment.Clear();
-                                AnswersComment.AddRange(comments);
-                                LoadStatus = LoadMoreStatus.StausEnd;
-                                CanLoadMore = false;
-                            }
-                            else
-                            {
-                                LoadStatus = LoadMoreStatus.StausNodata;
-                            }
+                            if (AnswersComment.Count > 0)
+                                AnswersComment.Clear();
+                            AnswersComment.AddRange(comments);
+                            LoadStatus = LoadMoreStatus.StausEnd;
+                            CanLoadMore = false;
                         }
                         else
                         {
-                            Log.SendLog("AnswersDetailsViewModel.GetCommentAsync:" + result.Message);
-                            LoadStatus = LoadMoreStatus.StausError;
-                            if (AnswersComment.Count > 0)
-                                AnswersComment.Clear();
+                            LoadStatus = LoadMoreStatus.StausNodata;
                         }
-                        CanLoadMore = false;
-                    });
+                    }
+                    else
+                    {
+                        Log.SaveLog("AnswersDetailsViewModel.GetCommentAsync", new Exception() { Source = result.Message });
+                        LoadStatus = LoadMoreStatus.StausError;
+                    }
+                    CanLoadMore = false;
                 }
                 catch (Exception ex)
                 {
-                    Log.SendLog("AnswersDetailsViewModel.RefreshCommand:" + ex.Message);
+                    Log.SaveLog("AnswersDetailsViewModel.RefreshCommand", ex);
                 }
                 finally
                 {
@@ -105,7 +100,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SendLog("AnswersDetailsViewModel.PostCommentAsync:" + result.Message);
+                Log.SaveLog("AnswersDetailsViewModel.PostCommentAsync" , new Exception() { Source = result.Message });
                 Toast.SendToast(result.Message.ToString());
             }
             return result.Success;
@@ -119,7 +114,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SendLog("AnswersDetailsViewModel.EditCommentAsync:" + result.Message);
+                Log.SaveLog("AnswersDetailsViewModel.EditCommentAsync" , new Exception() { Source = result.Message });
                 Toast.SendToast(result.Message.ToString());
             }
             return result.Success;
@@ -144,7 +139,7 @@ namespace XamCnblogs.Portable.ViewModel
                     }
                     else
                     {
-                        Log.SendLog("AnswersDetailsViewModel.DeleteCommentAsync:" + result.Message);
+                        Log.SaveLog("AnswersDetailsViewModel.DeleteCommentAsync", new Exception() { Source = result.Message });
                         index = AnswersComment.IndexOf(comment);
                         AnswersComment[index].IsDelete = false;
                         Toast.SendToast("删除失败");

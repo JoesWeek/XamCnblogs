@@ -1,7 +1,9 @@
-﻿namespace XamCnblogs.Portable.Interfaces
+﻿using System;
+
+namespace XamCnblogs.Portable.Interfaces
 {
     public interface ILog
     {
-        void SendLog(string message);
+        void SaveLog(string tag, Exception ex);
     }
 }

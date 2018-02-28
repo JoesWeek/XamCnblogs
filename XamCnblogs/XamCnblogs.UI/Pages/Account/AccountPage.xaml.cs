@@ -1,14 +1,10 @@
-﻿using FFImageLoading;
-using FFImageLoading.Transformations;
+﻿using Plugin.Messaging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 using XamCnblogs.Portable.Helpers;
+using XamCnblogs.Portable.Interfaces;
+using XamCnblogs.UI.Pages.About;
 
 namespace XamCnblogs.UI.Pages.Account
 {
@@ -17,24 +13,18 @@ namespace XamCnblogs.UI.Pages.Account
         public AccountPage()
         {
             InitializeComponent();
-            var cancel = new ToolbarItem
-            {
-                Text = "关闭",
-                Command = new Command(async () =>
-                {
-                    await Navigation.PopModalAsync();
-                })
-            };
-            ToolbarItems.Add(cancel);
-
-            if (Device.Android == Device.RuntimePlatform)
-                cancel.Icon = "toolbar_close.png";
+            Title = "我";
+            Icon = "menu_avatar.png";
+        }
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
 
             UpdateUser();
         }
         void UpdateUser()
         {
-            if (UserSettings.Current.Avatar == "")
+            if (UserTokenSettings.Current.HasExpiresIn())
             {
                 this.UserName.IsVisible = false;
                 this.UserSeniority.IsVisible = false;
@@ -95,6 +85,26 @@ namespace XamCnblogs.UI.Pages.Account
             else
             {
                 Navigation.PushAsync(new BookmarksPage());
+            }
+        }
+        void OnSetting(object sender, EventArgs args)
+        {
+            Navigation.PushAsync(new SettingPage());
+        }
+        void OnAbout(object sender, EventArgs args)
+        {
+            Navigation.PushAsync(new AboutPage());
+        }
+        void OnEmail(object sender, EventArgs args)
+        {
+            var emailMessenger = CrossMessaging.Current.EmailMessenger;
+            if (emailMessenger.CanSendEmail)
+            {
+                emailMessenger.SendEmail("476920650@qq.com", "来自 XamCnblogs - "+ DependencyService.Get<IVersionName>().GetVersionName() + " 的客户端反馈", "");
+            }
+            else
+            {
+                DependencyService.Get<IToast>().SendToast("系统中没有安装邮件客户端");
             }
         }
     }

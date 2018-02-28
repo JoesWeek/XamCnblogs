@@ -55,56 +55,51 @@ namespace XamCnblogs.Portable.ViewModel
                     IsBusy = true;
                     pageIndex = 1;
                     NextRefreshTime = DateTime.Now.AddMinutes(15);
-                    await Task.Run(async () =>
+                    var result = await StoreManager.QuestionsDetailsService.GetQuestionsAsync(questions.Qid);
+                    if (result.Success)
                     {
-                        var result = await StoreManager.QuestionsDetailsService.GetQuestionsAsync(questions.Qid);
-                        if (result.Success)
-                        {
-                            questions = JsonConvert.DeserializeObject<Questions>(result.Message.ToString());
+                        questions = JsonConvert.DeserializeObject<Questions>(result.Message.ToString());
 
-                            QuestionsDetails.Title = questions.Title;
-                            QuestionsDetails.UserName = questions.QuestionUserInfo.UserName;
-                            QuestionsDetails.UserDisplay = HtmlTemplate.GetScoreName(questions.QuestionUserInfo.QScore) + " · " + questions.QuestionUserInfo.QScore + "园豆" + " · 提问于 " + questions.DateDisplay;
-                            QuestionsDetails.Content = questions.ContentDisplay;
-                            QuestionsDetails.IconDisplay = questions.QuestionUserInfo.IconDisplay;
-                            QuestionsDetails.Award = questions.Award;
-                            QuestionsDetails.TagsDisplay = questions.TagsDisplay;
-                            QuestionsDetails.DealFlag = questions.DealFlag;
-                            QuestionsDetails.DiggDisplay = questions.DiggCount > 0 ? questions.DiggCount.ToString() : "推荐";
-                            QuestionsDetails.CommentDisplay = questions.AnswerCount > 0 ? questions.AnswerCount.ToString() : "回答";
-                            QuestionsDetails.ViewDisplay = questions.ViewCount > 0 ? questions.ViewCount.ToString() : "阅读";
-                            switch (questions.DealFlag)
-                            {
-                                case 1:
-                                    QuestionsDetails.DealFlagDisplay = "已解决";
-                                    break;
-                                case -1:
-                                    QuestionsDetails.DealFlagDisplay = "已关闭";
-                                    break;
-                                default:
-                                    QuestionsDetails.DealFlagDisplay = "待解决";
-                                    break;
-                            }
-                            QuestionsDetails.HasError = false;
-                            QuestionsDetails.HasContent = true;
-
-                            await ExecuteCommentCommandAsync();
-                        }
-                        else
+                        QuestionsDetails.Title = questions.Title;
+                        QuestionsDetails.UserName = questions.QuestionUserInfo.UserName;
+                        QuestionsDetails.UserDisplay = HtmlTemplate.GetScoreName(questions.QuestionUserInfo.QScore) + " · " + questions.QuestionUserInfo.QScore + "园豆" + " · 提问于 " + questions.DateDisplay;
+                        QuestionsDetails.Content = questions.ContentDisplay;
+                        QuestionsDetails.IconDisplay = questions.QuestionUserInfo.IconDisplay;
+                        QuestionsDetails.Award = questions.Award;
+                        QuestionsDetails.TagsDisplay = questions.TagsDisplay;
+                        QuestionsDetails.DealFlag = questions.DealFlag;
+                        QuestionsDetails.DiggDisplay = questions.DiggCount > 0 ? questions.DiggCount.ToString() : "推荐";
+                        QuestionsDetails.CommentDisplay = questions.AnswerCount > 0 ? questions.AnswerCount.ToString() : "回答";
+                        QuestionsDetails.ViewDisplay = questions.ViewCount > 0 ? questions.ViewCount.ToString() : "阅读";
+                        switch (questions.DealFlag)
                         {
-                            Log.SendLog("QuestionsDetailsViewModel.GetQuestionsAsync:" + result.Message);
-                            QuestionsDetails.HasError = true;
-                            QuestionsDetails.HasContent = false;
-                            LoadStatus = LoadMoreStatus.StausDefault;
-                            CanLoadMore = false;
-                            if (QuestionAnswers.Count > 0)
-                                QuestionAnswers.Clear();
+                            case 1:
+                                QuestionsDetails.DealFlagDisplay = "已解决";
+                                break;
+                            case -1:
+                                QuestionsDetails.DealFlagDisplay = "已关闭";
+                                break;
+                            default:
+                                QuestionsDetails.DealFlagDisplay = "待解决";
+                                break;
                         }
-                    });
+                        QuestionsDetails.HasError = false;
+                        QuestionsDetails.HasContent = true;
+
+                        await ExecuteCommentCommandAsync();
+                    }
+                    else
+                    {
+                        Log.SaveLog("QuestionsDetailsViewModel.GetQuestionsAsync", new Exception() { Source = result.Message });
+                        QuestionsDetails.HasError = true;
+                        QuestionsDetails.HasContent = false;
+                        LoadStatus = LoadMoreStatus.StausDefault;
+                        CanLoadMore = false;
+                    }
                 }
                 catch (Exception ex)
                 {
-                    Log.SendLog("QuestionsDetailsViewModel.RefreshCommand:" + ex.Message);
+                    Log.SaveLog("QuestionsDetailsViewModel.RefreshCommand", ex);
                 }
                 finally
                 {
@@ -143,7 +138,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SendLog("QuestionsDetailsViewModel.GetAnswersAsync:" + result.Message);
+                Log.SaveLog("QuestionsDetailsViewModel.GetAnswersAsync", new Exception() { Source = result.Message });
                 LoadStatus = LoadMoreStatus.StausError;
             }
         }
@@ -157,7 +152,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SendLog("QuestionsDetailsViewModel.PostAnswerAsync:" + result.Message);
+                Log.SaveLog("QuestionsDetailsViewModel.PostAnswerAsync", new Exception() { Source = result.Message });
                 Toast.SendToast(result.Message.ToString());
             }
             return result.Success;
@@ -171,7 +166,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SendLog("QuestionsDetailsViewModel.EditAnswerAsync:" + result.Message);
+                Log.SaveLog("QuestionsDetailsViewModel.EditAnswerAsync", new Exception() { Source = result.Message });
                 Toast.SendToast(result.Message.ToString());
             }
             return result.Success;
@@ -196,7 +191,7 @@ namespace XamCnblogs.Portable.ViewModel
                     }
                     else
                     {
-                        Log.SendLog("QuestionsDetailsViewModel.DeleteAnswerAsync:" + result.Message);
+                        Log.SaveLog("QuestionsDetailsViewModel.DeleteAnswerAsync", new Exception() { Source = result.Message });
                         index = QuestionAnswers.IndexOf(comment);
                         QuestionAnswers[index].IsDelete = false;
                         Toast.SendToast("删除失败");

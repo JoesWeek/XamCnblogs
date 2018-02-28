@@ -55,39 +55,34 @@ namespace XamCnblogs.Portable.ViewModel
                     IsBusy = true;
                     pageIndex = 1;
                     NextRefreshTime = DateTime.Now.AddMinutes(15);
-                    await Task.Run(async () =>
+                    var result = await StoreManager.NewsDetailsService.GetNewsAsync(news.Id);
+                    if (result.Success)
                     {
-                        var result = await StoreManager.NewsDetailsService.GetNewsAsync(news.Id);
-                        if (result.Success)
-                        {
-                            news.Body = JsonConvert.DeserializeObject<string>(result.Message.ToString());
+                        news.Body = JsonConvert.DeserializeObject<string>(result.Message.ToString());
 
-                            NewsDetails.Title = news.Title;
-                            NewsDetails.Content = news.BodyDisplay;
-                            NewsDetails.DiggDisplay = news.DiggCount > 0 ? news.DiggCount.ToString() : "推荐";
-                            NewsDetails.CommentDisplay = news.CommentCount > 0 ? news.CommentCount.ToString() : "评论";
-                            NewsDetails.ViewDisplay = news.ViewCount > 0 ? news.ViewCount.ToString() : "阅读";
-                            NewsDetails.DateDisplay = "发布于 " + news.DateDisplay;
-                            NewsDetails.HasError = false;
-                            NewsDetails.HasContent = true;
+                        NewsDetails.Title = news.Title;
+                        NewsDetails.Content = news.BodyDisplay;
+                        NewsDetails.DiggDisplay = news.DiggCount > 0 ? news.DiggCount.ToString() : "推荐";
+                        NewsDetails.CommentDisplay = news.CommentCount > 0 ? news.CommentCount.ToString() : "评论";
+                        NewsDetails.ViewDisplay = news.ViewCount > 0 ? news.ViewCount.ToString() : "阅读";
+                        NewsDetails.DateDisplay = "发布于 " + news.DateDisplay;
+                        NewsDetails.HasError = false;
+                        NewsDetails.HasContent = true;
 
-                            await ExecuteCommentCommandAsync();
-                        }
-                        else
-                        {
-                            Log.SendLog("NewsDetailsViewModel.GetNewsAsync:" + result.Message);
-                            NewsDetails.HasError = true;
-                            NewsDetails.HasContent = false;
-                            LoadStatus = LoadMoreStatus.StausDefault;
-                            CanLoadMore = false;
-                            if (NewsComments.Count > 0)
-                                NewsComments.Clear();
-                        }
-                    });
+                        await ExecuteCommentCommandAsync();
+                    }
+                    else
+                    {
+                        Log.SaveLog("NewsDetailsViewModel.GetNewsAsync" , new Exception() { Source = result.Message });
+                        NewsDetails.HasError = true;
+                        NewsDetails.HasContent = false;
+                        LoadStatus = LoadMoreStatus.StausDefault;
+                        CanLoadMore = false;
+                    }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    Log.SendLog("NewsDetailsViewModel.RefreshCommand:" + ex.Message);
+                    Log.SaveLog("NewsDetailsViewModel.RefreshCommand" , ex);
                 }
                 finally
                 {
@@ -143,7 +138,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SendLog("NewsDetailsViewModel.GetCommentAsync:" + result.Message);
+                Log.SaveLog("NewsDetailsViewModel.GetCommentAsync", new Exception() { Source = result.Message });
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
             }
         }
@@ -156,7 +151,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SendLog("NewsDetailsViewModel.PostCommentAsync:" + result.Message);
+                Log.SaveLog("NewsDetailsViewModel.PostCommentAsync", new Exception() { Source = result.Message });
                 Toast.SendToast(result.Message.ToString());
             }
             return result.Success;
@@ -197,7 +192,7 @@ namespace XamCnblogs.Portable.ViewModel
                     }
                     else
                     {
-                        Log.SendLog("NewsDetailsViewModel.DeleteCommentAsync:" + result.Message);
+                        Log.SaveLog("NewsDetailsViewModel.DeleteCommentAsync",  new Exception() { Source = result.Message });
                         index = NewsComments.IndexOf(comment);
                         NewsComments[index].IsDelete = false;
                         Toast.SendToast("删除失败");

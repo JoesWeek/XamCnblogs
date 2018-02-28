@@ -37,13 +37,13 @@ namespace XamCnblogs.UI.Pages.Account
 
             this.BookmarksListView.ItemSelected += async delegate
             {
-                var articles = BookmarksListView.SelectedItem as Bookmarks;
-                if (articles == null)
+                var bookmarks = BookmarksListView.SelectedItem as Bookmarks;
+                if (bookmarks == null)
                     return;
 
-                //var articlesDetails = new ArticlesDetailsPage(articles);
+                var bookmarksDetailsPage = new BookmarksDetailsPage(bookmarks);
 
-                //await NavigationService.PushAsync(Navigation, articlesDetails);
+                await NavigationService.PushAsync(Navigation, bookmarksDetailsPage);
                 this.BookmarksListView.SelectedItem = null;
             };
         }

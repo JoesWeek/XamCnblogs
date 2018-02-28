@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamCnblogs.Android", "XamCnblogs\XamCnblogs.Android\XamCnblogs.Android.csproj", "{66BFAA73-574E-4C1B-959B-57194A80E503}"
 EndProject

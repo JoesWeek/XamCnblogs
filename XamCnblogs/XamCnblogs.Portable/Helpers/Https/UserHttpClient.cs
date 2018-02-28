@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ModernHttpClient;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -14,19 +15,20 @@ namespace XamCnblogs.Portable.Helpers
 {
     public class UserHttpClient : BaseHttpClient
     {
+        private static readonly HttpClient client;
+
+        static UserHttpClient()
+        {
+            client = new HttpClient(new NativeMessageHandler() { Timeout = new TimeSpan(0, 0, 60), EnableUntrustedCertificates = true, DisableCaching = true })
+            {
+                BaseAddress = new Uri(Apis.Host)
+            };
+            client.DefaultRequestHeaders.Connection.Add("keep-alive");
+        }
         static UserHttpClient baseHttpClient;
         public static UserHttpClient Current
         {
             get { return baseHttpClient ?? (baseHttpClient = new UserHttpClient()); }
-        }
-        readonly HttpClient client;
-        public UserHttpClient()
-        {
-            client = new HttpClient
-            {
-                BaseAddress = new Uri(Apis.Host)
-            };
-            client.Timeout = TimeSpan.FromSeconds(10);
         }
         public async Task<ResponseMessage> GetAsyn(string url)
         {
@@ -61,13 +63,22 @@ namespace XamCnblogs.Portable.Helpers
         }
         public async Task<ResponseMessage> RefreshTokenAsync()
         {
-            var parameters = new Dictionary<string, string>();
-            parameters.Add("grant_type", "refresh_token");
-            parameters.Add("refresh_token", UserTokenSettings.Current.UserRefreshToken);
-            var basic = Convert.ToBase64String(Encoding.UTF8.GetBytes(ClientId + ":" + ClientSercret));
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", basic);
-            var response = await client.PostAsync(Apis.Token, new FormUrlEncodedContent(parameters));
-            return await GetResultMessage(response);
+            try
+            {
+                var parameters = new Dictionary<string, string>();
+                parameters.Add("grant_type", "refresh_token");
+                parameters.Add("refresh_token", UserTokenSettings.Current.UserRefreshToken);
+                var basic = Convert.ToBase64String(Encoding.UTF8.GetBytes(ClientId + ":" + ClientSercret));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", basic);
+                var response = await client.PostAsync(Apis.Token, new FormUrlEncodedContent(parameters));
+                return await GetResultMessage(response);
+            }
+            catch (Exception ex)
+            {
+                DependencyService.Get<ILog>().SaveLog("UserHttpClient:RefreshTokenAsync", ex);
+                new ResponseMessage() { Success = false, Message = ex.Message };
+                throw;
+            }
         }
         private async Task<ResponseMessage> GetResultMessage(HttpResponseMessage response)
         {
@@ -82,7 +93,7 @@ namespace XamCnblogs.Portable.Helpers
                     var message = await response.Content.ReadAsStringAsync();
                     try
                     {
-                        DependencyService.Get<ILog>().SendLog("UserHttpClient:" + message);
+                        DependencyService.Get<ILog>().SaveLog("UserHttpClient", new Exception() { Source = message });
                         message = JsonConvert.DeserializeObject<Messages>(await response.Content.ReadAsStringAsync()).Message;
                     }
                     catch (Exception e)

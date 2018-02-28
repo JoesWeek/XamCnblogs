@@ -16,6 +16,7 @@ namespace XamCnblogs.Droid
         Exported = true,
         Icon = "@drawable/ic_launcher",
         LaunchMode = LaunchMode.SingleTask,
+        Theme = "@style/MainTheme",
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {

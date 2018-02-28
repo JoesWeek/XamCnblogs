@@ -48,37 +48,34 @@ namespace XamCnblogs.Portable.ViewModel
                 {
                     NextRefreshTime = DateTime.Now.AddMinutes(15);
                     IsBusy = true;
-                    await Task.Run(async () =>
+                    var result = await StoreManager.StatusesCommentsService.GetCommentsAsync(statuses.Id);
+                    if (result.Success)
                     {
-                        var result = await StoreManager.StatusesCommentsService.GetCommentsAsync(statuses.Id);
-                        if (result.Success)
+                        var comments = JsonConvert.DeserializeObject<List<StatusesComments>>(result.Message.ToString());
+                        if (comments.Count > 0)
                         {
-                            var comments = JsonConvert.DeserializeObject<List<StatusesComments>>(result.Message.ToString());
-                            if (comments.Count > 0)
-                            {
-                                if (StatusesComments.Count > 0)
-                                    StatusesComments.Clear();
-                                StatusesComments.AddRange(comments);
-                                LoadStatus = LoadMoreStatus.StausEnd;
-                            }
-                            else
-                            {
-                                LoadStatus = LoadMoreStatus.StausNodata;
-                            }
+                            if (StatusesComments.Count > 0)
+                                StatusesComments.Clear();
+                            StatusesComments.AddRange(comments);
+                            LoadStatus = LoadMoreStatus.StausEnd;
                         }
                         else
                         {
-                            Log.SendLog("StatusesDetailsViewModel.GetCommentsAsync:" + result.Message);
-                            LoadStatus = LoadMoreStatus.StausError;
-                            if (StatusesComments.Count > 0)
-                                StatusesComments.Clear();
+                            LoadStatus = LoadMoreStatus.StausNodata;
                         }
-                        CanLoadMore = false;
-                    });
+                    }
+                    else
+                    {
+                        Log.SaveLog("StatusesDetailsViewModel.GetCommentsAsync", new Exception() { Source = result.Message });
+                        LoadStatus = LoadMoreStatus.StausError;
+                        if (StatusesComments.Count > 0)
+                            StatusesComments.Clear();
+                    }
+                    CanLoadMore = false;
                 }
                 catch (Exception ex)
                 {
-                    Log.SendLog("StatusesDetailsViewModel.RefreshCommand:" + ex.Message);
+                    Log.SaveLog("StatusesDetailsViewModel.RefreshCommand", ex);
                 }
                 finally
                 {
@@ -94,7 +91,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SendLog("StatusesDetailsViewModel.PostCommentAsync:" + result.Message);
+                Log.SaveLog("StatusesDetailsViewModel.PostCommentAsync", new Exception() { Source = result.Message });
                 Toast.SendToast(result.Message.ToString());
             }
             return result.Success;
@@ -119,7 +116,7 @@ namespace XamCnblogs.Portable.ViewModel
                     }
                     else
                     {
-                        Log.SendLog("StatusesDetailsViewModel.DeleteCommentAsync:" + result.Message);
+                        Log.SaveLog("StatusesDetailsViewModel.DeleteCommentAsync", new Exception() { Source = result.Message });
                         index = StatusesComments.IndexOf(comment);
                         StatusesComments[index].IsDelete = false;
                         Toast.SendToast("删除失败");

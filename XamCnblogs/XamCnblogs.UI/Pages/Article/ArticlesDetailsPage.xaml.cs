@@ -28,7 +28,7 @@ namespace XamCnblogs.UI.Pages.Article
             this.articles = articles;
             InitializeComponent();
             BindingContext = new ArticlesDetailsViewModel(articles);
-            
+
             var cancel = new ToolbarItem
             {
                 Text = "分享",
@@ -41,6 +41,8 @@ namespace XamCnblogs.UI.Pages.Article
 
             if (Device.Android == Device.RuntimePlatform)
                 cancel.Icon = "toolbar_share.png";
+
+            var v = ArticlesDetailsView.HeaderTemplate.Values;
         }
 
 

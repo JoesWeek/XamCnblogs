@@ -31,14 +31,11 @@ namespace XamCnblogs.Portable.ViewModel
                     IsBusy = true;
                     CanLoadMore = false;
                     pageIndex = 1;
-                    await Task.Run(async () =>
-                    {
-                        await ExecuteRefreshCommandAsync();
-                    });
+                    await ExecuteRefreshCommandAsync();
                 }
                 catch (Exception ex)
                 {
-                    Log.SendLog("BookmarksViewModel.RefreshCommand:" + ex.Message);
+                    Log.SaveLog("BookmarksViewModel.RefreshCommand", ex);
                     LoadStatus = LoadMoreStatus.StausFail;
                 }
                 finally
@@ -98,7 +95,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SendLog("BookmarksViewModel.GetBookmarksAsync:" + result.Message);
+                Log.SaveLog("BookmarksViewModel.GetBookmarksAsync", new Exception() { Source = result.Message });
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausEnd : LoadMoreStatus.StausNodata;
             }
         }
@@ -112,7 +109,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SendLog("BookmarksViewModel.EditBookmarkAsync:" + result.Message);
+                Log.SaveLog("BookmarksViewModel.EditBookmarkAsync", new Exception() { Source = result.Message });
                 if (result.Message.ToString() == "Conflict")
                 {
                     Toast.SendToast("收藏的网址已经存在了");
@@ -161,7 +158,7 @@ namespace XamCnblogs.Portable.ViewModel
                     }
                     else
                     {
-                        Log.SendLog("BookmarksViewModel.DeleteBookmarkAsync:" + result.Message);
+                        Log.SaveLog("BookmarksViewModel.DeleteBookmarkAsync", new Exception() { Source = result.Message });
                         index = Bookmarks.IndexOf(bookmark);
                         Bookmarks[index].IsDelete = false;
                         Toast.SendToast("删除失败");

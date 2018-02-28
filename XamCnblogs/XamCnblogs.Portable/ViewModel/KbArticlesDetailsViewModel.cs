@@ -44,33 +44,30 @@ namespace XamCnblogs.Portable.ViewModel
                 {
                     IsBusy = true;
                     NextRefreshTime = DateTime.Now.AddMinutes(15);
-                    await Task.Run(async () =>
+                    var result = await StoreManager.KbArticlesDetailsService.GetKbArticlesAsync(articles.Id);
+                    if (result.Success)
                     {
-                        var result = await StoreManager.KbArticlesDetailsService.GetKbArticlesAsync(articles.Id);
-                        if (result.Success)
-                        {
-                            articles.Body = JsonConvert.DeserializeObject<string>(result.Message.ToString());
+                        articles.Body = JsonConvert.DeserializeObject<string>(result.Message.ToString());
 
-                            KbArticlesDetails.Title = articles.Title;
-                            KbArticlesDetails.Content = articles.BodyDisplay;
-                            KbArticlesDetails.DiggDisplay = articles.DiggCount > 0 ? articles.DiggCount.ToString() : "推荐";
-                            KbArticlesDetails.ViewDisplay = articles.ViewCount > 0 ? articles.ViewCount.ToString() : "阅读";
-                            KbArticlesDetails.DateDisplay = "发布与 " + articles.DateDisplay;
+                        KbArticlesDetails.Title = articles.Title;
+                        KbArticlesDetails.Content = articles.BodyDisplay;
+                        KbArticlesDetails.DiggDisplay = articles.DiggCount > 0 ? articles.DiggCount.ToString() : "推荐";
+                        KbArticlesDetails.ViewDisplay = articles.ViewCount > 0 ? articles.ViewCount.ToString() : "阅读";
+                        KbArticlesDetails.DateDisplay = "发布与 " + articles.DateDisplay;
 
-                            KbArticlesDetails.HasError = false;
-                            KbArticlesDetails.HasContent = true;
-                        }
-                        else
-                        {
-                            Log.SendLog("KbArticlesDetailsViewModel.GetKbArticlesAsync:" + result.Message);
-                            KbArticlesDetails.HasError = true;
-                            KbArticlesDetails.HasContent = false;
-                        }
-                    });
+                        KbArticlesDetails.HasError = false;
+                        KbArticlesDetails.HasContent = true;
+                    }
+                    else
+                    {
+                        Log.SaveLog("KbArticlesDetailsViewModel.GetKbArticlesAsync", new Exception() { Source = result.Message });
+                        KbArticlesDetails.HasError = true;
+                        KbArticlesDetails.HasContent = false;
+                    }
                 }
                 catch (Exception ex)
                 {
-                    Log.SendLog("KbArticlesDetailsViewModel.RefreshCommand:" + ex.Message);
+                    Log.SaveLog("KbArticlesDetailsViewModel.RefreshCommand", ex);
                 }
                 finally
                 {

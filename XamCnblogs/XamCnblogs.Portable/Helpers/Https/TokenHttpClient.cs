@@ -21,19 +21,20 @@ namespace XamCnblogs.Portable.Helpers
     }
     public class TokenHttpClient : BaseHttpClient
     {
+        private static readonly HttpClient client;
+
+        static TokenHttpClient()
+        {
+            client = new HttpClient(new NativeMessageHandler() { Timeout = new TimeSpan(0, 0, 60), EnableUntrustedCertificates = true, DisableCaching = true })
+            {
+                BaseAddress = new Uri(Apis.Host)
+            };
+            client.DefaultRequestHeaders.Connection.Add("keep-alive");
+        }
         static TokenHttpClient baseHttpClient;
         public static TokenHttpClient Current
         {
             get { return baseHttpClient ?? (baseHttpClient = new TokenHttpClient()); }
-        }
-        readonly HttpClient client;
-        public TokenHttpClient()
-        {
-            client = new HttpClient(new NativeMessageHandler())
-            {
-                BaseAddress = new Uri(Apis.Host)
-            };
-            client.Timeout = TimeSpan.FromSeconds(10);
         }
         public async Task<ResponseMessage> GetAsyn(string url)
         {
@@ -78,7 +79,7 @@ namespace XamCnblogs.Portable.Helpers
                     var result = await TokenAsync();
                     if (result.Success)
                     {
-                        UpdateToken(JsonConvert.DeserializeObject<Token>(result.Message.ToString()));
+                        AccessTokenSettings.UpdateToken(JsonConvert.DeserializeObject<Token>(result.Message.ToString()));
                     }
                     else
                     {
@@ -90,7 +91,7 @@ namespace XamCnblogs.Portable.Helpers
                 {
                     message.Success = false;
                     message.Message = ex.Message;
-                    DependencyService.Get<ILog>().SendLog("CheckTokenAsync:" + ex.Message);
+                    DependencyService.Get<ILog>().SaveLog("CheckTokenAsync", ex);
                     return message;
                 }
             }
@@ -108,7 +109,7 @@ namespace XamCnblogs.Portable.Helpers
                 parameters.Add("grant_type", "client_credentials");
                 var basic = Convert.ToBase64String(Encoding.UTF8.GetBytes(ClientId + ":" + ClientSercret));
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", basic);
-                var response = await client.PostAsync(Apis.Token, new FormUrlEncodedContent(parameters));
+                var response = client.PostAsync(Apis.Token, new FormUrlEncodedContent(parameters)).Result;
                 return await GetResultMessage(response);
             }
             catch (Exception ex)
@@ -116,9 +117,8 @@ namespace XamCnblogs.Portable.Helpers
                 var result = new ResponseMessage();
                 result.Success = false;
                 result.Message = ex.Message;
-                DependencyService.Get<ILog>().SendLog("TokenAsync:" + ex.Message);
+                DependencyService.Get<ILog>().SaveLog("TokenAsync", ex);
                 return result;
-                throw;
             }
         }
         private async Task<ResponseMessage> GetResultMessage(HttpResponseMessage response)
@@ -132,7 +132,7 @@ namespace XamCnblogs.Portable.Helpers
                     var message = await response.Content.ReadAsStringAsync();
                     try
                     {
-                        DependencyService.Get<ILog>().SendLog("TokenHttpClient:" + message);
+                        DependencyService.Get<ILog>().SaveLog("TokenHttpClient", new Exception() { Source = message });
                         message = JsonConvert.DeserializeObject<Messages>(await response.Content.ReadAsStringAsync()).Message;
                     }
                     catch (Exception e)
@@ -141,13 +141,6 @@ namespace XamCnblogs.Portable.Helpers
                     }
                     return new ResponseMessage() { Success = false, Code = response.StatusCode, Message = message };
             }
-        }
-        private void UpdateToken(Token token)
-        {
-            AccessTokenSettings.Current.AccessToken = token.AccessToken;
-            AccessTokenSettings.Current.ExpiresIn = token.ExpiresIn;
-            AccessTokenSettings.Current.TokenType = token.TokenType;
-            AccessTokenSettings.Current.TokenRefreshTime = DateTime.Now;
         }
     }
 }

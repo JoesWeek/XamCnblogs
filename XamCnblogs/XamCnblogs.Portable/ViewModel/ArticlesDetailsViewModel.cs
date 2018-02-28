@@ -57,41 +57,38 @@ namespace XamCnblogs.Portable.ViewModel
                     IsBusy = true;
                     pageIndex = 1;
                     NextRefreshTime = DateTime.Now.AddMinutes(15);
-                    await Task.Run(async () =>
+                    var result = await StoreManager.ArticlesDetailsService.GetArticlesAsync(articles.Id);
+                    if (result.Success)
                     {
-                        var result = await StoreManager.ArticlesDetailsService.GetArticlesAsync(articles.Id);
-                        if (result.Success)
-                        {
-                            articles.Body = JsonConvert.DeserializeObject<string>(result.Message.ToString());
+                        articles.Body = JsonConvert.DeserializeObject<string>(result.Message.ToString());
 
-                            ArticlesDetails.Title = articles.Title;
-                            ArticlesDetails.Author = articles.Author;
-                            ArticlesDetails.Avatar = articles.Avatar;
-                            ArticlesDetails.Content = articles.BodyDisplay;
-                            ArticlesDetails.DiggDisplay = articles.DiggCount > 0 ? articles.DiggCount.ToString() : "推荐";
-                            ArticlesDetails.CommentDisplay = articles.CommentCount > 0 ? articles.CommentCount.ToString() : "评论";
-                            ArticlesDetails.ViewDisplay = articles.ViewCount > 0 ? articles.ViewCount.ToString() : "阅读";
-                            ArticlesDetails.DateDisplay = "发布于 " + articles.DateDisplay;
-                            ArticlesDetails.HasError = false;
-                            ArticlesDetails.HasContent = true;
+                        ArticlesDetails.Title = articles.Title;
+                        ArticlesDetails.Author = articles.Author;
+                        ArticlesDetails.Avatar = articles.Avatar;
+                        ArticlesDetails.Content = articles.BodyDisplay;
+                        ArticlesDetails.DiggDisplay = articles.DiggCount > 0 ? articles.DiggCount.ToString() : "推荐";
+                        ArticlesDetails.CommentDisplay = articles.CommentCount > 0 ? articles.CommentCount.ToString() : "评论";
+                        ArticlesDetails.ViewDisplay = articles.ViewCount > 0 ? articles.ViewCount.ToString() : "阅读";
+                        ArticlesDetails.DateDisplay = "发布于 " + articles.DateDisplay;
+                        ArticlesDetails.HasError = false;
+                        ArticlesDetails.HasContent = true;
 
-                            await ExecuteCommentCommandAsync();
-                        }
-                        else
-                        {
-                            Log.SendLog("ArticlesDetailsViewModel.GetArticlesAsync:" + result.Message);
-                            ArticlesDetails.HasError = true;
-                            ArticlesDetails.HasContent = false;
-                            LoadStatus = LoadMoreStatus.StausDefault;
-                            CanLoadMore = false;
-                            if (ArticlesComments.Count > 0)
-                                ArticlesComments.Clear();
-                        }
-                    });
+                        await ExecuteCommentCommandAsync();
+                    }
+                    else
+                    {
+                        Log.SaveLog("ArticlesDetailsViewModel.GetArticlesAsync", new Exception() { Source = result.Message });
+                        ArticlesDetails.HasError = true;
+                        ArticlesDetails.HasContent = false;
+                        LoadStatus = LoadMoreStatus.StausDefault;
+                        CanLoadMore = false;
+                        if (ArticlesComments.Count > 0)
+                            ArticlesComments.Clear();
+                    }
                 }
                 catch (Exception ex)
                 {
-                    Log.SendLog("ArticlesDetailsViewModel.RefreshCommand:" + ex.Message);
+                    Log.SaveLog("ArticlesDetailsViewModel.RefreshCommand", ex);
                 }
                 finally
                 {
@@ -113,7 +110,7 @@ namespace XamCnblogs.Portable.ViewModel
                 }
                 catch (Exception ex)
                 {
-                    Log.SendLog("ArticlesDetailsViewModel.LoadMoreCommand:" + ex.Message);
+                    Log.SaveLog("ArticlesDetailsViewModel.LoadMoreCommand" , ex);
                     LoadStatus = LoadMoreStatus.StausError;
                 }
             }));
@@ -148,7 +145,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SendLog("ArticlesDetailsViewModel.GetCommentAsync:" + result.Message);
+                Log.SaveLog("ArticlesDetailsViewModel.GetCommentAsync", new Exception() { Source = result.Message });
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
             }
         }
@@ -162,7 +159,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SendLog("ArticlesDetailsViewModel.PostCommentAsync:" + result.Message);
+                Log.SaveLog("ArticlesDetailsViewModel.PostCommentAsync", new Exception() { Source = result.Message });
                 Toast.SendToast(result.Message.ToString());
             }
             return result.Success;

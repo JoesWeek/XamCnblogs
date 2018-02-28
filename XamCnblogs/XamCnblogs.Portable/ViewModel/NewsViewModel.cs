@@ -37,9 +37,7 @@ namespace XamCnblogs.Portable.ViewModel
                 }
                 catch (Exception ex)
                 {
-                    Log.SendLog("NewsViewModel.RefreshCommand:" + ex.Message);
-                    if (News.Count > 0)
-                        News.Clear();
+                    Log.SaveLog("NewsViewModel.RefreshCommand", ex);
                     LoadStatus = LoadMoreStatus.StausFail;
                 }
                 finally
@@ -93,7 +91,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SendLog("NewsViewModel.GetNewsAsync:" + result.Message);
+                Log.SaveLog("NewsViewModel.GetNewsAsync", new Exception() { Source = result.Message });
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
             }
         }

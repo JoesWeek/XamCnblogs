@@ -81,7 +81,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             catch (Exception ex)
             {
-                Log.SendLog("LaunchBrowserCommand:" + ex.Message);
+                Log.SaveLog("LaunchBrowserCommand", ex);
             }
         }
 

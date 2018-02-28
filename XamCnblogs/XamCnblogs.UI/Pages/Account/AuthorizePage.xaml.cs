@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Rg.Plugins.Popup.Extensions;
 using System;
-
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using XamCnblogs.Portable.Helpers;
 using XamCnblogs.Portable.Model;
@@ -10,38 +10,41 @@ namespace XamCnblogs.UI.Pages.Account
 {
     public partial class AuthorizePage : ContentPage
     {
+        private bool isCompleted;
         ActivityIndicatorPopupPage popupPage;
         public AuthorizePage()
         {
             InitializeComponent();
             Title = "登录";
-            var cancel = new ToolbarItem
-            {
-                Text = "关闭",
-                Command = new Command(async () =>
-                {
-                    await Navigation.PopModalAsync();
-                })
-            };
-            ToolbarItems.Add(cancel);
-
-            if (Device.Android == Device.RuntimePlatform)
-                cancel.Icon = "toolbar_close.png";
-
+            
             FormsWebView.OnNavigationCompleted += OnNavigationCompleted;
+            FormsWebView.OnNavigationError += OnNavigationError;
 
             FormsWebView.Source = string.Format(Apis.Authorize, TokenHttpClient.ClientId);
 
             popupPage = new ActivityIndicatorPopupPage();
-
-            Navigation.PushPopupAsync(popupPage);
         }
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            if (!isCompleted)
+            {
+                Navigation.PushPopupAsync(popupPage);
+            }
+        }
+        
+        private async void OnNavigationError(object sender, int e)
+        {
+            await Navigation.RemovePopupPageAsync(popupPage);
+        }
+
         private async void OnNavigationCompleted(object sender, string url)
         {
+            isCompleted = false;
             if (url.IndexOf("https://passport.cnblogs.com/user/signin?returnUrl=") > -1)
             {
+                isCompleted = true;
                 await Navigation.RemovePopupPageAsync(popupPage);
-
             }
             if (url.IndexOf("https://oauth.cnblogs.com/auth/callback#code=") > -1)
             {
@@ -69,7 +72,10 @@ namespace XamCnblogs.UI.Pages.Account
                             {
                                 var user = JsonConvert.DeserializeObject<User>(userResult.Message.ToString());
                                 UserSettings.Current.UpdateUser(user);
-                                await Navigation.PopModalAsync();
+
+                                isCompleted = true;
+                                await Navigation.RemovePopupPageAsync(popupPage);
+                                await Navigation.PopAsync();
                             }
                             else
                             {
@@ -92,11 +98,13 @@ namespace XamCnblogs.UI.Pages.Account
                 }
             }
         }
-        
+
+
         protected async override void OnDisappearing()
         {
             base.OnDisappearing();
 
+            isCompleted = true;
             await Navigation.RemovePopupPageAsync(popupPage);
         }
     }

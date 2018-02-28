@@ -57,7 +57,7 @@ namespace XamCnblogs.Portable.Model
                     {
                         t += Tags[i] + ",";
                     }
-                    tag = t.TrimEnd(',');
+                    tag = tag == null ? tag : t.TrimEnd(',');
                 }
                 return tag;
             }

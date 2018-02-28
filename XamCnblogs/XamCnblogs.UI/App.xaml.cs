@@ -1,14 +1,20 @@
 ﻿using FormsToolkit;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using XamCnblogs.Portable.Helpers;
-using XamCnblogs.Portable.Interfaces;
 using XamCnblogs.Portable.Model;
 using XamCnblogs.Portable.ViewModel;
-using XamCnblogs.UI.Pages;
+using XamCnblogs.UI.Controls;
 using XamCnblogs.UI.Pages.Account;
+using XamCnblogs.UI.Pages.Article;
+using XamCnblogs.UI.Pages.New;
+using XamCnblogs.UI.Pages.Question;
+using XamCnblogs.UI.Pages.Status;
 
 namespace XamCnblogs.UI
 {
@@ -17,17 +23,23 @@ namespace XamCnblogs.UI
         public App()
         {
             InitializeComponent();
+            AppCenter.Start("", typeof(Analytics), typeof(Crashes));
             ViewModelBase.Init();
 
-            switch (Device.RuntimePlatform)
-            {
-                case Device.Android:
-                    MainPage = new Pages.Android.RootPage();
-                    //MainPage = new Page1();
-                    break;
-                case Device.iOS:
-                    break;
-            }
+            XamBottomBarPage bottomBarPage = new XamBottomBarPage() { Title = "博客园" };
+            bottomBarPage.BarTextColor = (Color)Application.Current.Resources["Primary"];
+            bottomBarPage.FixedMode = true;
+
+            bottomBarPage.BarTheme = XamBottomBarPage.BarThemeTypes.Light;
+            
+            bottomBarPage.Children.Add(new ArticlesTopTabbedPage());
+            bottomBarPage.Children.Add(new NewsTopTabbedPage());
+            bottomBarPage.Children.Add(new StatusesTopTabbedPage());
+            bottomBarPage.Children.Add(new QuestionsTopTabbedPage());
+            bottomBarPage.Children.Add(new AccountPage());
+            
+            MainPage = new NavigationPage(bottomBarPage);
+            
         }
         protected override void OnStart()
         {

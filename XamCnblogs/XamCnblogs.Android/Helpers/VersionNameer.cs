@@ -20,7 +20,7 @@ namespace XamCnblogs.Droid.Helpers
             }
             catch (System.Exception ex)
             {
-                DependencyService.Get<ILog>().SendLog("VersionNameer：" + ex.Message);
+                DependencyService.Get<ILog>().SaveLog("VersionNameer" , ex);
             }
             return "";
         }

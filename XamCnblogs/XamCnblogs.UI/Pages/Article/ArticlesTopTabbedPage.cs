@@ -4,6 +4,7 @@ using Xamarin.Forms;
 using XamCnblogs.Portable.Helpers;
 using XamCnblogs.Portable.Interfaces;
 using XamCnblogs.UI.Pages.About;
+using XamCnblogs.UI.Pages.KbArticle;
 
 namespace XamCnblogs.UI.Pages.Article
 {
@@ -16,9 +17,10 @@ namespace XamCnblogs.UI.Pages.Article
             BarBackgroundColor = (Color)Application.Current.Resources["Primary"];
 
             Title = "首页";
-            Icon = "menu_blog.png";
+            Icon = "menu_home.png";
             this.Children.Add(new ArticlesPage() { Title = "博客" });
             this.Children.Add(new ArticlesPage(1) { Title = "精华" });
+            this.Children.Add(new KbArticlesPage() { Title = "知识库" });
 
             var cancel = new ToolbarItem
             {

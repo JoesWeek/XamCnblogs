@@ -70,7 +70,7 @@ namespace XamCnblogs.Droid.Renderers
                         }
                         catch (System.Exception ex)
                         {
-                            DependencyService.Get<ILog>().SendLog("HtmlWebChromeClient：" + ex.Message);
+                            DependencyService.Get<ILog>().SaveLog("HtmlWebChromeClient" , ex);
                         }
                     }, 225);
                 }
@@ -78,5 +78,7 @@ namespace XamCnblogs.Droid.Renderers
             }
 
         }
+
+        
     }
 }

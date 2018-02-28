@@ -31,16 +31,11 @@ namespace XamCnblogs.Portable.ViewModel
                     NextRefreshTime = DateTime.Now.AddMinutes(15);
                     CanLoadMore = false;
                     pageIndex = 1;
-                    await Task.Run(async () =>
-                    {
-                        await ExecuteRefreshCommandAsync();
-                    });
+                    await ExecuteRefreshCommandAsync();
                 }
                 catch (Exception ex)
                 {
-                    Log.SendLog("KbArticlesViewModel.RefreshCommand:" + ex.Message);
-                    if (KbArticles.Count > 0)
-                        KbArticles.Clear();
+                    Log.SaveLog("KbArticlesViewModel.RefreshCommand", ex);
                     LoadStatus = LoadMoreStatus.StausFail;
                 }
                 finally
@@ -93,7 +88,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SendLog("KbArticlesViewModel.GetKbArticlesAsync:" + result.Message);
+                Log.SaveLog("KbArticlesViewModel.GetKbArticlesAsync", new Exception() { Source = result.Message });
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
             }
         }

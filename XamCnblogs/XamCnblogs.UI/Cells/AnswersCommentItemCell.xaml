@@ -51,7 +51,6 @@
             <StackLayout Orientation="Horizontal"
                     HorizontalOptions="End"
                     VerticalOptions="CenterAndExpand"
-                    Spacing="0"
                     IsVisible="{Binding UserGuid, Converter={StaticResource IsUserGuidConverter}}">
                 <controls:ActivityIndicatorButton
                         x:Name="DeleteButton"
@@ -69,11 +68,12 @@
                 <Image
                         Source="ic_edit.png"
                         VerticalOptions="CenterAndExpand"
-                        IsVisible="{Binding CommentID, Converter={StaticResource IsVisibleConverter}}"/>
-                <Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding Path=EditCommand, Source={x:Reference AnswersCommentItemCell}}"
+                        IsVisible="{Binding CommentID, Converter={StaticResource IsVisibleConverter}}">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding Path=EditCommand, Source={x:Reference AnswersCommentItemCell}}"
                                           CommandParameter="{Binding .}"/>
-                </Image.GestureRecognizers>
+                    </Image.GestureRecognizers>
+                </Image>
             </StackLayout>
             <Label
                Text="{Binding DateDisplay}"
