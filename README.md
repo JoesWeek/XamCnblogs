@@ -16,6 +16,7 @@
 ![screenshots](screenshots/Screenshot1.png)
 ![screenshots](screenshots/Screenshot2.png)
 ![screenshots](screenshots/Screenshot3.png)
+![screenshots](screenshots/Screenshot4.png)
 
 ## 下载
 
