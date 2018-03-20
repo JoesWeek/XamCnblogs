@@ -27,6 +27,7 @@ namespace XamCnblogs.UI.Pages.New
                 await NavigationService.PushAsync(Navigation, newsDetails);
                 this.NewsListView.SelectedItem = null;
             };
+            ViewModel.GetClientNewsAsync();
         }
 
         protected override void OnAppearing()
@@ -43,12 +44,6 @@ namespace XamCnblogs.UI.Pages.New
             {
                 //刷新
                 ViewModel.RefreshCommand.Execute(null);
-            }
-            else
-            {
-                //加载本地数据
-                if (ViewModel.News.Count == 0)
-                    ViewModel.RefreshCommand.Execute(null);
             }
         }
     }

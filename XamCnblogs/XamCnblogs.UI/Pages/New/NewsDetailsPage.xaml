@@ -3,106 +3,70 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:cells="clr-namespace:XamCnblogs.UI.Cells;assembly=XamCnblogs.UI"
              xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
+             xmlns:new="clr-namespace:XamCnblogs.UI.Pages.New;assembly=XamCnblogs.UI"
              x:Class="XamCnblogs.UI.Pages.New.NewsDetailsPage"
              x:Name="NewsDetailsPage"
              Title="{Binding Title}">
     <StackLayout Spacing="0">
-        <controls:LoadMoreListView
-            x:Name="NewsDetailsView"
-            ItemsSource="{Binding NewsComments}"
-            Header="{Binding NewsDetails}"
-            HasUnevenRows="True"
-            IsPullToRefreshEnabled="True"
-            RefreshCommand="{Binding RefreshCommand}"
-            IsRefreshing="{Binding IsBusy}"
-            LoadMoreCommand="{Binding LoadMoreCommand}"
-            LoadStatus="{Binding LoadStatus}"
-            CanLoadMore="{Binding CanLoadMore}"
-            FailHeight="70"
-            BackgroundColor="White"
-            SeparatorColor="{StaticResource Divider}">
-            <controls:LoadMoreListView.HeaderTemplate>
-                <DataTemplate>
-                    <Grid
-                             x:Name="GridView"
-                             BackgroundColor="White">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Label Grid.Row="0"
-                                IsVisible="{Binding HasContent}"
-                                Margin="{StaticResource StandardPadding}"
-                                Text="{Binding Title}"
-                                Style="{StaticResource TitleTextStyle}"/>
-                        <StackLayout Grid.Row="1"
-                              Orientation="Horizontal"
-                              Margin="{StaticResource StandardPadding}"
-                              IsVisible="{Binding HasContent}">
-                            <Label
-                                   Text="{Binding DateDisplay}"
-                                   Style="{StaticResource SecondaryTextStyle}"
-                                   VerticalOptions="CenterAndExpand" />
-                        </StackLayout>
-                        <controls:DetailsPageWebView Grid.Row="2"
-                               ContentType="StringData" 
-                               Source="{Binding Content}" 
-                               Margin="{StaticResource StandardPadding}"
-                               IsVisible="{Binding HasContent}" />
-                        <StackLayout Grid.Row="3"
-                                 Spacing="0"
-                                 Padding="0"
-                                 BackgroundColor="{StaticResource Background}"
-                                 IsVisible="{Binding HasContent}">
-                            <controls:HeaderDivider/>
-                            <StackLayout
-                                    Spacing="0"
-                                    Padding="{StaticResource StandardPadding}"
-                                    Orientation="Horizontal">
-                                <Label
-                                        Text="所有评论"
-                                        Style="{StaticResource SecondaryTextStyle}"
-                                        HorizontalOptions="FillAndExpand"
-                                        VerticalOptions="CenterAndExpand"/>
-                            </StackLayout>
-                        </StackLayout>
-                        <StackLayout Grid.Row="4"
-                               HeightRequest="300"
-                               IsVisible="{Binding HasError}">
-                            <StackLayout
-                                   HorizontalOptions="CenterAndExpand"
-                                   VerticalOptions="EndAndExpand">
-                                <Label
-                                        Text="似乎出了点问题"
-                                        Style="{StaticResource SecondaryTextStyle}"
-                                        HorizontalOptions="CenterAndExpand" />
-                                <Label
-                                        Text="重新加载"
-                                        Style="{StaticResource SecondaryTextStyle}"
-                                        TextColor="{StaticResource Primary}"
-                                        HorizontalOptions="CenterAndExpand">
-                                    <Label.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="OnTapped"/>
-                                    </Label.GestureRecognizers>
-                                </Label>
-                            </StackLayout>
-                        </StackLayout>
-                    </Grid>
-                </DataTemplate>
-            </controls:LoadMoreListView.HeaderTemplate>
-            <controls:LoadMoreListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <cells:NewsCommentItemCell
+        <AbsoluteLayout 
+            VerticalOptions="FillAndExpand">
+            <controls:LoadMoreListView
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                AbsoluteLayout.LayoutFlags="All"
+                x:Name="NewsDetailsView"
+                ItemsSource="{Binding NewsComments}"
+                Header="{Binding NewsDetails}"
+                HasUnevenRows="True"
+                IsPullToRefreshEnabled="True"
+                RefreshCommand="{Binding RefreshCommand}"
+                IsRefreshing="{Binding IsBusy}"
+                LoadMoreCommand="{Binding LoadMoreCommand}"
+                LoadStatus="{Binding LoadStatus}"
+                CanLoadMore="{Binding CanLoadMore}"
+                FailHeight="70"
+                BackgroundColor="White"
+                SeparatorColor="{StaticResource Divider}">
+                <controls:LoadMoreListView.HeaderTemplate>
+                    <DataTemplate>
+                        <new:NewsDetailsHeader />
+                    </DataTemplate>
+                </controls:LoadMoreListView.HeaderTemplate>
+                <controls:LoadMoreListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <cells:NewsCommentItemCell
                             EditCommand="{Binding Path=EditCommand, Source={x:Reference NewsDetailsPage}}"
                             DeleteCommand="{Binding Path=BindingContext.DeleteCommand, Source={x:Reference NewsDetailsPage}}"/>
-                    </ViewCell>
-                </DataTemplate>
-            </controls:LoadMoreListView.ItemTemplate>
-        </controls:LoadMoreListView>
+                        </ViewCell>
+                    </DataTemplate>
+                </controls:LoadMoreListView.ItemTemplate>
+            </controls:LoadMoreListView>
+            <StackLayout
+                VerticalOptions="FillAndExpand"
+                HorizontalOptions="FillAndExpand"
+                BackgroundColor="White"
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                AbsoluteLayout.LayoutFlags="All"
+                IsVisible="{Binding NewsDetails.HasError}">
+                <StackLayout
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalOptions="CenterAndExpand">
+                    <Label
+                         Text="似乎出了点问题"
+                         Style="{StaticResource SecondaryTextStyle}"
+                         HorizontalOptions="CenterAndExpand" />
+                    <Label
+                         Text="重新加载"
+                         Style="{StaticResource SecondaryTextStyle}"
+                         TextColor="{StaticResource Primary}"
+                         HorizontalOptions="CenterAndExpand">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnTapped"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </StackLayout>
+            </StackLayout>
+        </AbsoluteLayout>
         <StackLayout 
             Spacing="0"
             BackgroundColor="White"

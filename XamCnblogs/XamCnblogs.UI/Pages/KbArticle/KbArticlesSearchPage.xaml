@@ -14,7 +14,7 @@
             <SearchBar Grid.Row="0"
                        Text="{Binding KeyWords, Mode=TwoWay}" 
                        Placeholder="搜索你想知道的"
-                       SearchCommand="{Binding FilterSessionsCommand}"
+                       SearchCommand="{Binding RefreshCommand}"
                        FontSize="Small" >
                 <SearchBar.PlaceholderColor>
                     <OnPlatform x:TypeArguments="Color" Android="White"/>

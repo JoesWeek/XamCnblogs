@@ -21,7 +21,17 @@ namespace XamCnblogs.Portable.ViewModel
         public ArticlesViewModel(int position)
         {
             this.position = position;
-            NextRefreshTime = DateTime.Now.AddMinutes(15);
+        }
+        public async void GetClientArticlesAsync()
+        {
+            if (position == 0)
+            {
+                Articles.AddRange(await SqliteUtil.Current.QueryArticles(pageSize));
+            }
+            else if (position == 1)
+            {
+                Articles.AddRange(await SqliteUtil.Current.QueryArticlesByDigg(pageSize));
+            }
         }
         ICommand refreshCommand;
         public ICommand RefreshCommand =>
@@ -46,7 +56,6 @@ namespace XamCnblogs.Portable.ViewModel
                 }
             }));
 
-
         LoadMoreStatus loadStatus;
         public LoadMoreStatus LoadStatus
         {
@@ -68,8 +77,11 @@ namespace XamCnblogs.Portable.ViewModel
                 if (articles.Count > 0)
                 {
                     if (pageIndex == 1 && Articles.Count > 0)
+                    {
                         Articles.Clear();
+                    }
                     Articles.AddRange(articles);
+                    await SqliteUtil.Current.UpdateArticles(articles);
                     pageIndex++;
                     if (Articles.Count >= pageSize)
                     {

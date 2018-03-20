@@ -4,128 +4,71 @@
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
 	         xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
              xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
+             xmlns:articles="clr-namespace:XamCnblogs.UI.Pages.Article;assembly=XamCnblogs.UI"
+             xmlns:pullToRefresh="clr-namespace:Refractored.XamForms.PullToRefresh;assembly=Refractored.XamForms.PullToRefresh"
              xmlns:cells="clr-namespace:XamCnblogs.UI.Cells;assembly=XamCnblogs.UI"
              x:Class="XamCnblogs.UI.Pages.Article.ArticlesDetailsPage"
-             Title="{Binding Title}">
+             x:Name="ArticlesDetailsPage"
+             Title="{Binding Title}"
+             BackgroundColor="White">
     <StackLayout Spacing="0">
-        <controls:LoadMoreListView
-            x:Name="ArticlesDetailsView"
-            ItemsSource="{Binding ArticlesComments}"
-            Header="{Binding ArticlesDetails}"
-            HasUnevenRows="True"
-            IsPullToRefreshEnabled="True"
-            RefreshCommand="{Binding RefreshCommand}"
-            IsRefreshing="{Binding IsBusy}"
-            LoadMoreCommand="{Binding LoadMoreCommand}"
-            LoadStatus="{Binding LoadStatus}"
-            CanLoadMore="{Binding CanLoadMore}"
-            FailHeight="70"
-            BackgroundColor="White"
-            SeparatorColor="{StaticResource Divider}">
-            <controls:LoadMoreListView.HeaderTemplate>
-                <DataTemplate>
-                    <Grid
-                             x:Name="GridView"
-                             BackgroundColor="White">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Label Grid.Row="0"
-                                IsVisible="{Binding HasContent}"
-                                Margin="{StaticResource StandardPadding}"
-                                Text="{Binding Title}"
-                                Style="{StaticResource TitleTextStyle}"/>
-                        <StackLayout Grid.Row="1"
-                                 HorizontalOptions="FillAndExpand"
-                                 VerticalOptions="CenterAndExpand"
-                                 IsVisible="{Binding HasContent}"
-                                 Margin="{StaticResource StandardPadding}">
-                            <StackLayout
-                                 Orientation="Horizontal">
-                                <ffimageloading:CachedImage 
-                                    HorizontalOptions="Center" 
-                                    VerticalOptions="Center"
-			                        WidthRequest="35" 
-                                    HeightRequest="35"
-                                    LoadingPlaceholder = "avatar_placeholder.png"
-	                                ErrorPlaceholder = "avatar_placeholder.png"
-			                        DownsampleToViewSize="true"
-			                        Source = "{Binding Avatar}">
-                                    <ffimageloading:CachedImage.Transformations>
-                                        <fftransformations:CircleTransformation/>
-                                    </ffimageloading:CachedImage.Transformations>
-                                </ffimageloading:CachedImage>
-                                <Label
-                                   Text="{Binding  Author}"
-                                   Style="{StaticResource SecondaryTextStyle}"
-                                   VerticalOptions="CenterAndExpand"/>
-                            </StackLayout>
-                            <StackLayout
-                                 Orientation="Horizontal">
-                                <Label
-                                   Text="{Binding DateDisplay}"
-                                   Style="{StaticResource SecondaryTextStyle}"
-                                   VerticalOptions="CenterAndExpand" />
-                            </StackLayout>
-                        </StackLayout>
-                        <controls:DetailsPageWebView Grid.Row="2"
-                               ContentType="StringData" 
-                               Source="{Binding Content}" 
-                               Margin="{StaticResource StandardPadding}"
-                               IsVisible="{Binding HasContent}" />
-                        <StackLayout Grid.Row="3"
-                                 Spacing="0"
-                                 Padding="0"
-                                 BackgroundColor="{StaticResource Background}"
-                                 IsVisible="{Binding HasContent}">
-                            <controls:HeaderDivider/>
-                            <StackLayout
-                                    Spacing="0"
-                                    Padding="{StaticResource StandardPadding}"
-                                    Orientation="Horizontal">
-                                <Label
-                                        Text="所有评论"
-                                        Style="{StaticResource SecondaryTextStyle}"
-                                        HorizontalOptions="FillAndExpand"
-                                        VerticalOptions="CenterAndExpand"/>
-                            </StackLayout>
-                        </StackLayout>
-                        <StackLayout Grid.Row="4"
-                               HeightRequest="300"
-                               IsVisible="{Binding HasError}">
-                            <StackLayout
-                                   HorizontalOptions="CenterAndExpand"
-                                   VerticalOptions="EndAndExpand">
-                                <Label
-                                        Text="似乎出了点问题"
-                                        Style="{StaticResource SecondaryTextStyle}"
-                                        HorizontalOptions="CenterAndExpand" />
-                                <Label
-                                        Text="重新加载"
-                                        Style="{StaticResource SecondaryTextStyle}"
-                                        TextColor="{StaticResource Primary}"
-                                        HorizontalOptions="CenterAndExpand">
-                                    <Label.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="OnTapped"/>
-                                    </Label.GestureRecognizers>
-                                </Label>
-                            </StackLayout>
-                        </StackLayout>
-                    </Grid>
-                </DataTemplate>
-            </controls:LoadMoreListView.HeaderTemplate>
-            <controls:LoadMoreListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <cells:ArticlesCommentItemCell/>
-                    </ViewCell>
-                </DataTemplate>
-            </controls:LoadMoreListView.ItemTemplate>
-        </controls:LoadMoreListView>
+        <AbsoluteLayout 
+            VerticalOptions="FillAndExpand">
+            <controls:LoadMoreListView
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                AbsoluteLayout.LayoutFlags="All"
+                x:Name="ArticlesDetailsView"
+                ItemsSource="{Binding ArticlesComments}"
+                Header="{Binding ArticlesDetails}"
+                HasUnevenRows="True"
+                IsPullToRefreshEnabled="True"
+                RefreshCommand="{Binding RefreshCommand}"
+                IsRefreshing="{Binding IsBusy}"
+                LoadMoreCommand="{Binding LoadMoreCommand}"
+                LoadStatus="{Binding LoadStatus}"
+                CanLoadMore="{Binding CanLoadMore}"
+                FailHeight="70"
+                BackgroundColor="White"
+                SeparatorColor="{StaticResource Divider}">
+                <controls:LoadMoreListView.HeaderTemplate>
+                    <DataTemplate>
+                        <articles:ArticlesDetailsHeader/>
+                    </DataTemplate>
+                </controls:LoadMoreListView.HeaderTemplate>
+                <controls:LoadMoreListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <cells:ArticlesCommentItemCell/>
+                        </ViewCell>
+                    </DataTemplate>
+                </controls:LoadMoreListView.ItemTemplate>
+            </controls:LoadMoreListView>
+            <StackLayout
+                VerticalOptions="FillAndExpand"
+                HorizontalOptions="FillAndExpand"
+                BackgroundColor="White"
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                AbsoluteLayout.LayoutFlags="All"
+                IsVisible="{Binding ArticlesDetails.HasError}">
+                <StackLayout
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalOptions="CenterAndExpand">
+                    <Label
+                         Text="似乎出了点问题"
+                         Style="{StaticResource SecondaryTextStyle}"
+                         HorizontalOptions="CenterAndExpand" />
+                    <Label
+                         Text="重新加载"
+                         Style="{StaticResource SecondaryTextStyle}"
+                         TextColor="{StaticResource Primary}"
+                         HorizontalOptions="CenterAndExpand">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnTapped"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </StackLayout>
+            </StackLayout>
+        </AbsoluteLayout>
         <StackLayout 
             Spacing="0"
             BackgroundColor="White"

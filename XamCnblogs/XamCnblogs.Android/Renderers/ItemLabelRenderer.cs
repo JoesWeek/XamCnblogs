@@ -21,8 +21,6 @@ namespace XamCnblogs.Droid.Renderers
             base.OnElementChanged(e);
             if (e.NewElement != null)
             {
-                this.UpdateNativeControl();
-
                 var itemLabel = (XamCnblogs.UI.Controls.ItemLabel)Element;
                 var lineSpacing = itemLabel.LineSpacing;
                 var maxLines = itemLabel.MaxLines;
@@ -33,6 +31,7 @@ namespace XamCnblogs.Droid.Renderers
                     this.Control.SetMaxLines(maxLines);
                     this.Control.Ellipsize = global::Android.Text.TextUtils.TruncateAt.End;
                 }
+                this.UpdateNativeControl();
             }
         }
 

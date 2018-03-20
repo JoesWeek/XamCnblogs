@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
+using XamCnblogs.Portable.Interfaces;
 
 namespace XamCnblogs.UI.Controls
 {
@@ -30,7 +31,6 @@ namespace XamCnblogs.UI.Controls
                 BarBackgroundColor = (Color)Application.Current.Resources["Primary"];
                 BarTextColor = (Color)Application.Current.Resources["NavigationText"];
             }
-
         }
     }
 }

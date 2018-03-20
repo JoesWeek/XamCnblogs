@@ -50,7 +50,7 @@
                  VerticalOptions="CenterAndExpand">
                     <Label
                      Text="{Binding AnswerUserInfo.UserName}" 
-                     Style="{StaticResource SecondaryTextStyle}"
+                     Style="{StaticResource PrimaryTextStyle}"
                      VerticalOptions="CenterAndExpand"/>
                     <Label
                      Text="{Binding UserDisplay}" 

@@ -39,11 +39,9 @@ namespace XamCnblogs.Portable.ViewModel
             Title = news.Title;
             NewsDetails = new NewsDetailsModel()
             {
-                HasContent = false,
                 DiggDisplay = news.DiggCount > 0 ? news.DiggCount.ToString() : "推荐",
                 CommentDisplay = news.CommentCount > 0 ? news.CommentCount.ToString() : "评论",
-                ViewDisplay = news.ViewCount > 0 ? news.ViewCount.ToString() : "阅读",
-                DateDisplay = "发布于 " + news.DateDisplay
+                ViewDisplay = news.ViewCount > 0 ? news.ViewCount.ToString() : "阅读"
             };
         }
         ICommand refreshCommand;
@@ -54,6 +52,7 @@ namespace XamCnblogs.Portable.ViewModel
                 {
                     IsBusy = true;
                     pageIndex = 1;
+                    NewsDetails.HasError = false;
                     NextRefreshTime = DateTime.Now.AddMinutes(15);
                     var result = await StoreManager.NewsDetailsService.GetNewsAsync(news.Id);
                     if (result.Success)
@@ -67,22 +66,23 @@ namespace XamCnblogs.Portable.ViewModel
                         NewsDetails.ViewDisplay = news.ViewCount > 0 ? news.ViewCount.ToString() : "阅读";
                         NewsDetails.DateDisplay = "发布于 " + news.DateDisplay;
                         NewsDetails.HasError = false;
-                        NewsDetails.HasContent = true;
-
-                        await ExecuteCommentCommandAsync();
                     }
                     else
                     {
-                        Log.SaveLog("NewsDetailsViewModel.GetNewsAsync" , new Exception() { Source = result.Message });
-                        NewsDetails.HasError = true;
-                        NewsDetails.HasContent = false;
-                        LoadStatus = LoadMoreStatus.StausDefault;
-                        CanLoadMore = false;
+                        if (NewsDetails.Content == null)
+                        {
+                            NewsDetails.HasError = true;
+                        }
+                        else
+                        {
+                            Toast.SendToast("好像出了点问题 - -");
+                        }
+                        Log.SaveLog("NewsDetailsViewModel.GetNewsAsync", new Exception() { Source = result.Message });
                     }
                 }
                 catch (Exception ex)
                 {
-                    Log.SaveLog("NewsDetailsViewModel.RefreshCommand" , ex);
+                    Log.SaveLog("NewsDetailsViewModel.RefreshCommand", ex);
                 }
                 finally
                 {
@@ -95,11 +95,39 @@ namespace XamCnblogs.Portable.ViewModel
             {
                 try
                 {
-                    if (!NewsDetails.HasError)
-                    {
-                        LoadStatus = LoadMoreStatus.StausLoading;
+                    LoadStatus = LoadMoreStatus.StausLoading;
 
-                        await ExecuteCommentCommandAsync();
+                    var result = await StoreManager.NewsDetailsService.GetCommentAsync(news.Id, pageIndex, pageSize);
+                    if (result.Success)
+                    {
+                        var news = JsonConvert.DeserializeObject<List<NewsComments>>(result.Message.ToString());
+                        if (news.Count > 0)
+                        {
+                            if (pageIndex == 1 && NewsComments.Count > 0)
+                                NewsComments.Clear();
+                            NewsComments.AddRange(news);
+                            pageIndex++;
+                            if (NewsComments.Count >= pageSize)
+                            {
+                                LoadStatus = LoadMoreStatus.StausDefault;
+                                CanLoadMore = true;
+                            }
+                            else
+                            {
+                                LoadStatus = LoadMoreStatus.StausEnd;
+                                CanLoadMore = false;
+                            }
+                        }
+                        else
+                        {
+                            CanLoadMore = false;
+                            LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausEnd : LoadMoreStatus.StausNodata;
+                        }
+                    }
+                    else
+                    {
+                        Log.SaveLog("NewsDetailsViewModel.GetCommentAsync", new Exception() { Source = result.Message });
+                        LoadStatus = LoadMoreStatus.StausError;
                     }
                 }
                 catch (Exception)
@@ -107,41 +135,6 @@ namespace XamCnblogs.Portable.ViewModel
                     LoadStatus = LoadMoreStatus.StausError;
                 }
             }));
-        async Task ExecuteCommentCommandAsync()
-        {
-            var result = await StoreManager.NewsDetailsService.GetCommentAsync(news.Id, pageIndex, pageSize);
-            if (result.Success)
-            {
-                var news = JsonConvert.DeserializeObject<List<NewsComments>>(result.Message.ToString());
-                if (news.Count > 0)
-                {
-                    if (pageIndex == 1 && NewsComments.Count > 0)
-                        NewsComments.Clear();
-                    NewsComments.AddRange(news);
-                    pageIndex++;
-                    if (NewsComments.Count >= pageSize)
-                    {
-                        LoadStatus = LoadMoreStatus.StausDefault;
-                        CanLoadMore = true;
-                    }
-                    else
-                    {
-                        LoadStatus = LoadMoreStatus.StausEnd;
-                        CanLoadMore = false;
-                    }
-                }
-                else
-                {
-                    CanLoadMore = false;
-                    LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausEnd : LoadMoreStatus.StausNodata;
-                }
-            }
-            else
-            {
-                Log.SaveLog("NewsDetailsViewModel.GetCommentAsync", new Exception() { Source = result.Message });
-                LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
-            }
-        }
         public async Task<bool> ExecuteCommentEditCommandAsync(int id, string content, bool hasEdit = false)
         {
             var result = await StoreManager.NewsDetailsService.PostCommentAsync(id, content.ToString(), hasEdit);
@@ -162,7 +155,7 @@ namespace XamCnblogs.Portable.ViewModel
             if (book == null)
             {
                 NewsComments.Add(comment);
-                NewsDetails.CommentDisplay = (news.CommentCount + 1).ToString();
+                NewsDetails.CommentDisplay = (news.CommentCount = news.CommentCount + 1).ToString();
             }
             else
             {
@@ -188,11 +181,11 @@ namespace XamCnblogs.Portable.ViewModel
                         NewsComments.RemoveAt(index);
                         if (NewsComments.Count == 0)
                             LoadStatus = LoadMoreStatus.StausNodata;
-                        NewsDetails.CommentDisplay = (news.CommentCount - 1).ToString();
+                        NewsDetails.CommentDisplay = (news.CommentCount = news.CommentCount - 1).ToString();
                     }
                     else
                     {
-                        Log.SaveLog("NewsDetailsViewModel.DeleteCommentAsync",  new Exception() { Source = result.Message });
+                        Log.SaveLog("NewsDetailsViewModel.DeleteCommentAsync", new Exception() { Source = result.Message });
                         index = NewsComments.IndexOf(comment);
                         NewsComments[index].IsDelete = false;
                         Toast.SendToast("删除失败");
@@ -236,12 +229,6 @@ namespace XamCnblogs.Portable.ViewModel
             {
                 get { return hasError; }
                 set { SetProperty(ref hasError, value); }
-            }
-            bool hasContent;
-            public bool HasContent
-            {
-                get { return hasContent; }
-                set { SetProperty(ref hasContent, value); }
             }
         }
     }

@@ -1,16 +1,14 @@
-﻿using Newtonsoft.Json;
+﻿using Humanizer;
+using Newtonsoft.Json;
+using SQLite;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Humanizer;
 using XamCnblogs.Portable.Helpers;
 
 namespace XamCnblogs.Portable.Model
 {
     public class Articles
     {
+        [PrimaryKey]
         public int Id { get; set; }
         public string Title { get; set; }
         public string Url { get; set; }
@@ -23,8 +21,10 @@ namespace XamCnblogs.Portable.Model
         public int CommentCount { get; set; }
         public int DiggCount { get; set; }
         public string Body { get; set; }
+        [Ignore]
         [JsonIgnore]
-        public string DateDisplay { get { return PostDate.ToUniversalTime().Humanize(); } }
+        public string DateDisplay { get { return PostDate.ToUniversalTime().Humanize(true,null,new System.Globalization.CultureInfo("zh-CN")); } }
+        [Ignore]
         [JsonIgnore]
         public string DiggValue
         {
@@ -33,6 +33,7 @@ namespace XamCnblogs.Portable.Model
                 return DiggCount + " 推荐 · " + CommentCount + " 评论 · " + ViewCount + " 阅读";
             }
         }
+        [Ignore]
         [JsonIgnore]
         public string BodyDisplay
         {

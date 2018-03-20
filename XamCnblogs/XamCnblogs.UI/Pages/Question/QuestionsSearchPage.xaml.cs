@@ -17,27 +17,30 @@ namespace XamCnblogs.UI.Pages.Question
                 var search = SearchsListView.SelectedItem as Search;
                 if (search == null)
                     return;
-                var id = search.Uri.Substring(search.Uri.LastIndexOf("/") + 1);
-                var questions = new Questions()
+                var id = 0;
+                if (int.TryParse(search.Uri.Substring(search.Uri.TrimEnd('/').LastIndexOf("/") + 1).TrimEnd('/'), out id))
                 {
-                    Qid = int.Parse(id),
-                    Title = search.Title,
-                    Content = search.Content,
-                    Award = 0,
-                    QuestionUserInfo = new QuestionUserInfo
+                    var questions = new Questions()
                     {
-                        UserName = search.UserName,
-                        IconName = search.UserAlias
-                    },
-                    DateAdded = search.PublishTime,
-                    DiggCount = search.VoteTimes,
-                    AnswerCount = search.CommentTimes,
-                    ViewCount = search.ViewTimes
-                };
+                        Qid = id,
+                        Title = search.Title,
+                        Content = search.Content,
+                        Award = 0,
+                        QuestionUserInfo = new QuestionUserInfo
+                        {
+                            UserName = search.UserName,
+                            IconName = search.UserAlias
+                        },
+                        DateAdded = search.PublishTime,
+                        DiggCount = search.VoteTimes,
+                        AnswerCount = search.CommentTimes,
+                        ViewCount = search.ViewTimes
+                    };
 
-                var articlesDetails = new QuestionsDetailsPage(questions);
+                    var articlesDetails = new QuestionsDetailsPage(questions);
 
-                await NavigationService.PushAsync(Navigation, articlesDetails);
+                    await NavigationService.PushAsync(Navigation, articlesDetails);
+                }
                 this.SearchsListView.SelectedItem = null;
             };
         }

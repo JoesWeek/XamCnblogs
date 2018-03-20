@@ -17,11 +17,26 @@ namespace XamCnblogs.Portable.ViewModel
         public DateTime NextRefreshTime { get; set; }
         private int pageIndex = 1;
         private int position = 1;
+        private int pageSize = 20;
         public NewsViewModel(int position)
         {
             this.position = position;
-            NextRefreshTime = DateTime.Now.AddMinutes(15);
             CanLoadMore = false;
+        }
+        public async void GetClientNewsAsync()
+        {
+            if (position == 0)
+            {
+                News.AddRange(await SqliteUtil.Current.QueryNews(pageSize));
+            }
+            else if (position == 1)
+            {
+                News.AddRange(await SqliteUtil.Current.QueryNewsByRecommend(pageSize));
+            }
+            else if (position == 2)
+            {
+                News.AddRange(await SqliteUtil.Current.QueryNewsByWorkHot(pageSize, GetMondayDate(DateTime.Now)));
+            }
         }
         ICommand refreshCommand;
         public ICommand RefreshCommand =>
@@ -70,7 +85,7 @@ namespace XamCnblogs.Portable.ViewModel
             }));
         async Task ExecuteRefreshCommandAsync()
         {
-            var result = await StoreManager.NewsService.GetNewsAsync(position, pageIndex);
+            var result = await StoreManager.NewsService.GetNewsAsync(position, pageIndex, pageSize);
             if (result.Success)
             {
                 var news = JsonConvert.DeserializeObject<List<News>>(result.Message.ToString());
@@ -79,6 +94,16 @@ namespace XamCnblogs.Portable.ViewModel
                     if (pageIndex == 1 && News.Count > 0)
                         News.Clear();
                     News.AddRange(news);
+                    switch (position)
+                    {
+                        case 1:
+                            news.ForEach(s => s.IsRecommend = true);
+                            break;
+                        case 2:
+                            news.ForEach(s => s.IsHot = true);
+                            break;
+                    }
+                    await SqliteUtil.Current.UpdateNews(news);
                     pageIndex++;
                     LoadStatus = LoadMoreStatus.StausDefault;
                     CanLoadMore = true;
@@ -95,6 +120,12 @@ namespace XamCnblogs.Portable.ViewModel
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
             }
         }
-
+        public DateTime GetMondayDate(DateTime someDate)
+        {
+            int i = someDate.DayOfWeek - DayOfWeek.Monday;
+            if (i == -1) i = 6;
+            TimeSpan ts = new TimeSpan(i, 0, 0, 0);
+            return someDate.Subtract(ts);
+        }
     }
 }

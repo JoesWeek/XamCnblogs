@@ -7,11 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MvvmHelpers;
+using SQLite;
 
 namespace XamCnblogs.Portable.Model
 {
     public class Statuses : BaseViewModel
     {
+        [PrimaryKey]
         public int Id { get; set; }
         private string content;
         public string Content
@@ -28,6 +30,7 @@ namespace XamCnblogs.Portable.Model
         public string UserIconUrl { get; set; }
         public int UserId { get; set; }
         public Guid UserGuid { get; set; }
+        [Ignore]
         [JsonIgnore]
         public string CommentValue
         {
@@ -36,12 +39,15 @@ namespace XamCnblogs.Portable.Model
                 return CommentCount > 0 ? CommentCount.ToString() : "回复";
             }
         }
+        [Ignore]
         [JsonIgnore]
         public string DateDisplay { get { return DateAdded.ToUniversalTime().Humanize(); } }
+        [Ignore]
         [JsonIgnore]
         public List<StatusesComments> Comments { get; set; } = new List<StatusesComments>();
 
         private bool isDelete;
+        [Ignore]
         [JsonIgnore]
         public bool IsDelete
         {

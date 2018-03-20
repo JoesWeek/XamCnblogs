@@ -54,6 +54,7 @@ namespace XamCnblogs.UI.Pages.Status
                     await NavigationService.PushAsync(Navigation, statusesDetails);
                 this.StatusesListView.SelectedItem = null;
             };
+            ViewModel.GetClientStatusesAsync();
         }
 
         protected override void OnAppearing()
@@ -70,12 +71,6 @@ namespace XamCnblogs.UI.Pages.Status
             {
                 //刷新
                 ViewModel.RefreshCommand.Execute(null);
-            }
-            else
-            {
-                //加载本地数据
-                if (ViewModel.Statuses.Count == 0)
-                    ViewModel.RefreshCommand.Execute(null);
             }
         }
         private void OnResult(Statuses result)

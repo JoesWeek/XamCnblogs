@@ -24,6 +24,7 @@
                     </ffimageloading:CachedImage.Transformations>
                 </ffimageloading:CachedImage>
                 <StackLayout  
+                    HorizontalOptions="FillAndExpand"
                     VerticalOptions="CenterAndExpand">
                     <Label
                         x:Name="UserName"

@@ -21,12 +21,18 @@ namespace XamCnblogs.Portable.ViewModel
         public StatusesViewModel(int position = 0)
         {
             this.position = position;
-            NextRefreshTime = DateTime.Now.AddMinutes(15);
             CanLoadMore = false;
             //判断有没有登录
             if (position > 0 && UserTokenSettings.Current.HasExpiresIn())
             {
                 LoadStatus = LoadMoreStatus.StausNologin;
+            }
+        }
+        public async void GetClientStatusesAsync()
+        {
+            if (position == 0)
+            {
+                Statuses.AddRange(await SqliteUtil.Current.QueryStatuses(pageSize));
             }
         }
         ICommand refreshCommand;
@@ -92,6 +98,11 @@ namespace XamCnblogs.Portable.ViewModel
                     if (pageIndex == 1 && Statuses.Count > 0)
                         Statuses.Clear();
                     Statuses.AddRange(statuses);
+
+                    if (position == 0)
+                    {
+                        await SqliteUtil.Current.UpdateStatuses(statuses);
+                    }
                     pageIndex++;
                     if (Statuses.Count >= pageSize)
                     {

@@ -4,10 +4,16 @@
              xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
              x:Class="XamCnblogs.UI.Pages.Account.AuthorizePage"
              BackgroundColor="White">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <controls:AuthorizeWebView x:Name="FormsWebView" ContentType="Internet" Grid.Row="0"/>
-    </Grid>
+    <AbsoluteLayout>
+        <controls:AuthorizeView 
+            x:Name="authorizeView"
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All"/>
+        <ActivityIndicator 
+            x:Name="activityIndicator"
+            VerticalOptions="CenterAndExpand"
+            HorizontalOptions="CenterAndExpand"
+            AbsoluteLayout.LayoutBounds="0.5,0.5,1,1"
+            AbsoluteLayout.LayoutFlags="All"/>
+    </AbsoluteLayout>
 </ContentPage>

@@ -6,10 +6,5 @@
              x:Class="XamCnblogs.UI.Pages.Account.BookmarksDetailsPage"
              x:Name="BookmarksDetailsPage"
              Title="我的收藏">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <controls:AuthorizeWebView x:Name="FormsWebView" ContentType="Internet" Grid.Row="0"/>
-    </Grid>
+    <controls:AuthorizeView x:Name="authorizeView"/>
 </ContentPage>

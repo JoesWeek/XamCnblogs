@@ -1,12 +1,45 @@
 body {
     font-family: Helvetica,"Microsoft Yahei",Verdana,Helvetica,SimSun,Arial,"Arial Unicode MS",MingLiu,PMingLiu,"MS Gothic",sans-serief;
     margin: 0;
-    padding: 10px 0;
+    padding: 0;
     background-color: #ffffff;
     color: #333;
     word-wrap: break-word;
     font-size: 14px !important;
 }
+
+.content {
+    padding: 10px;
+}
+
+.tags {
+    padding: 10px;
+    text-align: left;
+}
+
+    .tags img {
+        width: 20px;
+        height: 20px;
+        vertical-align: middle;
+    }
+
+.footer {
+    background-color: #F4F4F4;
+}
+
+    .footer span {
+        display: block;
+    }
+
+    .footer .line {
+        background-color: #EBE8EB;
+        height: 1px;
+    }
+
+    .footer .comment {
+        color: #757575;
+        padding: 5px 10px;
+    }
 
 p {
     margin-top: 0;

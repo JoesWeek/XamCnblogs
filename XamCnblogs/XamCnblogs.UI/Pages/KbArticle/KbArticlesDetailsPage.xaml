@@ -6,71 +6,66 @@
              Title="{Binding Title}"
              BackgroundColor="{StaticResource Background}">
     <StackLayout Spacing="0">
-        <controls:LoadMoreListView
-            x:Name="KbArticlesDetailsView"
-            Header="{Binding KbArticlesDetails}"
-            HasUnevenRows="True"
-            IsPullToRefreshEnabled="True"
-            RefreshCommand="{Binding RefreshCommand}"
-            IsRefreshing="{Binding IsBusy}"
-            CanLoadMore="False"
-            BackgroundColor="White"
-            SeparatorColor="{StaticResource Divider}">
-            <controls:LoadMoreListView.HeaderTemplate>
-                <DataTemplate>
-                    <Grid
-                             x:Name="GridView"
-                             BackgroundColor="White">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Label Grid.Row="0"
-                                IsVisible="{Binding HasContent}"
-                                Margin="{StaticResource StandardPadding}"
-                                Text="{Binding Title}"
-                                Style="{StaticResource TitleTextStyle}"/>
-                        <StackLayout Grid.Row="1"
-                              Orientation="Horizontal"
-                              Margin="{StaticResource StandardPadding}"
-                              IsVisible="{Binding HasContent}">
-                            <Label
-                                   Text="{Binding DateDisplay}"
-                                   Style="{StaticResource SecondaryTextStyle}"
-                                   VerticalOptions="CenterAndExpand" />
-                        </StackLayout>
-                        <controls:DetailsPageWebView Grid.Row="2"
-                               ContentType="StringData" 
-                               Source="{Binding Content}" 
-                               Margin="{StaticResource StandardPadding}"
-                               IsVisible="{Binding HasContent}" />
-                        <StackLayout Grid.Row="3"
-                               HeightRequest="300"
-                               IsVisible="{Binding HasError}">
+        <AbsoluteLayout 
+            VerticalOptions="FillAndExpand">
+            <controls:LoadMoreListView
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                AbsoluteLayout.LayoutFlags="All"
+                x:Name="KbArticlesDetailsView"
+                Header="{Binding KbArticlesDetails}"
+                HasUnevenRows="True"
+                IsPullToRefreshEnabled="True"
+                RefreshCommand="{Binding RefreshCommand}"
+                IsRefreshing="{Binding IsBusy}"
+                CanLoadMore="False"
+                BackgroundColor="White"
+                SeparatorColor="{StaticResource Divider}">
+                <controls:LoadMoreListView.HeaderTemplate>
+                    <DataTemplate>
+                        <StackLayout>
                             <StackLayout
-                                   HorizontalOptions="CenterAndExpand"
-                                   VerticalOptions="EndAndExpand">
+                                Padding="{StaticResource StandardPadding}">
                                 <Label
-                                        Text="似乎出了点问题"
-                                        Style="{StaticResource SecondaryTextStyle}"
-                                        HorizontalOptions="CenterAndExpand" />
+                                    Text="{Binding Title}"
+                                    Style="{StaticResource TitleTextStyle}"/>
                                 <Label
-                                        Text="重新加载"
-                                        Style="{StaticResource SecondaryTextStyle}"
-                                        TextColor="{StaticResource Primary}"
-                                        HorizontalOptions="CenterAndExpand">
-                                    <Label.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="OnTapped"/>
-                                    </Label.GestureRecognizers>
-                                </Label>
+                                    Text="{Binding DateDisplay}"
+                                    Style="{StaticResource SecondaryTextStyle}"/>
                             </StackLayout>
+                            <controls:DetailsView
+                                x:Name="detailsView"
+                                Source="{Binding Content}"
+                                HeightRequest="400"/>
                         </StackLayout>
-                    </Grid>
-                </DataTemplate>
-            </controls:LoadMoreListView.HeaderTemplate>
-        </controls:LoadMoreListView>
+                    </DataTemplate>
+                </controls:LoadMoreListView.HeaderTemplate>
+            </controls:LoadMoreListView>
+            <StackLayout
+                VerticalOptions="FillAndExpand"
+                HorizontalOptions="FillAndExpand"
+                BackgroundColor="White"
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                AbsoluteLayout.LayoutFlags="All"
+                IsVisible="{Binding KbArticlesDetails.HasError}">
+                <StackLayout
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalOptions="CenterAndExpand">
+                    <Label
+                         Text="似乎出了点问题"
+                         Style="{StaticResource SecondaryTextStyle}"
+                         HorizontalOptions="CenterAndExpand" />
+                    <Label
+                         Text="重新加载"
+                         Style="{StaticResource SecondaryTextStyle}"
+                         TextColor="{StaticResource Primary}"
+                         HorizontalOptions="CenterAndExpand">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnTapped"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </StackLayout>
+            </StackLayout>
+        </AbsoluteLayout>
         <StackLayout 
             Spacing="0"
             BackgroundColor="White"

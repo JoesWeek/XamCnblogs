@@ -35,62 +35,47 @@ namespace XamCnblogs.Portable.ViewModel
         {
             this.answers = answers;
             Title = answers.UserName + "的回答";
-            NextRefreshTime = DateTime.Now.AddMinutes(15);
-            AnswersDetails = new AnswersDetailsModel();
-        }
-        public void ExecuteAnswersDetails()
-        {
-            AnswersDetails.UserName = answers.AnswerUserInfo.UserName;
-            AnswersDetails.IconDisplay = answers.AnswerUserInfo.IconDisplay;
-            AnswersDetails.UserDisplay = answers.UserDisplay;
-            AnswersDetails.IsBest = answers.IsBest;
-            AnswersDetails.Answer = answers.AnswerDisplay;
-            AnswersDetails.DiggDisplay = answers.DiggCount > 0 ? answers.DiggCount.ToString() : "推荐";
-            AnswersDetails.CommentDisplay = answers.CommentCounts > 0 ? answers.CommentCounts.ToString() : "评论";
-        }
-        ICommand refreshCommand;
-        public ICommand RefreshCommand =>
-            refreshCommand ?? (refreshCommand = new Command(async () =>
+            AnswersDetails = new AnswersDetailsModel()
             {
-                try
-                {
-                    IsBusy = true;
-                    NextRefreshTime = DateTime.Now.AddMinutes(15);
+                UserName = answers.AnswerUserInfo.UserName,
+                IconDisplay = answers.AnswerUserInfo.IconDisplay,
+                UserDisplay = answers.UserDisplay,
+                IsBest = answers.IsBest,
+                Answer = answers.AnswerDisplay,
+                DiggDisplay = answers.DiggCount > 0 ? answers.DiggCount.ToString() : "推荐",
+                CommentDisplay = answers.CommentCounts > 0 ? answers.CommentCounts.ToString() : "评论"
+            };
+        }
+        ICommand loadMoreCommand;
+        public ICommand LoadMoreCommand =>
+            loadMoreCommand ?? (loadMoreCommand = new Command(async () =>
+            {
+                LoadStatus = LoadMoreStatus.StausLoading;
 
-                    var result = await StoreManager.AnswersDetailsService.GetCommentAsync(answers.AnswerID);
-                    if (result.Success)
+                var result = await StoreManager.AnswersDetailsService.GetCommentAsync(answers.AnswerID);
+                if (result.Success)
+                {
+                    var comments = JsonConvert.DeserializeObject<List<AnswersComment>>(result.Message.ToString());
+                    if (comments.Count > 0)
                     {
-                        var comments = JsonConvert.DeserializeObject<List<AnswersComment>>(result.Message.ToString());
-                        if (comments.Count > 0)
-                        {
-                            if (AnswersComment.Count > 0)
-                                AnswersComment.Clear();
-                            AnswersComment.AddRange(comments);
-                            LoadStatus = LoadMoreStatus.StausEnd;
-                            CanLoadMore = false;
-                        }
-                        else
-                        {
-                            LoadStatus = LoadMoreStatus.StausNodata;
-                        }
+                        if (AnswersComment.Count > 0)
+                            AnswersComment.Clear();
+                        AnswersComment.AddRange(comments);
+                        LoadStatus = LoadMoreStatus.StausEnd;
                     }
                     else
                     {
-                        Log.SaveLog("AnswersDetailsViewModel.GetCommentAsync", new Exception() { Source = result.Message });
-                        LoadStatus = LoadMoreStatus.StausError;
+                        LoadStatus = LoadMoreStatus.StausNodata;
                     }
                     CanLoadMore = false;
                 }
-                catch (Exception ex)
+                else
                 {
-                    Log.SaveLog("AnswersDetailsViewModel.RefreshCommand", ex);
+                    Log.SaveLog("AnswersDetailsViewModel.GetCommentAsync", new Exception() { Source = result.Message });
+                    LoadStatus = LoadMoreStatus.StausError;
                 }
-                finally
-                {
-                    IsBusy = false;
-                }
-            }));
-
+            })
+         );
         public async Task<bool> ExecuteCommentPostCommandAsync(int questionId, int answerId, string content)
         {
             var result = await StoreManager.AnswersDetailsService.PostCommentAsync(questionId, answerId, content);
@@ -100,7 +85,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SaveLog("AnswersDetailsViewModel.PostCommentAsync" , new Exception() { Source = result.Message });
+                Log.SaveLog("AnswersDetailsViewModel.PostCommentAsync", new Exception() { Source = result.Message });
                 Toast.SendToast(result.Message.ToString());
             }
             return result.Success;
@@ -114,7 +99,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SaveLog("AnswersDetailsViewModel.EditCommentAsync" , new Exception() { Source = result.Message });
+                Log.SaveLog("AnswersDetailsViewModel.EditCommentAsync", new Exception() { Source = result.Message });
                 Toast.SendToast(result.Message.ToString());
             }
             return result.Success;

@@ -27,13 +27,10 @@ namespace XamCnblogs.Portable.ViewModel
         {
             this.articles = articles;
             Title = articles.Title;
-            NextRefreshTime = DateTime.Now.AddMinutes(15);
             KbArticlesDetails = new KbArticlesDetailsModel()
             {
-                HasContent = false,
                 DiggDisplay = articles.DiggCount > 0 ? articles.DiggCount.ToString() : "推荐",
-                ViewDisplay = articles.ViewCount > 0 ? articles.ViewCount.ToString() : "阅读",
-                DateDisplay = "发布于 " + articles.DateDisplay
+                ViewDisplay = articles.ViewCount > 0 ? articles.ViewCount.ToString() : "阅读"
             };
         }
         ICommand refreshCommand;
@@ -43,6 +40,7 @@ namespace XamCnblogs.Portable.ViewModel
                 try
                 {
                     IsBusy = true;
+                    KbArticlesDetails.HasError = false;
                     NextRefreshTime = DateTime.Now.AddMinutes(15);
                     var result = await StoreManager.KbArticlesDetailsService.GetKbArticlesAsync(articles.Id);
                     if (result.Success)
@@ -56,13 +54,11 @@ namespace XamCnblogs.Portable.ViewModel
                         KbArticlesDetails.DateDisplay = "发布与 " + articles.DateDisplay;
 
                         KbArticlesDetails.HasError = false;
-                        KbArticlesDetails.HasContent = true;
                     }
                     else
                     {
                         Log.SaveLog("KbArticlesDetailsViewModel.GetKbArticlesAsync", new Exception() { Source = result.Message });
                         KbArticlesDetails.HasError = true;
-                        KbArticlesDetails.HasContent = false;
                     }
                 }
                 catch (Exception ex)
@@ -105,12 +101,6 @@ namespace XamCnblogs.Portable.ViewModel
             {
                 get { return hasError; }
                 set { SetProperty(ref hasError, value); }
-            }
-            bool hasContent;
-            public bool HasContent
-            {
-                get { return hasContent; }
-                set { SetProperty(ref hasContent, value); }
             }
         }
     }

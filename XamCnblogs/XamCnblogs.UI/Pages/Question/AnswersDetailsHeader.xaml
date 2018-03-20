@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+	         xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             x:Class="XamCnblogs.UI.Pages.Question.AnswersDetailsHeader">
+  <ContentView.Content>
+        <StackLayout>
+            <StackLayout
+                Padding="{StaticResource StandardPadding}">
+                <StackLayout
+                    Spacing="10"
+                    Orientation="Horizontal"
+                    VerticalOptions="CenterAndExpand">
+                    <ffimageloading:CachedImage 
+			             WidthRequest="40" 
+                         HeightRequest="40"
+                         LoadingPlaceholder = "avatar_placeholder.png"
+	                     ErrorPlaceholder = "avatar_placeholder.png"
+			             DownsampleToViewSize="true"
+			             Source = "{Binding IconDisplay}">
+                        <ffimageloading:CachedImage.Transformations>
+                            <fftransformations:CircleTransformation BorderSize="1" BorderHexColor="#757575"/>
+                        </ffimageloading:CachedImage.Transformations>
+                    </ffimageloading:CachedImage>
+                    <StackLayout
+                         Spacing="3"
+                         HorizontalOptions="FillAndExpand"
+                         VerticalOptions="CenterAndExpand">
+                        <Label
+                             Text="{Binding  UserName}"
+                             Style="{StaticResource SecondaryTextStyle}"/>
+                        <Label
+                              Text="{Binding UserDisplay}"
+                              Style="{StaticResource SecondaryTextStyle}"/>
+                    </StackLayout>
+                    <Label
+                         Text="最佳回答"
+                         Style="{StaticResource SecondaryTextStyle}"
+                         IsVisible="{Binding IsBest}"
+                         HorizontalOptions="EndAndExpand"
+                         VerticalOptions="CenterAndExpand" />
+                </StackLayout>
+            </StackLayout>
+            <controls:DetailsView
+                x:Name="detailsView"
+                Source="{Binding Answer}"
+                HeightRequest="100"/>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

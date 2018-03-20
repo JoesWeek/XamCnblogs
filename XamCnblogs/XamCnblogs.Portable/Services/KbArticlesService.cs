@@ -9,11 +9,10 @@ namespace XamCnblogs.Portable.Services
 {
     public class KbArticlesService : IKbArticlesService
     {
-        private int pageSize = 10;
         public KbArticlesService()
         {
         }
-        public async Task<ResponseMessage> GetKbArticlesAsync(int pageIndex = 1)
+        public async Task<ResponseMessage> GetKbArticlesAsync(int pageIndex = 1, int pageSize = 20)
         {
             var url = string.Format(Apis.KbArticles, pageIndex, pageSize);
             return await TokenHttpClient.Current.GetAsyn(url);

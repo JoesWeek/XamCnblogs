@@ -9,11 +9,10 @@ namespace XamCnblogs.Portable.Services
 {
     public class NewsService : INewsService
     {
-        private int pageSize = 10;
         public NewsService()
         {
         }
-        public async Task<ResponseMessage> GetNewsAsync(int position, int pageIndex = 1)
+        public async Task<ResponseMessage> GetNewsAsync(int position, int pageIndex = 1, int pageSize = 20)
         {
             var url = "";
             switch (position)

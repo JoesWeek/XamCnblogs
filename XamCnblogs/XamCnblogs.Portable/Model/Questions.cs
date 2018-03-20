@@ -7,11 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MvvmHelpers;
+using SQLite;
 
 namespace XamCnblogs.Portable.Model
 {
     public class Questions : BaseViewModel
     {
+        [PrimaryKey]
         public int Qid { get; set; }
         private int dealFlag;
         public int DealFlag
@@ -31,7 +33,6 @@ namespace XamCnblogs.Portable.Model
             get { return summary; }
             set { SetProperty(ref summary, value); }
         }
-        public new string Title { get; set; }
         public string Content { get; set; }
         public DateTime DateAdded { get; set; }
         public string Supply { get; set; }
@@ -63,10 +64,15 @@ namespace XamCnblogs.Portable.Model
         public int Flags { get; set; }
         public string DateEnded { get; set; }
         public int UserInfoID { get; set; }
+        [Ignore]
         public QuestionUserInfo QuestionUserInfo { get; set; }
+        public int AdditionID { get; set; }
+        [Ignore]
         public QuestionAddition Addition { get; set; }
+        [Ignore]
         [JsonIgnore]
         public string DateDisplay => DateAdded.ToUniversalTime().Humanize();
+        [Ignore]
         [JsonIgnore]
         public string DiggValue
         {
@@ -76,6 +82,7 @@ namespace XamCnblogs.Portable.Model
             }
         }
         private string tag;
+        [Ignore]
         [JsonIgnore]
         public string TagsDisplay
         {
@@ -85,6 +92,7 @@ namespace XamCnblogs.Portable.Model
             }
             set { SetProperty(ref tag, value); }
         }
+        [Ignore]
         [JsonIgnore]
         public string ContentDisplay
         {
@@ -94,12 +102,13 @@ namespace XamCnblogs.Portable.Model
                 {
                     Content += "<h2>问题补充：</h2>" + Addition.Content;
                 }
-                return HtmlTemplate.ReplaceHtml(Content);
+                return HtmlTemplate.ReplaceHtml(Content, Tags);
             }
         }
     }
     public class QuestionUserInfo
     {
+        [PrimaryKey]
         public int UserID { get; set; }
         public string UserName { get; set; }
         public string LoginName { get; set; }
@@ -112,11 +121,13 @@ namespace XamCnblogs.Portable.Model
         public bool IsActive { get; set; }
         public Guid UCUserID { get; set; }
 
+        [Ignore]
         [JsonIgnore]
         public string IconDisplay { get { return "https://pic.cnblogs.com/face/" + IconName; } }
     }
     public class QuestionAddition
     {
+        [PrimaryKey]
         public int QID { get; set; }
         public string Content { get; set; }
         public string ConvertedContent { get; set; }

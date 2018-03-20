@@ -26,38 +26,6 @@ namespace XamCnblogs.UI.Pages.Question
             InitializeComponent();
             BindingContext = new AnswersDetailsViewModel(answers);
         }
-
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-            UpdatePage();
-        }
-
-        public void OnResume()
-        {
-            UpdatePage();
-        }
-        private void UpdatePage()
-        {
-            bool forceRefresh = (DateTime.Now > (ViewModel?.NextRefreshTime ?? DateTime.Now));
-
-            if (forceRefresh)
-            {
-                //刷新
-                ViewModel.RefreshCommand.Execute(null);
-            }
-            else
-            {
-                ViewModel.ExecuteAnswersDetails();
-                //加载本地数据
-                if (ViewModel.AnswersComment.Count == 0)
-                    ViewModel.RefreshCommand.Execute(null);
-            }
-        }
-        void OnTapped(object sender, EventArgs args)
-        {
-            ViewModel.RefreshCommand.Execute(null);
-        }
         void OnScrollComment(object sender, EventArgs args)
         {
             if (ViewModel.AnswersComment.Count > 0)

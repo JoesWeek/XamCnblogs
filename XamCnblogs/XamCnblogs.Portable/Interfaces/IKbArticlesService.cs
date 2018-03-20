@@ -6,6 +6,6 @@ namespace XamCnblogs.Portable.Interfaces
 {
     public interface IKbArticlesService
     {
-        Task<ResponseMessage> GetKbArticlesAsync(int pageIndex = 1);
+        Task<ResponseMessage> GetKbArticlesAsync(int pageIndex = 1,int pageSize = 20);
     }
 }

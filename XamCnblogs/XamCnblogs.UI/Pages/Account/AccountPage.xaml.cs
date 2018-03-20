@@ -1,4 +1,5 @@
-﻿using Plugin.Messaging;
+﻿using FormsToolkit;
+using Plugin.Messaging;
 using System;
 
 using Xamarin.Forms;
@@ -51,7 +52,7 @@ namespace XamCnblogs.UI.Pages.Account
         {
             if (UserTokenSettings.Current.HasExpiresIn())
             {
-                Navigation.PushAsync(new AuthorizePage());
+                MessagingService.Current.SendMessage(MessageKeys.NavigateLogin);
             }
         }
         void OnLogout(object sender, EventArgs args)
@@ -69,7 +70,7 @@ namespace XamCnblogs.UI.Pages.Account
         {
             if (UserTokenSettings.Current.HasExpiresIn())
             {
-                Navigation.PushAsync(new AuthorizePage());
+                MessagingService.Current.SendMessage(MessageKeys.NavigateLogin);
             }
             else
             {
@@ -80,7 +81,7 @@ namespace XamCnblogs.UI.Pages.Account
         {
             if (UserTokenSettings.Current.HasExpiresIn())
             {
-                Navigation.PushAsync(new AuthorizePage());
+                MessagingService.Current.SendMessage(MessageKeys.NavigateLogin);
             }
             else
             {

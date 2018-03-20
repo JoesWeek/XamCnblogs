@@ -1,20 +1,14 @@
-﻿using FormsToolkit;
+﻿
+using FormsToolkit;
 using Rg.Plugins.Popup.Extensions;
-using Rg.Plugins.Popup.Services;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 using XamCnblogs.Portable.Helpers;
 using XamCnblogs.Portable.Interfaces;
 using XamCnblogs.Portable.Model;
 using XamCnblogs.Portable.ViewModel;
 using XamCnblogs.UI.Pages.Account;
-using XamCnblogs.UI.Pages.New;
 
 namespace XamCnblogs.UI.Pages.Article
 {
@@ -42,9 +36,7 @@ namespace XamCnblogs.UI.Pages.Article
             if (Device.Android == Device.RuntimePlatform)
                 cancel.Icon = "toolbar_share.png";
 
-            var v = ArticlesDetailsView.HeaderTemplate.Values;
         }
-
 
         protected override void OnAppearing()
         {
@@ -60,12 +52,6 @@ namespace XamCnblogs.UI.Pages.Article
                 //刷新
                 ViewModel.RefreshCommand.Execute(null);
             }
-            else
-            {
-                //加载本地数据
-                if (ViewModel.ArticlesComments.Count == 0)
-                    ViewModel.RefreshCommand.Execute(null);
-            }
         }
         void OnTapped(object sender, EventArgs args)
         {
@@ -73,8 +59,10 @@ namespace XamCnblogs.UI.Pages.Article
         }
         void OnScrollComment(object sender, EventArgs args)
         {
-            if (ViewModel.ArticlesComments.Count > 0)
-                ArticlesDetailsView.ScrollTo(ViewModel.ArticlesComments.First(), ScrollToPosition.Start, false);
+            var view = ArticlesDetailsView.HeaderTemplate;
+
+            //if (ViewModel.ArticlesComments.Count > 0)
+            //    ArticlesDetailsView.ScrollTo(ViewModel.ArticlesComments.First(), ScrollToPosition.Start, false);
         }
         async void OnShowComment(object sender, EventArgs args)
         {
@@ -94,7 +82,7 @@ namespace XamCnblogs.UI.Pages.Article
             if (result != null)
             {
                 ViewModel.AddComment(result);
-                ArticlesDetailsView.ScrollTo(ViewModel.ArticlesComments.Last(), ScrollToPosition.Start, false);
+                //ArticlesDetailsView.ScrollTo(ViewModel.ArticlesComments.Last(), ScrollToPosition.Start, false);
             }
         }
         async void OnBookmarks(object sender, EventArgs args)

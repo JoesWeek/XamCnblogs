@@ -49,6 +49,7 @@ namespace XamCnblogs.Portable.Helpers
                 }
                 catch (Exception ex)
                 {
+                    DependencyService.Get<ILog>().SaveLog("GetAsyn", ex);
                     result.Success = false;
                     result.Message = ex.Message;
                     return result;

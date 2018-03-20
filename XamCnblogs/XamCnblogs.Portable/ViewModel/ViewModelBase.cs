@@ -1,6 +1,7 @@
 ﻿using MvvmHelpers;
 using Plugin.Share;
 using Plugin.Share.Abstractions;
+using SQLite;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -48,7 +49,7 @@ namespace XamCnblogs.Portable.ViewModel
         protected IToast Toast { get; } = DependencyService.Get<IToast>();
         protected ILog Log { get; } = DependencyService.Get<ILog>();
         protected IShares Shares { get; } = DependencyService.Get<IShares>();
-
+        
         ICommand launchBrowserCommand;
         public ICommand LaunchBrowserCommand =>
         launchBrowserCommand ?? (launchBrowserCommand = new Command<string>(async (t) => await ExecuteLaunchBrowserAsync(t)));

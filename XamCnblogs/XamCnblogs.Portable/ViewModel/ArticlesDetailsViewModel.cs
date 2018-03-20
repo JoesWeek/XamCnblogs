@@ -38,14 +38,11 @@ namespace XamCnblogs.Portable.ViewModel
         {
             this.articles = articles;
             Title = articles.Title;
-            NextRefreshTime = DateTime.Now.AddMinutes(15);
             ArticlesDetails = new ArticlesDetailsModel()
             {
-                HasContent = false,
                 DiggDisplay = articles.DiggCount > 0 ? articles.DiggCount.ToString() : "推荐",
                 CommentDisplay = articles.CommentCount > 0 ? articles.CommentCount.ToString() : "评论",
-                ViewDisplay = articles.ViewCount > 0 ? articles.ViewCount.ToString() : "阅读",
-                DateDisplay = "发布于 " + articles.DateDisplay
+                ViewDisplay = articles.ViewCount > 0 ? articles.ViewCount.ToString() : "阅读"
             };
         }
         ICommand refreshCommand;
@@ -56,6 +53,7 @@ namespace XamCnblogs.Portable.ViewModel
                 {
                     IsBusy = true;
                     pageIndex = 1;
+                    ArticlesDetails.HasError = false;
                     NextRefreshTime = DateTime.Now.AddMinutes(15);
                     var result = await StoreManager.ArticlesDetailsService.GetArticlesAsync(articles.Id);
                     if (result.Success)
@@ -71,19 +69,18 @@ namespace XamCnblogs.Portable.ViewModel
                         ArticlesDetails.ViewDisplay = articles.ViewCount > 0 ? articles.ViewCount.ToString() : "阅读";
                         ArticlesDetails.DateDisplay = "发布于 " + articles.DateDisplay;
                         ArticlesDetails.HasError = false;
-                        ArticlesDetails.HasContent = true;
-
-                        await ExecuteCommentCommandAsync();
                     }
                     else
                     {
+                        if (ArticlesDetails.Content == null)
+                        {
+                            ArticlesDetails.HasError = true;
+                        }
+                        else
+                        {
+                            Toast.SendToast("好像出了点问题 - -");
+                        }
                         Log.SaveLog("ArticlesDetailsViewModel.GetArticlesAsync", new Exception() { Source = result.Message });
-                        ArticlesDetails.HasError = true;
-                        ArticlesDetails.HasContent = false;
-                        LoadStatus = LoadMoreStatus.StausDefault;
-                        CanLoadMore = false;
-                        if (ArticlesComments.Count > 0)
-                            ArticlesComments.Clear();
                     }
                 }
                 catch (Exception ex)
@@ -101,55 +98,47 @@ namespace XamCnblogs.Portable.ViewModel
             {
                 try
                 {
-                    if (!ArticlesDetails.HasError)
-                    {
-                        LoadStatus = LoadMoreStatus.StausLoading;
+                    LoadStatus = LoadMoreStatus.StausLoading;
 
-                        await ExecuteCommentCommandAsync();
+                    var result = await StoreManager.ArticlesDetailsService.GetCommentAsync(articles.BlogApp, articles.Id, pageIndex, pageSize);
+                    if (result.Success)
+                    {
+                        var comments = JsonConvert.DeserializeObject<List<ArticlesComments>>(result.Message.ToString());
+                        if (comments.Count > 0)
+                        {
+                            if (pageIndex == 1 && ArticlesComments.Count > 0)
+                                ArticlesComments.Clear();
+                            ArticlesComments.AddRange(comments);
+                            pageIndex++;
+                            if (ArticlesComments.Count >= pageSize)
+                            {
+                                LoadStatus = LoadMoreStatus.StausDefault;
+                                CanLoadMore = true;
+                            }
+                            else
+                            {
+                                LoadStatus = LoadMoreStatus.StausEnd;
+                                CanLoadMore = false;
+                            }
+                        }
+                        else
+                        {
+                            CanLoadMore = false;
+                            LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausEnd : LoadMoreStatus.StausNodata;
+                        }
+                    }
+                    else
+                    {
+                        Log.SaveLog("ArticlesDetailsViewModel.GetCommentAsync", new Exception() { Source = result.Message });
+                        LoadStatus = LoadMoreStatus.StausError;
                     }
                 }
                 catch (Exception ex)
                 {
-                    Log.SaveLog("ArticlesDetailsViewModel.LoadMoreCommand" , ex);
+                    Log.SaveLog("ArticlesDetailsViewModel.LoadMoreCommand", ex);
                     LoadStatus = LoadMoreStatus.StausError;
                 }
             }));
-        async Task ExecuteCommentCommandAsync()
-        {
-            var result = await StoreManager.ArticlesDetailsService.GetCommentAsync(articles.BlogApp, articles.Id, pageIndex, pageSize);
-            if (result.Success)
-            {
-                var comments = JsonConvert.DeserializeObject<List<ArticlesComments>>(result.Message.ToString());
-                if (comments.Count > 0)
-                {
-                    if (pageIndex == 1 && ArticlesComments.Count > 0)
-                        ArticlesComments.Clear();
-                    ArticlesComments.AddRange(comments);
-                    pageIndex++;
-                    if (ArticlesComments.Count >= pageSize)
-                    {
-                        LoadStatus = LoadMoreStatus.StausDefault;
-                        CanLoadMore = true;
-                    }
-                    else
-                    {
-                        LoadStatus = LoadMoreStatus.StausEnd;
-                        CanLoadMore = false;
-                    }
-                }
-                else
-                {
-                    CanLoadMore = false;
-                    LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausEnd : LoadMoreStatus.StausNodata;
-                }
-            }
-            else
-            {
-                Log.SaveLog("ArticlesDetailsViewModel.GetCommentAsync", new Exception() { Source = result.Message });
-                LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
-            }
-        }
-
         public async Task<bool> ExecuteCommentEditCommandAsync(string blogApp, int id, string content)
         {
             var result = await StoreManager.ArticlesDetailsService.PostCommentAsync(blogApp, id, content);
@@ -169,7 +158,7 @@ namespace XamCnblogs.Portable.ViewModel
             ArticlesComments.Add(comment);
             if (LoadStatus == LoadMoreStatus.StausNodata)
                 LoadStatus = LoadMoreStatus.StausEnd;
-            ArticlesDetails.CommentDisplay = (articles.CommentCount + 1).ToString();
+            ArticlesDetails.CommentDisplay = (articles.CommentCount = articles.CommentCount + 1).ToString();
         }
         public class ArticlesDetailsModel : BaseViewModel
         {
@@ -220,12 +209,6 @@ namespace XamCnblogs.Portable.ViewModel
             {
                 get { return hasError; }
                 set { SetProperty(ref hasError, value); }
-            }
-            bool hasContent;
-            public bool HasContent
-            {
-                get { return hasContent; }
-                set { SetProperty(ref hasContent, value); }
             }
             private bool isDelete;
             public bool IsDelete

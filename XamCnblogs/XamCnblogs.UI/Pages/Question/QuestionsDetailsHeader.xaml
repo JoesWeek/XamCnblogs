@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+	         xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             xmlns:converter="clr-namespace:XamCnblogs.UI.Converters;assembly=XamCnblogs.UI"
+             x:Class="XamCnblogs.UI.Pages.Question.QuestionsDetailsHeader"
+             x:Name="QuestionsDetailsHeader">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:IsGoldConverter x:Key="IsGoldConverter" />
+            <converter:DealFlagConverter x:Key="DealFlagConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentView.Content>
+        <StackLayout>
+            <StackLayout
+                Padding="{StaticResource StandardPadding}">
+                <Label
+                    Text="{Binding Title}"
+                    Style="{StaticResource TitleTextStyle}"/>
+                <StackLayout
+                    Spacing="10"
+                    Orientation="Horizontal"
+                    VerticalOptions="CenterAndExpand">
+                    <ffimageloading:CachedImage 
+			             WidthRequest="40" 
+                         HeightRequest="40"
+                         LoadingPlaceholder = "avatar_placeholder.png"
+	                     ErrorPlaceholder = "avatar_placeholder.png"
+			             DownsampleToViewSize="true"
+			             Source = "{Binding IconDisplay}">
+                        <ffimageloading:CachedImage.Transformations>
+                            <fftransformations:CircleTransformation BorderSize="1" BorderHexColor="#757575"/>
+                        </ffimageloading:CachedImage.Transformations>
+                    </ffimageloading:CachedImage>
+                    <StackLayout
+                         Spacing="3"
+                         HorizontalOptions="FillAndExpand"
+                         VerticalOptions="CenterAndExpand">
+                        <Label
+                             Text="{Binding  UserName}"
+                             Style="{StaticResource SecondaryTextStyle}"/>
+                        <Label
+                              Text="{Binding UserDisplay}"
+                              Style="{StaticResource SecondaryTextStyle}"/>
+                    </StackLayout>
+                    <StackLayout
+                               Spacing="0"
+                               Orientation="Vertical"
+                               HorizontalOptions="EndAndExpand"
+                               VerticalOptions="CenterAndExpand">
+                        <StackLayout
+                                   Orientation="Horizontal"
+                                   HorizontalOptions="CenterAndExpand"
+                                   VerticalOptions="CenterAndExpand"
+                                   IsVisible="{Binding Award, Converter={StaticResource IsGoldConverter}}">
+                            <Image Source="ic_gold.png"/>
+                            <Label
+                                       Text="{Binding Award}"
+                                       Style="{StaticResource GoldTextStyle}" />
+                        </StackLayout>
+                        <Label
+                                   Text="{Binding DealFlagDisplay}"
+                                   FontSize="{StaticResource SecondaryTextSize}"
+                                   TextColor="{Binding DealFlag, Converter={StaticResource DealFlagConverter}}"
+                                   HorizontalOptions="CenterAndExpand"
+                                   VerticalOptions="CenterAndExpand" />
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+            <controls:DetailsView
+                x:Name="detailsView"
+                Source="{Binding Content}"
+                HeightRequest="100"/>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

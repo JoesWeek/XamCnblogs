@@ -50,19 +50,28 @@ namespace XamCnblogs.Portable.Helpers
         }
         public async Task<ResponseMessage> PatchAsync(string url, HttpContent content)
         {
-            var method = new HttpMethod("PATCH");
-
-            var request = new HttpRequestMessage(method, url)
+            var responseMessage = new ResponseMessage();
+            try
             {
-                Content = content
-            };
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(UserTokenSettings.Current.UserTokenType, UserTokenSettings.Current.UserToken);
 
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(UserTokenSettings.Current.UserTokenType, UserTokenSettings.Current.UserToken);
-            var response = await client.SendAsync(request);
-            return await GetResultMessage(response);
+                var response = await client.SendAsync(new HttpRequestMessage(new HttpMethod("PATCH"), url)
+                {
+                    Content = content
+                });
+                responseMessage = await GetResultMessage(response);
+            }
+            catch (Exception ex)
+            {
+
+                DependencyService.Get<ILog>().SaveLog("UserHttpClient:PatchAsync", ex);
+                responseMessage = new ResponseMessage() { Success = false, Message = ex.Message };
+            }
+            return responseMessage;
         }
         public async Task<ResponseMessage> RefreshTokenAsync()
         {
+            var responseMessage = new ResponseMessage();
             try
             {
                 var parameters = new Dictionary<string, string>();
@@ -71,14 +80,14 @@ namespace XamCnblogs.Portable.Helpers
                 var basic = Convert.ToBase64String(Encoding.UTF8.GetBytes(ClientId + ":" + ClientSercret));
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", basic);
                 var response = await client.PostAsync(Apis.Token, new FormUrlEncodedContent(parameters));
-                return await GetResultMessage(response);
+                responseMessage = await GetResultMessage(response);
             }
             catch (Exception ex)
             {
                 DependencyService.Get<ILog>().SaveLog("UserHttpClient:RefreshTokenAsync", ex);
-                new ResponseMessage() { Success = false, Message = ex.Message };
-                throw;
+                responseMessage = new ResponseMessage() { Success = false, Message = ex.Message };
             }
+            return responseMessage;
         }
         private async Task<ResponseMessage> GetResultMessage(HttpResponseMessage response)
         {

@@ -49,6 +49,7 @@ namespace XamCnblogs.UI.Pages.KbArticle
 
                 this.KbArticlesListView.SelectedItem = null;
             };
+            ViewModel.GetClientKbArticlesAsync();
         }
 
         protected override void OnAppearing()
@@ -65,12 +66,6 @@ namespace XamCnblogs.UI.Pages.KbArticle
             {
                 //刷新
                 ViewModel.RefreshCommand.Execute(null);
-            }
-            else
-            {
-                //加载本地数据
-                if (ViewModel.KbArticles.Count == 0)
-                    ViewModel.RefreshCommand.Execute(null);
             }
         }
     }

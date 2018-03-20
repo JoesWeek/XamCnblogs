@@ -69,11 +69,6 @@ namespace XamCnblogs.UI.Pages.Question
                 //刷新
                 ViewModel.RefreshCommand.Execute(null);
             }
-            else
-            {
-                //加载本地数据
-                ViewModel.RefreshCommand.Execute(null);
-            }
         }
         void OnTapped(object sender, EventArgs args)
         {

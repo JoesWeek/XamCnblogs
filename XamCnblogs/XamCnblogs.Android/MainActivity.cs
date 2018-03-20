@@ -7,7 +7,6 @@ using Android.Runtime;
 using Com.Umeng.Socialize;
 using FFImageLoading.Forms.Droid;
 using FormsToolkit.Droid;
-using Xam.Plugin.WebView.Droid;
 using XamCnblogs.Droid.Helpers;
 
 namespace XamCnblogs.Droid
@@ -26,8 +25,6 @@ namespace XamCnblogs.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(bundle);
-
-            FormsWebViewRenderer.Initialize();
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             Toolkit.Init();

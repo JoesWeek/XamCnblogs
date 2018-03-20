@@ -28,7 +28,6 @@ namespace XamCnblogs.Portable.Model
         public int Score { get; set; }
         public int BuryCount { get; set; }
         public int CommentCounts { get; set; }
-
         [JsonIgnore]
         public string DateDisplay { get { return DateAdded.ToUniversalTime().Humanize(); } }
         [JsonIgnore]

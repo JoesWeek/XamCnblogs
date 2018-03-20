@@ -21,6 +21,7 @@ namespace XamCnblogs.Droid.Renderers
             if (e.NewElement != null)
             {
                 var aListView = (AListView)Control;
+                aListView.VerticalScrollBarEnabled = false;
                 var _refresh = (SwipeRefreshLayout)aListView.Parent;
                 if (_refresh != null)
                 {

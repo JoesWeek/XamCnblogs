@@ -23,7 +23,11 @@ namespace XamCnblogs.UI
         public App()
         {
             InitializeComponent();
-            AppCenter.Start("", typeof(Analytics), typeof(Crashes));
+
+            SqliteUtil.Current.CreateAllTablesAsync();
+
+            AppCenter.Start("android=edece6f4-538e-4a97-b9f7-5a24c95a00d8;ios=8b7847a8-ceae-4e21-bc51-a9da9a6e7ecc;", typeof(Analytics), typeof(Crashes));
+
             ViewModelBase.Init();
 
             XamBottomBarPage bottomBarPage = new XamBottomBarPage() { Title = "博客园" };
@@ -31,16 +35,18 @@ namespace XamCnblogs.UI
             bottomBarPage.FixedMode = true;
 
             bottomBarPage.BarTheme = XamBottomBarPage.BarThemeTypes.Light;
-            
+
             bottomBarPage.Children.Add(new ArticlesTopTabbedPage());
             bottomBarPage.Children.Add(new NewsTopTabbedPage());
             bottomBarPage.Children.Add(new StatusesTopTabbedPage());
             bottomBarPage.Children.Add(new QuestionsTopTabbedPage());
             bottomBarPage.Children.Add(new AccountPage());
-            
-            MainPage = new NavigationPage(bottomBarPage);
-            
+
+            //MainPage = new XamNavigationPage(bottomBarPage);
+
+            MainPage = new XamNavigationPage(new Page1());
         }
+
         protected override void OnStart()
         {
             OnResume();

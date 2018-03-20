@@ -21,13 +21,16 @@ namespace XamCnblogs.Portable.ViewModel
         public QuestionsViewModel(int position = 0)
         {
             this.position = position;
-            NextRefreshTime = DateTime.Now.AddMinutes(15);
             CanLoadMore = false;
             //判断有没有登录
             if (position == 4 && UserTokenSettings.Current.HasExpiresIn())
             {
                 LoadStatus = LoadMoreStatus.StausNologin;
             }
+        }
+        public async void GetClientQuestionsAsync()
+        {
+            Questions.AddRange(await SqliteUtil.Current.QueryQuestionsByType(position, pageSize));
         }
         ICommand refreshCommand;
         public ICommand RefreshCommand =>
@@ -53,7 +56,7 @@ namespace XamCnblogs.Portable.ViewModel
                 }
                 catch (Exception ex)
                 {
-                    Log.SaveLog("QuestionsViewModel.RefreshCommand" , ex);
+                    Log.SaveLog("QuestionsViewModel.RefreshCommand", ex);
                     LoadStatus = LoadMoreStatus.StausFail;
                 }
                 finally
@@ -94,6 +97,8 @@ namespace XamCnblogs.Portable.ViewModel
                     if (pageIndex == 1 && Questions.Count > 0)
                         Questions.Clear();
                     Questions.AddRange(questions);
+                    if (position != 4)
+                        await SqliteUtil.Current.UpdateQuestions(questions);
                     pageIndex++;
                     if (Questions.Count >= pageSize)
                     {

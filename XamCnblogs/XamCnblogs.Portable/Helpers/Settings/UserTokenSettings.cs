@@ -27,14 +27,18 @@ namespace XamCnblogs.Portable.Helpers
         /// </summary>
         public bool HasExpiresIn()
         {
-            if (UserToken != null && UserTokenRefreshTime.AddSeconds(UserExpiresIn) > DateTime.Now)
+            if (UserToken == null)
             {
-                return false;
+                return true;
             }
-            else
+            else if (UserTokenRefreshTime.AddSeconds(UserExpiresIn) < DateTime.Now)
             {
                 UpdateUserToken(new Token());
                 return true;
+            }
+            else
+            {
+                return false;
             }
         }
         const string UserTokenKey = "user_token";

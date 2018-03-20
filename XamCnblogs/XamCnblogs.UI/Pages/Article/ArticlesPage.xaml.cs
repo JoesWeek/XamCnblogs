@@ -1,9 +1,6 @@
-﻿
-using Rg.Plugins.Popup.Extensions;
-using System;
+﻿using System;
 using Xamarin.Forms;
 using XamCnblogs.Portable.Helpers;
-using XamCnblogs.Portable.Interfaces;
 using XamCnblogs.Portable.Model;
 using XamCnblogs.Portable.ViewModel;
 
@@ -28,6 +25,8 @@ namespace XamCnblogs.UI.Pages.Article
                 await NavigationService.PushAsync(Navigation, articlesDetails);
                 this.ArticlesListView.SelectedItem = null;
             };
+
+            ViewModel.GetClientArticlesAsync();
         }
 
         protected override void OnAppearing()
@@ -44,12 +43,6 @@ namespace XamCnblogs.UI.Pages.Article
             {
                 //刷新
                 ViewModel.RefreshCommand.Execute(null);
-            }
-            else
-            {
-                //加载本地数据
-                if (ViewModel.Articles.Count == 0)
-                    ViewModel.RefreshCommand.Execute(null);
             }
         }
     }

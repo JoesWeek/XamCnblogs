@@ -16,10 +16,14 @@ namespace XamCnblogs.Portable.ViewModel
         public ObservableRangeCollection<KbArticles> KbArticles { get; } = new ObservableRangeCollection<KbArticles>();
         public DateTime NextRefreshTime { get; set; }
         private int pageIndex = 1;
+        private int pageSize = 20;
         public KbArticlesViewModel()
         {
-            NextRefreshTime = DateTime.Now.AddMinutes(15);
             CanLoadMore = false;
+        }
+        public async void GetClientKbArticlesAsync()
+        {
+            KbArticles.AddRange(await SqliteUtil.Current.QueryKbArticles(pageSize));
         }
         ICommand refreshCommand;
         public ICommand RefreshCommand =>
@@ -67,7 +71,7 @@ namespace XamCnblogs.Portable.ViewModel
             }));
         async Task ExecuteRefreshCommandAsync()
         {
-            var result = await StoreManager.KbArticlesService.GetKbArticlesAsync(pageIndex);
+            var result = await StoreManager.KbArticlesService.GetKbArticlesAsync(pageIndex, pageSize);
             if (result.Success)
             {
                 var kbArticles = JsonConvert.DeserializeObject<List<KbArticles>>(result.Message.ToString());
@@ -76,6 +80,7 @@ namespace XamCnblogs.Portable.ViewModel
                     if (pageIndex == 1 && KbArticles.Count > 0)
                         KbArticles.Clear();
                     KbArticles.AddRange(kbArticles);
+                    await SqliteUtil.Current.UpdateKbArticles(kbArticles);
                     pageIndex++;
                     LoadStatus = LoadMoreStatus.StausDefault;
                     CanLoadMore = true;

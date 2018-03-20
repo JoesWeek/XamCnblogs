@@ -57,6 +57,7 @@ namespace XamCnblogs.UI.Pages.Question
                 await NavigationService.PushAsync(Navigation, questionsDetails);
                 this.QuestionsListView.SelectedItem = null;
             };
+            ViewModel.GetClientQuestionsAsync();
         }
 
         protected override void OnAppearing()
@@ -73,12 +74,6 @@ namespace XamCnblogs.UI.Pages.Question
             {
                 //刷新
                 ViewModel.RefreshCommand.Execute(null);
-            }
-            else
-            {
-                //加载本地数据
-                if (ViewModel.Questions.Count == 0)
-                    ViewModel.RefreshCommand.Execute(null);
             }
         }
 

@@ -17,12 +17,12 @@ namespace XamCnblogs.Droid.Helpers
             sb.Append("Tag：\n");
             sb.Append(tag).Append("\n\n");
             sb.Append("异常信息：\n");
-            sb.Append(ex.Message).Append("\n\n");
-            sb.Append(ex.StackTrace).Append("\n\n");
-            sb.Append(ex.Source).Append("\n\n");
-            sb.Append(ex.TargetSite).Append("\n\n");
-            sb.Append(ex.InnerException).Append("\n\n");
-            if (ex.Data != null)
+            sb.Append("1.Message：" + ex.Message).Append("\n\n");
+            sb.Append("2.StackTrace：" + ex.StackTrace).Append("\n\n");
+            sb.Append("3.Source：" + ex.Source).Append("\n\n");
+            sb.Append("4.TargetSite：" + ex.TargetSite).Append("\n\n");
+            sb.Append("5.InnerException：" + ex.InnerException).Append("\n\n");
+            if (ex.Data.Count > 0)
             {
                 sb.Append("其他信息：\n");
                 foreach (var item in ex.Data)
