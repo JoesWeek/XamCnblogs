@@ -117,8 +117,9 @@ namespace XamCnblogs.Droid.Renderers
 
                 int i = 10;
                 while (view.ContentHeight == 0 && i-- > 0)
-                    await System.Threading.Tasks.Task.Delay(150);
+                    await System.Threading.Tasks.Task.Delay(200);
                 renderer.Element.HeightRequest = view.ContentHeight;
+                await System.Threading.Tasks.Task.Delay(200);
                 renderer.Element.OnCompleted();
             }
         }

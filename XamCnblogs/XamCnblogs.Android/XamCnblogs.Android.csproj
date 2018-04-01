@@ -18,6 +18,7 @@
     <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <AndroidKeyStore>false</AndroidKeyStore>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -28,7 +29,11 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <AndroidSupportedAbis />
+    <AndroidSupportedAbis>
+    </AndroidSupportedAbis>
+    <AotAssemblies>false</AotAssemblies>
+    <EnableLLVM>false</EnableLLVM>
+    <BundleAssemblies>false</BundleAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,10 +45,12 @@
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <EnableProguard>false</EnableProguard>
-    <AotAssemblies>false</AotAssemblies>
-    <EnableLLVM>false</EnableLLVM>
+    <AotAssemblies>true</AotAssemblies>
+    <EnableLLVM>true</EnableLLVM>
     <AndroidEnableSGenConcurrent>false</AndroidEnableSGenConcurrent>
     <AndroidSupportedAbis />
+    <BundleAssemblies>true</BundleAssemblies>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -148,7 +155,6 @@
     <Compile Include="Helpers\SQLite_Android.cs" />
     <Compile Include="Helpers\VersionNameer.cs" />
     <Compile Include="Helpers\Toaster.cs" />
-    <Compile Include="Helpers\X5WebView.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MainApplication.cs" />
     <Compile Include="Renderers\DetailsViewRenderer.cs" />
@@ -171,10 +177,6 @@
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <AndroidResource Include="Resources\drawable\searchview_background.xml" />
-    <AndroidResource Include="Resources\layout\drawer_header.axml" />
-    <AndroidResource Include="Resources\layout\NavView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\authorizeview.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -212,6 +214,10 @@
       <Project>{65a214fb-6f63-4eac-bdc0-7e3b13d1b42c}</Project>
       <Name>Binding_TencentTBS</Name>
     </ProjectReference>
+    <ProjectReference Include="AndroidBindings\Binding_XgPush\Binding_XgPush.csproj">
+      <Project>{98176440-c544-45b9-9c2a-42974f8b0015}</Project>
+      <Name>Binding_XgPush</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\background_splash.xml" />
@@ -248,9 +254,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\menu_statuses.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\menu\nav_menu.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\colors.xml" />
@@ -365,6 +368,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\ic_tab.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\values-v26\styles.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\search_bg.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

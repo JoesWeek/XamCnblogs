@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+  <style name="WXEntryStyle" parent="android:style/Theme.Translucent.NoTitleBar">
+    <item name="android:windowIsTranslucent">false</item>
+    <item name="android:windowDisablePreview">true</item>
+  </style>
+</resources>

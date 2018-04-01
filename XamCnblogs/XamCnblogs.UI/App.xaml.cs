@@ -42,16 +42,10 @@ namespace XamCnblogs.UI
             bottomBarPage.Children.Add(new QuestionsTopTabbedPage());
             bottomBarPage.Children.Add(new AccountPage());
 
-            //MainPage = new XamNavigationPage(bottomBarPage);
-
-            MainPage = new XamNavigationPage(new Page1());
+            MainPage = new XamNavigationPage(bottomBarPage);
         }
 
         protected override void OnStart()
-        {
-            OnResume();
-        }
-        public void SecondOnResume()
         {
             OnResume();
         }

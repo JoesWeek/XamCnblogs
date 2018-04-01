@@ -5,12 +5,12 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{65A214FB-6F63-4EAC-BDC0-7E3B13D1B42C}</ProjectGuid>
+    <ProjectGuid>{98176440-C544-45B9-9C2A-42974F8B0015}</ProjectGuid>
     <ProjectTypeGuids>{10368E6C-D01B-4462-8E8B-01FC667A7035};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Binding_TencentTBS</RootNamespace>
-    <AssemblyName>TBS.Droid</AssemblyName>
+    <RootNamespace>Binding_XgPush</RootNamespace>
+    <AssemblyName>XgPush.Android</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
@@ -38,12 +38,11 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Additions\Com.Tencent.Smtt.Sdk.WebChromeClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Jars\AboutJars.txt" />
-    <None Include="Additions\AboutAdditions.txt" />
+    <EmbeddedNativeLibrary Include="libs\armeabi\libtpnsSecurity.so" />
+    <EmbeddedNativeLibrary Include="libs\armeabi\libxguardian.so" />
   </ItemGroup>
   <ItemGroup>
     <TransformFile Include="Transforms\Metadata.xml" />
@@ -51,7 +50,30 @@
     <TransformFile Include="Transforms\EnumMethods.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedJar Include="Jars\tbs_sdk_thirdapp_v3.5.0.1004_43500_sharewithdownload_withoutGame_obfs_20170801_113025.jar" />
+    <EmbeddedJar Include="Jars\Xg_sdk_v3.2.2_20180116_1704.jar" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedReferenceJar Include="Jars\mid-core-sdk-4.0.6.jar" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedReferenceJar Include="Jars\wup-1.0.0.E-SNAPSHOT.jar" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Additions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedNativeLibrary Include="libs\arm64-v8a\libtpnsSecurity.so" />
+    <EmbeddedNativeLibrary Include="libs\arm64-v8a\libxguardian.so" />
+    <EmbeddedNativeLibrary Include="libs\armeabi-v7a\libtpnsSecurity.so" />
+    <EmbeddedNativeLibrary Include="libs\armeabi-v7a\libxguardian.so" />
+    <EmbeddedNativeLibrary Include="libs\mips64\libtpnsSecurity.so" />
+    <EmbeddedNativeLibrary Include="libs\mips64\libxguardian.so" />
+    <EmbeddedNativeLibrary Include="libs\mips\libtpnsSecurity.so" />
+    <EmbeddedNativeLibrary Include="libs\mips\libxguardian.so" />
+    <EmbeddedNativeLibrary Include="libs\x86\libtpnsSecurity.so" />
+    <EmbeddedNativeLibrary Include="libs\x86\libxguardian.so" />
+    <EmbeddedNativeLibrary Include="libs\x86_64\libtpnsSecurity.so" />
+    <EmbeddedNativeLibrary Include="libs\x86_64\libxguardian.so" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.Bindings.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

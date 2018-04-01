@@ -25,5 +25,12 @@ namespace XamCnblogs.Droid.Helpers
             // Return the synchronous database connection 
             return new SQLiteAsyncConnection(dbPath);
         }
+        public SQLiteConnection GetConnection()
+        {
+            var dbPath = GetDatabasePath();
+
+            // Return the synchronous database connection 
+            return new SQLiteConnection(dbPath);
+        }
     }
 }

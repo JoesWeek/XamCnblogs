@@ -16,23 +16,30 @@ namespace XamCnblogs.Portable.Helpers
             get { return baseSqlite ?? (baseSqlite = new SqliteUtil()); }
         }
         private static readonly SQLiteAsyncConnection db;
+        private static readonly SQLiteConnection dbAsync;
         private static readonly ILog Log;
         static SqliteUtil()
         {
-            db = DependencyService.Get<ISQLite>().GetAsyncConnection();
+            if (db == null)
+                db = DependencyService.Get<ISQLite>().GetAsyncConnection();
+            if (dbAsync == null)
+                dbAsync = DependencyService.Get<ISQLite>().GetConnection();
             Log = DependencyService.Get<ILog>();
         }
         public async void CreateAllTablesAsync()
         {
             try
             {
-                await db.CreateTableAsync<Articles>().ConfigureAwait(false);
-                await db.CreateTableAsync<KbArticles>().ConfigureAwait(false);
-                await db.CreateTableAsync<News>().ConfigureAwait(false);
-                await db.CreateTableAsync<Statuses>().ConfigureAwait(false);
-                await db.CreateTableAsync<Questions>().ConfigureAwait(false);
-                await db.CreateTableAsync<QuestionUserInfo>().ConfigureAwait(false);
-                await db.CreateTableAsync<QuestionAddition>().ConfigureAwait(false);
+                await Task.Run(() =>
+                {
+                    dbAsync.CreateTable<Articles>();
+                    dbAsync.CreateTable<KbArticles>();
+                    dbAsync.CreateTable<News>();
+                    dbAsync.CreateTable<Statuses>();
+                    dbAsync.CreateTable<Questions>();
+                    dbAsync.CreateTable<QuestionUserInfo>();
+                    dbAsync.CreateTable<QuestionAddition>();
+                });
             }
             catch (Exception ex)
             {

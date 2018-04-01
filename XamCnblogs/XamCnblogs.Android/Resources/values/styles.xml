@@ -12,16 +12,18 @@
     <item name="android:windowBackground">@color/window_background</item>
   </style>
 
-   <style name="SplashTheme" parent="SplashTheme.Base">
+  <style name="SplashTheme" parent="SplashTheme.Base">
     <item name="colorPrimary">@color/primary</item>
     <item name="colorPrimaryDark">@color/primary_dark</item>
     <item name="colorAccent">@color/accent</item>
-   </style>
-   <style name="SplashTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@drawable/background_splash</item>
-    </style>
+  </style>
+  <style name="SplashTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="android:windowBackground">@drawable/background_splash</item>
+  </style>
   <style name="AppCompatDialogStyle" parent="Theme.AppCompat.Light.Dialog">
     <item name="colorAccent">@color/primary</item>
+  </style>
+  <style name="WXEntryStyle" parent="android:style/Theme.Translucent.NoTitleBar">
   </style>
 
 </resources>

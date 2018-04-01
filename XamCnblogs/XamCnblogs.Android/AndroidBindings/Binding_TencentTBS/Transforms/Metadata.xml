@@ -1,14 +1,4 @@
 ﻿<metadata>
-  <!--
-  This sample removes the class: android.support.v4.content.AsyncTaskLoader.LoadTask:
-  <remove-node path="/api/package[@name='android.support.v4.content']/class[@name='AsyncTaskLoader.LoadTask']" />
-  
-  This sample removes the method: android.support.v4.content.CursorLoader.loadInBackground:
-  <remove-node path="/api/package[@name='android.support.v4.content']/class[@name='CursorLoader']/method[@name='loadInBackground']" />
-  -->
-
-
  <remove-node path="/api/package[@name='com.tencent.smtt.sdk']/class[@name='WebChromeClient']/method[@name='onProgressChanged' and count(parameter)=2 and parameter[1][@type='com.tencent.smtt.sdk.WebView'] and parameter[2][@type='int']]"/> 
   <remove-node path="/api/package[@name='com.tencent.smtt.export.external.interfaces']/interface[@name='DownloadListener']" />
-  <!--<attr path="/api/package[@name='com.tencent.smtt.export.external.interfaces']/interface[@name='DownloadListener']/method[@name='onDownloadStart']/parameter[@name='p0']" name="name">url</attr>-->
 </metadata>
