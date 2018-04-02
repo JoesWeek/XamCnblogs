@@ -18,7 +18,7 @@ namespace XamCnblogs.Droid.Helpers
         public SharesWidget(Activity context)
         {
             this.context = context;
-            
+
             shareAction = new ShareAction(context)
                                 .SetDisplayList(SHARE_MEDIA.Weixin, SHARE_MEDIA.WeixinCircle, SHARE_MEDIA.WeixinFavorite, SHARE_MEDIA.Sina)
                                 .SetShareboardclickCallback(this);

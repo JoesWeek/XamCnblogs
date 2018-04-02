@@ -12,7 +12,7 @@
     <RootNamespace>Binding_XgPush</RootNamespace>
     <AssemblyName>XgPush.Android</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
+    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -43,6 +43,8 @@
   <ItemGroup>
     <EmbeddedNativeLibrary Include="libs\armeabi\libtpnsSecurity.so" />
     <EmbeddedNativeLibrary Include="libs\armeabi\libxguardian.so" />
+    <EmbeddedNativeLibrary Include="libs\x86\libtpnsSecurity.so" />
+    <EmbeddedNativeLibrary Include="libs\x86\libxguardian.so" />
   </ItemGroup>
   <ItemGroup>
     <TransformFile Include="Transforms\Metadata.xml" />
@@ -70,8 +72,6 @@
     <EmbeddedNativeLibrary Include="libs\mips64\libxguardian.so" />
     <EmbeddedNativeLibrary Include="libs\mips\libtpnsSecurity.so" />
     <EmbeddedNativeLibrary Include="libs\mips\libxguardian.so" />
-    <EmbeddedNativeLibrary Include="libs\x86\libtpnsSecurity.so" />
-    <EmbeddedNativeLibrary Include="libs\x86\libxguardian.so" />
     <EmbeddedNativeLibrary Include="libs\x86_64\libtpnsSecurity.so" />
     <EmbeddedNativeLibrary Include="libs\x86_64\libxguardian.so" />
   </ItemGroup>

@@ -36,23 +36,19 @@ namespace XamCnblogs.Droid
             Shares.Init(this);
 
             XGPushConfig.EnableDebug(this, !BuildConfig.Debug);
-            XGPushManager.RegisterPush(ApplicationContext, this);
-            var str = XGPushConfig.GetToken(ApplicationContext);
-
-            Toast.MakeText(this, "token：" + str, ToastLength.Long).Show();
+            XGPushManager.RegisterPush(this, this);
+            var str = XGPushConfig.GetToken(this);
 
             LoadApplication(new UI.App());
         }
         public void OnFail(Java.Lang.Object data, int flag, string message)
         {
             Log.Error("TPush", "注册识别，设备token为：" + data);
-            Toast.MakeText(this, "注册失败：" + flag + "------" + message, ToastLength.Long).Show();
         }
 
         public void OnSuccess(Java.Lang.Object data, int flag)
         {
             Log.Debug("TPush", "注册成功，设备token为：" + data);
-            Toast.MakeText(this, "注册成功：" + data, ToastLength.Long).Show();
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
