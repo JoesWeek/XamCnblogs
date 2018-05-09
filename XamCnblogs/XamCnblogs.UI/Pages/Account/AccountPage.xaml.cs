@@ -1,4 +1,5 @@
-﻿using FormsToolkit;
+﻿using FFImageLoading.Transformations;
+using FormsToolkit;
 using Plugin.Messaging;
 using System;
 
@@ -16,6 +17,8 @@ namespace XamCnblogs.UI.Pages.Account
             InitializeComponent();
             Title = "我";
             Icon = "menu_avatar.png";
+
+            ffimageloading.Transformations.Add(new CircleTransformation());
         }
         protected override void OnAppearing()
         {
@@ -32,7 +35,7 @@ namespace XamCnblogs.UI.Pages.Account
                 this.LogoutLayout.IsVisible = false;
                 this.Login.IsVisible = true;
 
-                this.AvatarLayout.Source = "avatar_placeholder.png";
+                this.ffimageloading.Source = "avatar_placeholder.png";
                 this.UserName.Text = "";
                 this.UserSeniority.Text = "";
             }
@@ -43,7 +46,7 @@ namespace XamCnblogs.UI.Pages.Account
                 this.LogoutLayout.IsVisible = true;
                 this.Login.IsVisible = false;
 
-                this.AvatarLayout.Source = UserSettings.Current.Avatar;
+                this.ffimageloading.Source = UserSettings.Current.Avatar;
                 this.UserName.Text = UserSettings.Current.DisplayName;
                 this.UserSeniority.Text = "园龄：" + UserSettings.Current.Seniority;
             }

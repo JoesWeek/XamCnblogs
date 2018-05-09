@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-	         xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
              xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
              x:Class="XamCnblogs.UI.Pages.Account.AccountPage"
              Title="我">
@@ -11,17 +11,15 @@
         <Frame Padding="10">
             <StackLayout Orientation="Horizontal" VerticalOptions="CenterAndExpand" Padding="5">
                 <ffimageloading:CachedImage 
-                    x:Name="AvatarLayout"
+                    x:Name="ffimageloading"
                     HorizontalOptions="Center" 
                     VerticalOptions="Center"
-			        WidthRequest="60" 
-                    HeightRequest="60"
-                    LoadingPlaceholder = "avatar_placeholder.png"
-	                ErrorPlaceholder = "avatar_placeholder.png"
-			        DownsampleToViewSize="true">
-                    <ffimageloading:CachedImage.Transformations>
-                        <fftransformations:CircleTransformation />
-                    </ffimageloading:CachedImage.Transformations>
+                    LoadingPlaceholder="avatar_placeholder.png" 
+                    ErrorPlaceholder="avatar_placeholder.png" 
+                    DownsampleToViewSize="true"
+                    Aspect="AspectFit" 
+                    HeightRequest="60" 
+                    WidthRequest="60">
                 </ffimageloading:CachedImage>
                 <StackLayout  
                     HorizontalOptions="FillAndExpand"

@@ -20,9 +20,7 @@
             SeparatorColor="{StaticResource Divider}">
             <controls:LoadMoreListView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell>
-                        <cells:ArticlesItemCell/>
-                    </ViewCell>
+                    <cells:ArticlesItemCell/>
                 </DataTemplate>
             </controls:LoadMoreListView.ItemTemplate>
         </controls:LoadMoreListView>

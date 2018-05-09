@@ -1,4 +1,5 @@
 ﻿using FormsToolkit;
+using Newtonsoft.Json;
 using Rg.Plugins.Popup.Extensions;
 using System;
 using System.Collections.Generic;
@@ -20,41 +21,49 @@ namespace XamCnblogs.UI.Pages.Status
         StatusesDetailsViewModel ViewModel => vm ?? (vm = BindingContext as StatusesDetailsViewModel);
         StatusesDetailsViewModel vm;
         Statuses statuses;
+
         public StatusesDetailsPage(Statuses statuses)
         {
             this.statuses = statuses;
             InitializeComponent();
             Title = statuses.UserDisplayName + "的闪存";
             BindingContext = new StatusesDetailsViewModel(statuses);
-        }
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-            UpdatePage();
-        }
-        private void UpdatePage()
-        {
-            bool forceRefresh = (DateTime.Now > (ViewModel?.NextRefreshTime ?? DateTime.Now));
 
-            if (forceRefresh)
+            formsWebView.OnContentLoaded += delegate (object sender, EventArgs e)
             {
-                //刷新
-                ViewModel.RefreshCommand.Execute(null);
-            }
-            else
+                RefreshStatuses();
+            };
+
+            formsWebView.AddLocalCallback("reload", async delegate (string obj)
             {
-                //加载本地数据
-                ViewModel.RefreshCommand.Execute(null);
-            }
+                if (formsWebView.LoadStatus == LoadMoreStatus.StausDefault || formsWebView.LoadStatus == LoadMoreStatus.StausError || formsWebView.LoadStatus == LoadMoreStatus.StausFail)
+                {
+                    var questionsComments = JsonConvert.SerializeObject(await ViewModel.ReloadCommentsAsync());
+                    await formsWebView.InjectJavascriptAsync("updateComments(" + questionsComments + ");");
+                }
+            });
+            formsWebView.AddLocalCallback("editItem", delegate (string id)
+            {
+                var statusesComments = ViewModel.StatusesComments.Where(n => n.Id == int.Parse(id)).FirstOrDefault();
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    var page = new StatusesCommentPopupPage(statuses, new Action<StatusesComments>(OnResult));
+                    await Navigation.PushPopupAsync(page);
+                });
+            });
+            formsWebView.AddLocalCallback("deleteItem", async delegate (string id)
+            {
+                var result = await ViewModel.DeleteStatusesCommentsAsync(int.Parse(id));
+                await formsWebView.InjectJavascriptAsync("deleteComment(" + id + "," + result.ToString().ToLower() + ");");
+            });
         }
-        void OnTapped(object sender, EventArgs args)
+        async void RefreshStatuses()
         {
-            ViewModel.RefreshCommand.Execute(null);
+            var model = JsonConvert.SerializeObject(statuses);
+            await formsWebView.InjectJavascriptAsync("updateModel(" + model + ");");
         }
         void OnScrollComment(object sender, EventArgs args)
         {
-            if (ViewModel.StatusesComments.Count > 0)
-                StatusesView.ScrollTo(ViewModel.StatusesComments.First(), ScrollToPosition.Start, false);
         }
         async void OnShowComment(object sender, EventArgs args)
         {
@@ -69,12 +78,12 @@ namespace XamCnblogs.UI.Pages.Status
                     await Navigation.PushPopupAsync(page);
             }
         }
-        private void OnResult(StatusesComments result)
+        async void OnResult(StatusesComments result)
         {
             if (result != null)
             {
                 ViewModel.AddComment(result);
-                StatusesView.ScrollTo(ViewModel.StatusesComments.Last(), ScrollToPosition.Start, false);
+                await formsWebView.InjectJavascriptAsync("updateComment(" + JsonConvert.SerializeObject(result) + ");");
             }
         }
     }

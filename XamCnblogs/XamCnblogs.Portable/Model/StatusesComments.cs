@@ -1,38 +1,35 @@
-﻿using Humanizer;
-using MvvmHelpers;
+﻿using MvvmHelpers;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using XamCnblogs.Portable.Helpers;
 
 namespace XamCnblogs.Portable.Model
 {
-    public class StatusesComments : BaseViewModel
+    public class StatusesComments
     {
         public int Id { get; set; }
-        private string content;
-        public string Content
-        {
-            get { return content; }
-            set { SetProperty(ref content, value); }
-        }
+        public string Content { get; set; }
         public int StatusId { get; set; }
         public string UserAlias { get; set; }
-        public string UserDisplayName { get; set; }        
+        public string UserDisplayName { get; set; }
         public DateTime DateAdded { get; set; }
         public string UserIconUrl { get; set; }
         public int UserId { get; set; }
         public Guid UserGuid { get; set; }
-        [JsonIgnore]
-        public string DateDisplay { get { return DateAdded.ToUniversalTime().Humanize(); } }
-        private bool isDelete;
-        [JsonIgnore]
-        public bool IsDelete
+        public string DateDisplay { get { return DateAdded.Format(); } }
+        public bool IsLoginUser
         {
-            get { return isDelete; }
-            set { SetProperty(ref isDelete, value); }
+            get
+            {
+                if (!UserTokenSettings.Current.HasExpiresIn() && Id > 0)
+                {
+                    return UserGuid.Equals(UserSettings.Current.UserId);
+                }
+                else
+                {
+                    return false;
+                }
+            }
         }
     }
 }

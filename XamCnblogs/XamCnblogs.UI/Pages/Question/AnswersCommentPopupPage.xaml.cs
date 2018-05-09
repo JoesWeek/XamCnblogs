@@ -14,10 +14,10 @@ namespace XamCnblogs.UI.Pages.New
     {
         AnswersDetailsViewModel ViewModel => vm ?? (vm = BindingContext as AnswersDetailsViewModel);
         AnswersDetailsViewModel vm;
-        Action<AnswersComment> result;
+        Action<AnswersComments> result;
         QuestionsAnswers answers;
-        AnswersComment answersComment;
-        public AnswersCommentPopupPage(QuestionsAnswers answers, Action<AnswersComment> result, AnswersComment answersComment = null)
+        AnswersComments answersComment;
+        public AnswersCommentPopupPage(QuestionsAnswers answers, Action<AnswersComments> result, AnswersComments answersComment = null)
         {
             this.answers = answers;
             this.result = result;
@@ -29,6 +29,7 @@ namespace XamCnblogs.UI.Pages.New
                 this.Comment.Text = answersComment.Content;
             }
             this.Comment.Focus();
+            ViewModel.IsBusy = false;
         }
         private void OnClose(object sender, EventArgs e)
         {
@@ -40,7 +41,7 @@ namespace XamCnblogs.UI.Pages.New
             {
                 if (answersComment == null)
                 {
-                    answersComment = new AnswersComment();
+                    answersComment = new AnswersComments();
                     answersComment.PostUserInfo = new QuestionUserInfo()
                     {
                         UserID = UserSettings.Current.SpaceUserId,
@@ -73,6 +74,9 @@ namespace XamCnblogs.UI.Pages.New
                 SendButton.IsRunning = true;
                 if (answersComment == null)
                 {
+                    if (AboutSettings.Current.WeibaToggled)
+                        content += "<br/>" + AboutSettings.Current.WeibaContent;
+
                     if (await ViewModel.ExecuteCommentPostCommandAsync(answers.Qid, answers.AnswerID, content))
                     {
                         SendButton.IsRunning = false;

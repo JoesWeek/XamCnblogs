@@ -1,5 +1,6 @@
 ﻿
 using FormsToolkit;
+using Newtonsoft.Json;
 using Rg.Plugins.Popup.Extensions;
 using System;
 using System.Linq;
@@ -17,10 +18,12 @@ namespace XamCnblogs.UI.Pages.Article
         ArticlesDetailsViewModel ViewModel => vm ?? (vm = BindingContext as ArticlesDetailsViewModel);
         ArticlesDetailsViewModel vm;
         Articles articles;
+
         public ArticlesDetailsPage(Articles articles)
         {
             this.articles = articles;
             InitializeComponent();
+            
             BindingContext = new ArticlesDetailsViewModel(articles);
 
             var cancel = new ToolbarItem
@@ -36,34 +39,35 @@ namespace XamCnblogs.UI.Pages.Article
             if (Device.Android == Device.RuntimePlatform)
                 cancel.Icon = "toolbar_share.png";
 
-        }
-
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-            UpdatePage();
-        }
-        private void UpdatePage()
-        {
-            bool forceRefresh = (DateTime.Now > (ViewModel?.NextRefreshTime ?? DateTime.Now));
-
-            if (forceRefresh)
+            formsWebView.OnContentLoaded += delegate (object sender, EventArgs e)
             {
-                //刷新
-                ViewModel.RefreshCommand.Execute(null);
-            }
+                RefreshArticles();
+            };
+            formsWebView.AddLocalCallback("reload", async delegate (string obj)
+            {
+                if (formsWebView.LoadStatus == LoadMoreStatus.StausDefault || formsWebView.LoadStatus == LoadMoreStatus.StausError || formsWebView.LoadStatus == LoadMoreStatus.StausFail)
+                {
+                    var articlesComments = JsonConvert.SerializeObject(await ViewModel.ReloadCommentsAsync());
+                    await formsWebView.InjectJavascriptAsync("updateComments(" + articlesComments + ");");
+                }
+            });
         }
-        void OnTapped(object sender, EventArgs args)
+
+        async void RefreshArticles()
         {
-            ViewModel.RefreshCommand.Execute(null);
+            var model = JsonConvert.SerializeObject(await ViewModel.RefreshArticlesAsync());
+            await formsWebView.InjectJavascriptAsync("updateModel(" + model + ");");
         }
+
+        void OnReloadArticles(object sender, EventArgs args)
+        {
+            RefreshArticles();
+        }
+
         void OnScrollComment(object sender, EventArgs args)
         {
-            var view = ArticlesDetailsView.HeaderTemplate;
-
-            //if (ViewModel.ArticlesComments.Count > 0)
-            //    ArticlesDetailsView.ScrollTo(ViewModel.ArticlesComments.First(), ScrollToPosition.Start, false);
         }
+
         async void OnShowComment(object sender, EventArgs args)
         {
             if (UserTokenSettings.Current.HasExpiresIn())
@@ -77,14 +81,15 @@ namespace XamCnblogs.UI.Pages.Article
                     await Navigation.PushPopupAsync(page);
             }
         }
-        private void OnResult(ArticlesComments result)
+
+        private async void OnResult(ArticlesComments result)
         {
             if (result != null)
             {
-                ViewModel.AddComment(result);
-                //ArticlesDetailsView.ScrollTo(ViewModel.ArticlesComments.Last(), ScrollToPosition.Start, false);
+                await formsWebView.InjectJavascriptAsync("updateComment(" + JsonConvert.SerializeObject(result) + ");");
             }
         }
+
         async void OnBookmarks(object sender, EventArgs args)
         {
             if (UserTokenSettings.Current.HasExpiresIn())

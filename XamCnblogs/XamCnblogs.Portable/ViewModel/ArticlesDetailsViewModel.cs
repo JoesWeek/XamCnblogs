@@ -1,6 +1,4 @@
-﻿using XamCnblogs.Portable.Helpers;
-using XamCnblogs.Portable.Model;
-using XamCnblogs.Portable.Services;
+﻿using Microsoft.AppCenter.Crashes;
 using MvvmHelpers;
 using Newtonsoft.Json;
 using System;
@@ -8,18 +6,17 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
-using Humanizer;
-using System.Globalization;
+using XamCnblogs.Portable.Helpers;
+using XamCnblogs.Portable.Model;
 
 namespace XamCnblogs.Portable.ViewModel
 {
     public class ArticlesDetailsViewModel : ViewModelBase
     {
-        public ObservableRangeCollection<ArticlesComments> ArticlesComments { get; } = new ObservableRangeCollection<ArticlesComments>();
         private Articles articles;
-        public DateTime NextRefreshTime { get; set; }
         private int pageIndex = 1;
         private int pageSize = 20;
+        public DateTime NextRefreshTime { get; set; }
 
         ArticlesDetailsModel articlesDetailsModel;
         public ArticlesDetailsModel ArticlesDetails
@@ -33,112 +30,102 @@ namespace XamCnblogs.Portable.ViewModel
             get { return loadStatus; }
             set { SetProperty(ref loadStatus, value); }
         }
+        bool hasError;
+        public bool HasError
+        {
+            get { return hasError; }
+            set { SetProperty(ref hasError, value); }
+        }
 
         public ArticlesDetailsViewModel(Articles articles)
         {
+            Title = "博文";
             this.articles = articles;
-            Title = articles.Title;
             ArticlesDetails = new ArticlesDetailsModel()
             {
                 DiggDisplay = articles.DiggCount > 0 ? articles.DiggCount.ToString() : "推荐",
                 CommentDisplay = articles.CommentCount > 0 ? articles.CommentCount.ToString() : "评论",
                 ViewDisplay = articles.ViewCount > 0 ? articles.ViewCount.ToString() : "阅读"
             };
+            IsBusy = true;
         }
-        ICommand refreshCommand;
-        public ICommand RefreshCommand =>
-            refreshCommand ?? (refreshCommand = new Command(async () =>
+        public async Task<Articles> RefreshArticlesAsync()
+        {
+            try
             {
-                try
+                IsBusy = true;
+                HasError = false;
+                pageIndex = 1;
+                NextRefreshTime = DateTime.Now.AddMinutes(15);
+                var result = await StoreManager.ArticlesDetailsService.GetArticlesAsync(articles.Id);
+                if (result.Success)
                 {
-                    IsBusy = true;
-                    pageIndex = 1;
-                    ArticlesDetails.HasError = false;
-                    NextRefreshTime = DateTime.Now.AddMinutes(15);
-                    var result = await StoreManager.ArticlesDetailsService.GetArticlesAsync(articles.Id);
-                    if (result.Success)
-                    {
-                        articles.Body = JsonConvert.DeserializeObject<string>(result.Message.ToString());
+                    articles.Body = JsonConvert.DeserializeObject<string>(result.Message.ToString());
 
-                        ArticlesDetails.Title = articles.Title;
-                        ArticlesDetails.Author = articles.Author;
-                        ArticlesDetails.Avatar = articles.Avatar;
-                        ArticlesDetails.Content = articles.BodyDisplay;
-                        ArticlesDetails.DiggDisplay = articles.DiggCount > 0 ? articles.DiggCount.ToString() : "推荐";
-                        ArticlesDetails.CommentDisplay = articles.CommentCount > 0 ? articles.CommentCount.ToString() : "评论";
-                        ArticlesDetails.ViewDisplay = articles.ViewCount > 0 ? articles.ViewCount.ToString() : "阅读";
-                        ArticlesDetails.DateDisplay = "发布于 " + articles.DateDisplay;
-                        ArticlesDetails.HasError = false;
-                    }
-                    else
+                    ArticlesDetails.DiggDisplay = articles.DiggCount > 0 ? articles.DiggCount.ToString() : "推荐";
+                    ArticlesDetails.CommentDisplay = articles.CommentCount > 0 ? articles.CommentCount.ToString() : "评论";
+                    ArticlesDetails.ViewDisplay = articles.ViewCount > 0 ? articles.ViewCount.ToString() : "阅读";
+                }
+                else
+                {
+                    HasError = true;
+                    Crashes.TrackError(new Exception() { Source = result.Message });
+                }
+            }
+            catch (Exception ex)
+            {
+                HasError = true;
+                Crashes.TrackError(ex);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+            return articles;
+        }
+
+        public async Task<List<ArticlesComments>> ReloadCommentsAsync()
+        {
+            List<ArticlesComments> articlesComments = new List<ArticlesComments>();
+            try
+            {
+                LoadStatus = LoadMoreStatus.StausLoading;
+
+                var result = await StoreManager.ArticlesDetailsService.GetCommentAsync(articles.BlogApp, articles.Id, pageIndex, pageSize);
+                if (result.Success)
+                {
+                    articlesComments = JsonConvert.DeserializeObject<List<ArticlesComments>>(result.Message.ToString());
+                    if (articlesComments.Count > 0)
                     {
-                        if (ArticlesDetails.Content == null)
+                        pageIndex++;
+                        if (articlesComments.Count < pageSize)
                         {
-                            ArticlesDetails.HasError = true;
+                            LoadStatus = LoadMoreStatus.StausEnd;
                         }
                         else
                         {
-                            Toast.SendToast("好像出了点问题 - -");
-                        }
-                        Log.SaveLog("ArticlesDetailsViewModel.GetArticlesAsync", new Exception() { Source = result.Message });
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Log.SaveLog("ArticlesDetailsViewModel.RefreshCommand", ex);
-                }
-                finally
-                {
-                    IsBusy = false;
-                }
-            }));
-        ICommand loadMoreCommand;
-        public ICommand LoadMoreCommand =>
-            loadMoreCommand ?? (loadMoreCommand = new Command(async () =>
-            {
-                try
-                {
-                    LoadStatus = LoadMoreStatus.StausLoading;
-
-                    var result = await StoreManager.ArticlesDetailsService.GetCommentAsync(articles.BlogApp, articles.Id, pageIndex, pageSize);
-                    if (result.Success)
-                    {
-                        var comments = JsonConvert.DeserializeObject<List<ArticlesComments>>(result.Message.ToString());
-                        if (comments.Count > 0)
-                        {
-                            if (pageIndex == 1 && ArticlesComments.Count > 0)
-                                ArticlesComments.Clear();
-                            ArticlesComments.AddRange(comments);
-                            pageIndex++;
-                            if (ArticlesComments.Count >= pageSize)
-                            {
-                                LoadStatus = LoadMoreStatus.StausDefault;
-                                CanLoadMore = true;
-                            }
-                            else
-                            {
-                                LoadStatus = LoadMoreStatus.StausEnd;
-                                CanLoadMore = false;
-                            }
-                        }
-                        else
-                        {
-                            CanLoadMore = false;
-                            LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausEnd : LoadMoreStatus.StausNodata;
+                            LoadStatus = LoadMoreStatus.StausDefault;
                         }
                     }
                     else
                     {
-                        Log.SaveLog("ArticlesDetailsViewModel.GetCommentAsync", new Exception() { Source = result.Message });
-                        LoadStatus = LoadMoreStatus.StausError;
+                        LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausEnd : LoadMoreStatus.StausNodata;
                     }
                 }
-                catch (Exception ex)
+                else
                 {
-                    Log.SaveLog("ArticlesDetailsViewModel.LoadMoreCommand", ex);
+                    Crashes.TrackError(new Exception() { Source = result.Message });
                     LoadStatus = LoadMoreStatus.StausError;
                 }
-            }));
+            }
+            catch (Exception ex)
+            {
+                Crashes.TrackError(ex);
+                LoadStatus = LoadMoreStatus.StausError;
+            }
+            return articlesComments;
+        }
+
         public async Task<bool> ExecuteCommentEditCommandAsync(string blogApp, int id, string content)
         {
             var result = await StoreManager.ArticlesDetailsService.PostCommentAsync(blogApp, id, content);
@@ -148,32 +135,14 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SaveLog("ArticlesDetailsViewModel.PostCommentAsync", new Exception() { Source = result.Message });
+                Crashes.TrackError(new Exception() { Source = result.Message });
                 Toast.SendToast(result.Message.ToString());
             }
             return result.Success;
         }
-        public void AddComment(ArticlesComments comment)
-        {
-            ArticlesComments.Add(comment);
-            if (LoadStatus == LoadMoreStatus.StausNodata)
-                LoadStatus = LoadMoreStatus.StausEnd;
-            ArticlesDetails.CommentDisplay = (articles.CommentCount = articles.CommentCount + 1).ToString();
-        }
+        
         public class ArticlesDetailsModel : BaseViewModel
         {
-            string author;
-            public string Author
-            {
-                get { return author; }
-                set { SetProperty(ref author, value); }
-            }
-            string avatar;
-            public string Avatar
-            {
-                get { return avatar; }
-                set { SetProperty(ref avatar, value); }
-            }
             string diggDisplay;
             public string DiggDisplay
             {
@@ -191,30 +160,6 @@ namespace XamCnblogs.Portable.ViewModel
             {
                 get { return viewDisplay; }
                 set { SetProperty(ref viewDisplay, value); }
-            }
-            string content;
-            public string Content
-            {
-                get { return content; }
-                set { SetProperty(ref content, value); }
-            }
-            string dateDisplay;
-            public string DateDisplay
-            {
-                get { return dateDisplay; }
-                set { SetProperty(ref dateDisplay, value); }
-            }
-            bool hasError;
-            public bool HasError
-            {
-                get { return hasError; }
-                set { SetProperty(ref hasError, value); }
-            }
-            private bool isDelete;
-            public bool IsDelete
-            {
-                get { return isDelete; }
-                set { SetProperty(ref isDelete, value); }
             }
         }
     }

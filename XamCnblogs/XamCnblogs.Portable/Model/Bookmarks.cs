@@ -1,9 +1,8 @@
-﻿using Humanizer;
-using MvvmHelpers;
+﻿using MvvmHelpers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using XamCnblogs.Portable.Helpers;
 
 namespace XamCnblogs.Portable.Model
 {
@@ -65,7 +64,7 @@ namespace XamCnblogs.Portable.Model
         }
         public bool FromCNBlogs { get; set; }
         [JsonIgnore]
-        public string DateDisplay { get { return DateAdded.ToUniversalTime().Humanize(); } }
+        public string DateDisplay { get { return DateAdded.Format(); } }
 
         private bool isDelete;
         [JsonIgnore]

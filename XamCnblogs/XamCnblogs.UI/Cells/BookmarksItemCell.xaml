@@ -1,16 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+<ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
              xmlns:converter="clr-namespace:XamCnblogs.UI.Converters;assembly=XamCnblogs.UI"
              x:Class="XamCnblogs.UI.Cells.BookmarksItemCellView"
              x:Name="BookmarksItemCell">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <converter:IsTagsConverter x:Key="IsTagsConverter" />
-            <converter:IsVisibleConverter x:Key="IsVisibleConverter" />
-        </ResourceDictionary>
-    </ContentPage.Resources>
     <Grid
              x:Name="GridView"
              Padding="{StaticResource  StandardPadding}"
@@ -20,13 +14,19 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        <Grid.Resources>
+            <ResourceDictionary>
+                <converter:IsTagsConverter x:Key="IsTagsConverter" />
+                <converter:IsVisibleConverter x:Key="IsVisibleConverter" />
+            </ResourceDictionary>
+        </Grid.Resources>
         <StackLayout Grid.Row="0">
             <Label
                Text="{Binding Title}"
                Style="{StaticResource PrimaryTextStyle}"/>
             <controls:ItemLabel
                LineSpacing="1.3"
-               MaxLines="3"
+               MaxLines="4"
                Text="{Binding Summary}"
                Style="{StaticResource SecondaryTextStyle}" 
                IsVisible="{Binding Summary, Converter={StaticResource IsVisibleConverter}}" />
@@ -72,4 +72,4 @@
                 VerticalOptions="CenterAndExpand"/>
         </StackLayout>
     </Grid>
-</ContentView>
+</ViewCell>

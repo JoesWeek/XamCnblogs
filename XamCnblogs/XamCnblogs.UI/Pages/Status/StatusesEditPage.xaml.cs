@@ -69,6 +69,9 @@ namespace XamCnblogs.UI.Pages.Status
             }
             else
             {
+                if (AboutSettings.Current.WeibaToggled && statuses.Id == 0)
+                    content += "<br/>" + AboutSettings.Current.WeibaContent;
+
                 statuses.Content = content;
                 statuses.DateAdded = DateTime.Now;
                 statuses.UserId = UserSettings.Current.SpaceUserId;

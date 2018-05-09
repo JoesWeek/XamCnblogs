@@ -19,9 +19,7 @@
             SeparatorColor="{DynamicResource Divider}">
         <controls:LoadMoreListView.ItemTemplate>
             <DataTemplate>
-                <ViewCell>
-                    <cells:KbArticlesItemCell/>
-                </ViewCell>
+                <cells:KbArticlesItemCell/>
             </DataTemplate>
         </controls:LoadMoreListView.ItemTemplate>
     </controls:LoadMoreListView>

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{66BFAA73-574E-4C1B-959B-57194A80E503}</ProjectGuid>
+    <ProjectGuid>{221A1CAA-4ECD-4B21-9909-81542F811F5C}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <RootNamespace>XamCnblogs.Droid</RootNamespace>
@@ -18,7 +18,6 @@
     <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <AndroidKeyStore>false</AndroidKeyStore>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,14 +28,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <AndroidSupportedAbis>
-    </AndroidSupportedAbis>
-    <AotAssemblies>false</AotAssemblies>
-    <EnableLLVM>false</EnableLLVM>
-    <BundleAssemblies>false</BundleAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
+    <DebugSymbols>false</DebugSymbols>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
@@ -44,13 +38,11 @@
     <WarningLevel>4</WarningLevel>
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
-    <EnableProguard>false</EnableProguard>
+    <BundleAssemblies>true</BundleAssemblies>
     <AotAssemblies>true</AotAssemblies>
     <EnableLLVM>true</EnableLLVM>
-    <AndroidEnableSGenConcurrent>false</AndroidEnableSGenConcurrent>
-    <AndroidSupportedAbis />
-    <BundleAssemblies>true</BundleAssemblies>
-    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+    <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -67,17 +59,11 @@
     <PackageReference Include="FormsToolkit">
       <Version>2.0.1</Version>
     </PackageReference>
-    <PackageReference Include="Humanizer">
-      <Version>2.2.0</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.AppCenter.Analytics">
-      <Version>1.5.0</Version>
+      <Version>1.6.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AppCenter.Crashes">
-      <Version>1.5.0</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.AppCenter.Push">
-      <Version>1.5.0</Version>
+      <Version>1.6.0</Version>
     </PackageReference>
     <PackageReference Include="modernhttpclient-updated">
       <Version>2.6.0</Version>
@@ -86,10 +72,10 @@
       <Version>0.0.3.3</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>11.0.1</Version>
+      <Version>11.0.2</Version>
     </PackageReference>
     <PackageReference Include="Plugin.CurrentActivity">
-      <Version>1.0.1</Version>
+      <Version>2.1.0.1</Version>
     </PackageReference>
     <PackageReference Include="Plugin.Share">
       <Version>7.1.1</Version>
@@ -104,16 +90,16 @@
       <Version>1.4.118</Version>
     </PackageReference>
     <PackageReference Include="SQLitePCLRaw.bundle_green">
-      <Version>1.1.9</Version>
+      <Version>1.1.11</Version>
     </PackageReference>
     <PackageReference Include="SQLitePCLRaw.core">
-      <Version>1.1.9</Version>
+      <Version>1.1.11</Version>
     </PackageReference>
     <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3.android">
-      <Version>1.1.9</Version>
+      <Version>1.1.11</Version>
     </PackageReference>
     <PackageReference Include="SQLitePCLRaw.provider.e_sqlite3.android">
-      <Version>1.1.9</Version>
+      <Version>1.1.11</Version>
     </PackageReference>
     <PackageReference Include="Square.OkHttp3">
       <Version>3.8.1</Version>
@@ -124,20 +110,26 @@
     <PackageReference Include="UMeng.Android.Shares">
       <Version>6.4.3</Version>
     </PackageReference>
+    <PackageReference Include="Xam.Plugin.Connectivity">
+      <Version>3.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Xam.Plugin.WebView">
+      <Version>2.1.3</Version>
+    </PackageReference>
     <PackageReference Include="Xam.Plugins.Messaging">
-      <Version>5.1.0</Version>
+      <Version>5.2.0</Version>
     </PackageReference>
     <PackageReference Include="Xam.Plugins.Settings">
-      <Version>3.1.1</Version>
+      <Version>4.0.0.7</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.CustomTabs">
       <Version>27.0.2</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.FFImageLoading.Forms">
-      <Version>2.3.4</Version>
+      <Version>2.3.6</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.FFImageLoading.Transformations">
-      <Version>2.3.4</Version>
+      <Version>2.3.6</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="2.5.0.280555" />
     <PackageReference Include="Xamarin.Android.Support.Design" Version="27.0.2" />
@@ -147,28 +139,27 @@
     <PackageReference Include="Xamarin.Android.Support.v7.MediaRouter" Version="27.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\HtmlUtils.cs" />
+    <Compile Include="Helpers\HtmlTemplates.cs" />
     <Compile Include="Helpers\Settings.cs" />
-    <Compile Include="Helpers\Logger.cs" />
     <Compile Include="Helpers\Shares.cs" />
     <Compile Include="Helpers\SharesWidget.cs" />
     <Compile Include="Helpers\SQLite_Android.cs" />
-    <Compile Include="Helpers\VersionNameer.cs" />
     <Compile Include="Helpers\Toaster.cs" />
+    <Compile Include="Helpers\VersionCodeer.cs" />
+    <Compile Include="Helpers\VersionNameer.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="MainApplication.cs" />
-    <Compile Include="Renderers\DetailsViewRenderer.cs" />
-    <Compile Include="Renderers\HtmlTextViewRenderer.cs" />
-    <Compile Include="Renderers\ItemLabelRenderer.cs" />
+    <Compile Include="Receivers\XgMessageReceiver.cs" />
     <Compile Include="Renderers\AuthorizeViewRenderer.cs" />
+    <Compile Include="Renderers\CommentEditorRenderer.cs" />
+    <Compile Include="Renderers\ItemLabelRenderer.cs" />
+    <Compile Include="Renderers\ListViewRenderer.cs" />
     <Compile Include="Renderers\XamBottomBarPageRenderer.cs" />
     <Compile Include="Renderers\XamEditorRenderer.cs" />
     <Compile Include="Renderers\XamEntryRenderer.cs" />
-    <Compile Include="Renderers\CommentEditorRenderer.cs" />
-    <Compile Include="Renderers\ListViewRenderer.cs" />
     <Compile Include="Renderers\XamSearchBarRenderer.cs" />
+    <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="SplashActivity.cs" />
     <Compile Include="WBShareActivity.cs" />
     <Compile Include="wxapi\WXEntryActivity.cs" />
@@ -176,15 +167,15 @@
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
-    <AndroidResource Include="Resources\drawable\searchview_background.xml" />
-    <AndroidResource Include="Resources\layout\authorizeview.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\AndroidManifest.xml">
-      <SubType>Designer</SubType>
-    </None>
+    <AndroidResource Include="Resources\drawable\icon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Tabbar.axml" />
@@ -199,20 +190,12 @@
       <Name>UMeng.Share.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\XamCnblogs.Portable\XamCnblogs.Portable.csproj">
-      <Project>{dd091a87-a806-40c9-89f9-010916cc82d3}</Project>
+      <Project>{3b7d869c-9041-4433-8145-5048b1848efb}</Project>
       <Name>XamCnblogs.Portable</Name>
     </ProjectReference>
     <ProjectReference Include="..\XamCnblogs.UI\XamCnblogs.UI.csproj">
-      <Project>{796ea191-8cca-4bf7-b48c-2d74b2da568e}</Project>
+      <Project>{9faf5c61-8aae-4cb5-b293-e57af6156750}</Project>
       <Name>XamCnblogs.UI</Name>
-    </ProjectReference>
-    <ProjectReference Include="AndroidBindings\Binding_HtmlTextView\Binding_HtmlTextView.csproj">
-      <Project>{E966C799-1338-4AE0-8908-F3BA5E51FA4A}</Project>
-      <Name>Binding_HtmlTextView</Name>
-    </ProjectReference>
-    <ProjectReference Include="AndroidBindings\Binding_TencentTBS\Binding_TencentTBS.csproj">
-      <Project>{65a214fb-6f63-4eac-bdc0-7e3b13d1b42c}</Project>
-      <Name>Binding_TencentTBS</Name>
     </ProjectReference>
     <ProjectReference Include="AndroidBindings\Binding_XgPush\Binding_XgPush.csproj">
       <Project>{98176440-c544-45b9-9c2a-42974f8b0015}</Project>
@@ -220,160 +203,77 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <AndroidAsset Include="Assets\answers.html" />
+    <AndroidAsset Include="Assets\articles.html" />
+    <AndroidAsset Include="Assets\kbarticles.html" />
+    <AndroidAsset Include="Assets\news.html" />
+    <AndroidAsset Include="Assets\questions.html" />
+    <AndroidAsset Include="Assets\statuses.html" />
+    <AndroidAsset Include="Assets\css\default.css" />
+    <AndroidAsset Include="Assets\images\avatar_placeholder.png" />
+    <AndroidAsset Include="Assets\images\ic_delete.png" />
+    <AndroidAsset Include="Assets\images\ic_edit.png" />
+    <AndroidAsset Include="Assets\images\ic_gold.png" />
+    <AndroidAsset Include="Assets\images\ic_reply.png" />
+    <AndroidAsset Include="Assets\images\ic_tab.png" />
+    <AndroidAsset Include="Assets\images\loading.gif" />
+    <AndroidAsset Include="Assets\images\lucky-star.png" />
+    <AndroidAsset Include="Assets\js\jquery.min.js" />
+    <AndroidAsset Include="Assets\js\vue.min.js" />
     <AndroidResource Include="Resources\drawable\background_splash.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\avatar_placeholder.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_launcher.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\logo_launchscreen.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\main_nav_header_bg.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\menu_blog.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\menu_bookmarks.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\menu_kbarticles.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\menu_news.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\menu_question.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\menu_setting.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\menu_statuses.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\values\colors.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\values-v19\styles.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\values-v21\styles.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\toolbar_close.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\icon_edit.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\icon_reply.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\icon_bookmarks.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\content.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\default.css" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\icon_read.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\icon_digg.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\menu_send_p.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\color_cursor.xml" />
-  </ItemGroup>
-  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\color_progressbar.xml" />
     <AndroidResource Include="Resources\drawable\commenteditor.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\commenteditor_normal.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\commenteditor_pressed.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\placeholder.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_tab.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_reply.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_gold.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\bg.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\menu_send.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\editor_normal.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\toolbar_add.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_edit.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\search_bg.xml" />
+    <AndroidResource Include="Resources\drawable\search_cursor.xml" />
+    <AndroidResource Include="Resources\drawable\searchview_background.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\jpush_ic_richpush_actionbar_back.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\jpush_ic_richpush_actionbar_divider.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\jpush_richpush_btn_selector.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\jpush_richpush_progressbar.xml" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\avatar_placeholder.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\bg.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_delete.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_edit.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_gold.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_reply.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_tab.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon_bookmarks.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon_digg.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon_edit.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon_read.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon_reply.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\logo_launchscreen.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\luckyStar.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\main_nav_header_bg.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\menu_about.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\menu_avatar.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\menu_blog.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\menu_bookmarks.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\menu_email.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\menu_home.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\menu_kbarticles.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\menu_news.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\menu_question.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\menu_send.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\menu_send_p.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\menu_setting.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\menu_statuses.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\placeholder.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\toolbar_add.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\toolbar_close.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\toolbar_search.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\toolbar_share.png" />
+    <AndroidResource Include="Resources\values\colors.xml" />
+    <AndroidResource Include="Resources\values-v26\styles.xml" />
     <AndroidResource Include="Resources\xml\provider_paths.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\values\strings.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\toolbar_share.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\toolbar_search.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\search_cursor.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\lucky-star.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\menu_avatar.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\menu_home.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\menu_email.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\color_progressbar.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\ic_tab.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\values-v26\styles.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\search_bg.xml" />
+    <TransformFile Include="Resources\values\strings.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

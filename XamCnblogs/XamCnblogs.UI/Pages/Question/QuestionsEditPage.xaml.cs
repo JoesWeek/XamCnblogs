@@ -73,6 +73,9 @@ namespace XamCnblogs.UI.Pages.Question
             }
             else
             {
+                if (AboutSettings.Current.WeibaToggled && questions.Qid == 0)
+                    content += "<br/>" + AboutSettings.Current.WeibaContent;
+
                 questions.Title = title;
                 questions.Tags = tags;
                 questions.Summary = content;

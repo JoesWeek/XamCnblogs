@@ -9,28 +9,38 @@ namespace XamCnblogs.Droid.Helpers
 {
     public class SQLite_Android : ISQLite
     {
+        private static string path;
+
+        private static SQLiteAsyncConnection connectionAsync;
+
+        private static readonly object locker = new object();
+        private static readonly object pathLocker = new object();
+
         private static string GetDatabasePath()
         {
-            const string sqliteFilename = "xamcnblogs.db3";
-            string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); // Documents folder
-            var path = Path.Combine(documentsPath, sqliteFilename);
-
+            lock (pathLocker)
+            {
+                if (path == null)
+                {
+                    const string sqliteFilename = "xamcnblogs.db3";
+                    string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); // Documents folder
+                    path = Path.Combine(documentsPath, sqliteFilename);
+                }
+            }
             return path;
         }
 
         public SQLiteAsyncConnection GetAsyncConnection()
         {
-            var dbPath = GetDatabasePath();
-
-            // Return the synchronous database connection 
-            return new SQLiteAsyncConnection(dbPath);
-        }
-        public SQLiteConnection GetConnection()
-        {
-            var dbPath = GetDatabasePath();
-
-            // Return the synchronous database connection 
-            return new SQLiteConnection(dbPath);
+            lock (locker)
+            {
+                if (connectionAsync == null)
+                {
+                    var dbPath = GetDatabasePath();
+                    connectionAsync = new SQLiteAsyncConnection(dbPath);
+                }
+            }
+            return connectionAsync;
         }
     }
 }

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 using System.Linq;
+using Microsoft.AppCenter.Crashes;
 
 namespace XamCnblogs.Portable.ViewModel
 {
@@ -56,7 +57,7 @@ namespace XamCnblogs.Portable.ViewModel
                 }
                 catch (Exception ex)
                 {
-                    Log.SaveLog("QuestionsViewModel.RefreshCommand", ex);
+                    Crashes.TrackError(ex);
                     LoadStatus = LoadMoreStatus.StausFail;
                 }
                 finally
@@ -119,7 +120,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SaveLog("QuestionsViewModel.GetQuestionsAsync", new Exception() { Source = result.Message });
+                Crashes.TrackError(new Exception() { Source = result.Message });
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
             }
         }
@@ -132,7 +133,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SaveLog("QuestionsViewModel.EditQuestionsAsync", new Exception() { Source = result.Message });
+                Crashes.TrackError(new Exception() { Source = result.Message });
                 Toast.SendToast(result.Message.ToString());
             }
             return result.Success;

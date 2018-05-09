@@ -34,6 +34,7 @@ namespace XamCnblogs.UI.Pages.New
                 this.Comment.Text = comments.CommentContent;
             }
             this.Comment.Focus();
+            ViewModel.IsBusy = false;
         }
         private void OnClose(object sender, EventArgs e)
         {
@@ -76,7 +77,11 @@ namespace XamCnblogs.UI.Pages.New
             else
             {
                 SendButton.IsRunning = true;
-                if (await ViewModel.ExecuteCommentEditCommandAsync(news.Id, comment, comments != null))
+
+                if (AboutSettings.Current.WeibaToggled && comments == null)
+                    comment += "<br/>" + AboutSettings.Current.WeibaContent;
+
+                if (await ViewModel.EditCommentAsync(news.Id, comment, comments != null))
                 {
                     SendButton.IsRunning = false;
                     ClosePopupPage(comment);

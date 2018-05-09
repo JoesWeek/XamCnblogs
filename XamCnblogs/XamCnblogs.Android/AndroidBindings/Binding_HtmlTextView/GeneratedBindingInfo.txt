@@ -1,7 +1,0 @@
-Binding for:
-org.sufficientlysecure:html-textview:3.5
-
-Dependencies:
-
-html-textview-3.5.aar,    Path=C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\org.sufficientlysecure\html-textview\3.5\e2aabe7ee03449572db89dd8221f1a7ab0b598b8\html-textview-3.5.aar
-	support-annotations-25.0.0.jar,    Path=C:\Program Files (x86)\Android\android-sdk\extras\android\m2repository\com\android\support\support-annotations\25.0.0\support-annotations-25.0.0.jar

@@ -6,7 +6,7 @@ using XamCnblogs.UI.Pages.Account;
 
 namespace XamCnblogs.UI.Cells
 {
-    public partial class BookmarksItemCellView : ContentView
+    public partial class BookmarksItemCellView : ViewCell
     {
         public BookmarksItemCellView()
         {

@@ -1,4 +1,0 @@
-﻿<metadata>
- <remove-node path="/api/package[@name='com.tencent.smtt.sdk']/class[@name='WebChromeClient']/method[@name='onProgressChanged' and count(parameter)=2 and parameter[1][@type='com.tencent.smtt.sdk.WebView'] and parameter[2][@type='int']]"/> 
-  <remove-node path="/api/package[@name='com.tencent.smtt.export.external.interfaces']/interface[@name='DownloadListener']" />
-</metadata>

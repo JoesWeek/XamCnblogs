@@ -46,9 +46,7 @@
                     AbsoluteLayout.LayoutBounds="0,0,1,1">
                     <controls:LoadMoreListView.ItemTemplate>
                         <DataTemplate>
-                            <ViewCell>
-                                <cells:SearchItemCell/>
-                            </ViewCell>
+                            <cells:SearchItemCell/>
                         </DataTemplate>
                     </controls:LoadMoreListView.ItemTemplate>
                 </controls:LoadMoreListView>

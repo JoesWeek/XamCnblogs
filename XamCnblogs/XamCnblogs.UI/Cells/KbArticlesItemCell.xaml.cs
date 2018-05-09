@@ -9,9 +9,8 @@ using Xamarin.Forms.Xaml;
 
 namespace XamCnblogs.UI.Cells
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class KbArticlesItemCell : ContentView
-	{
+	public partial class KbArticlesItemCell : ViewCell
+    {
 		public KbArticlesItemCell ()
 		{
 			InitializeComponent ();

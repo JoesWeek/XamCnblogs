@@ -1,12 +1,7 @@
-﻿using XamCnblogs.Portable.Helpers;
-using Humanizer;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
 using SQLite;
+using System;
+using XamCnblogs.Portable.Helpers;
 
 namespace XamCnblogs.Portable.Model
 {
@@ -22,24 +17,13 @@ namespace XamCnblogs.Portable.Model
         public int DiggCount { get; set; }
         public string Body { get; set; }
         [Ignore]
-        [JsonIgnore]
-        public string DateDisplay { get { return DateAdded.ToUniversalTime().Humanize(); } }
+        public string DateDisplay { get { return DateAdded.Format(); } }
         [Ignore]
-        [JsonIgnore]
         public string DiggValue
         {
             get
             {
                 return DiggCount + " 推荐 · " + ViewCount + " 阅读";
-            }
-        }
-        [Ignore]
-        [JsonIgnore]
-        public string BodyDisplay
-        {
-            get
-            {
-                return HtmlTemplate.ReplaceHtml(Body, false);
             }
         }
     }

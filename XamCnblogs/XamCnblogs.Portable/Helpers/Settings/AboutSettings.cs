@@ -21,7 +21,7 @@ namespace XamCnblogs.Portable.Helpers
         {
             get { return settings ?? (settings = new AboutSettings()); }
         }
-        public static string DefaultWeibaContent = "来自优雅的 [XamCnblogs](https://github.com/JoesWeek/XamCnblogs)";
+        public static string DefaultWeibaContent = "来自 Cnblogs For Xamarin";
 
         const string WeibaToggledKey = "weiba_toggled";
         public bool WeibaToggled

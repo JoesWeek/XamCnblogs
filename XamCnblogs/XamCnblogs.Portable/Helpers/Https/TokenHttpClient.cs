@@ -1,4 +1,5 @@
-﻿using ModernHttpClient;
+﻿using Microsoft.AppCenter.Crashes;
+using ModernHttpClient;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,6 @@ namespace XamCnblogs.Portable.Helpers
     {
         public const string ClientId = "cda7b086-4cdf-4aaf-bde5-2aefabefa828";
         public const string ClientSercret = "E9xR1T6fMb8WJ8fqr3AXMuSrAHUfD4Tgo6MxlArBF5o_XxVK9IWmC498PyM03aAZILhhYHTwgszFFmAk";
-
     }
     public class TokenHttpClient : BaseHttpClient
     {
@@ -49,7 +49,7 @@ namespace XamCnblogs.Portable.Helpers
                 }
                 catch (Exception ex)
                 {
-                    DependencyService.Get<ILog>().SaveLog("GetAsyn", ex);
+                    Crashes.TrackError(ex);
                     result.Success = false;
                     result.Message = ex.Message;
                     return result;
@@ -92,7 +92,7 @@ namespace XamCnblogs.Portable.Helpers
                 {
                     message.Success = false;
                     message.Message = ex.Message;
-                    DependencyService.Get<ILog>().SaveLog("CheckTokenAsync", ex);
+                    Crashes.TrackError(ex);
                     return message;
                 }
             }
@@ -115,10 +115,10 @@ namespace XamCnblogs.Portable.Helpers
             }
             catch (Exception ex)
             {
+                Crashes.TrackError(ex);
                 var result = new ResponseMessage();
                 result.Success = false;
                 result.Message = ex.Message;
-                DependencyService.Get<ILog>().SaveLog("TokenAsync", ex);
                 return result;
             }
         }
@@ -133,7 +133,7 @@ namespace XamCnblogs.Portable.Helpers
                     var message = await response.Content.ReadAsStringAsync();
                     try
                     {
-                        DependencyService.Get<ILog>().SaveLog("TokenHttpClient", new Exception() { Source = message });
+                        Crashes.TrackError(new Exception() { Source = message });
                         message = JsonConvert.DeserializeObject<Messages>(await response.Content.ReadAsStringAsync()).Message;
                     }
                     catch (Exception e)

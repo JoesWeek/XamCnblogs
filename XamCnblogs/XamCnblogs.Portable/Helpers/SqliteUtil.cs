@@ -1,4 +1,5 @@
-﻿using SQLite;
+﻿using Microsoft.AppCenter.Crashes;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -16,34 +17,23 @@ namespace XamCnblogs.Portable.Helpers
             get { return baseSqlite ?? (baseSqlite = new SqliteUtil()); }
         }
         private static readonly SQLiteAsyncConnection db;
-        private static readonly SQLiteConnection dbAsync;
-        private static readonly ILog Log;
         static SqliteUtil()
         {
             if (db == null)
                 db = DependencyService.Get<ISQLite>().GetAsyncConnection();
-            if (dbAsync == null)
-                dbAsync = DependencyService.Get<ISQLite>().GetConnection();
-            Log = DependencyService.Get<ILog>();
         }
         public async void CreateAllTablesAsync()
         {
             try
             {
-                await Task.Run(() =>
+                await db.CreateTablesAsync<Articles, KbArticles, News, Statuses, Questions>().ContinueWith(async (result) =>
                 {
-                    dbAsync.CreateTable<Articles>();
-                    dbAsync.CreateTable<KbArticles>();
-                    dbAsync.CreateTable<News>();
-                    dbAsync.CreateTable<Statuses>();
-                    dbAsync.CreateTable<Questions>();
-                    dbAsync.CreateTable<QuestionUserInfo>();
-                    dbAsync.CreateTable<QuestionAddition>();
+                    await db.CreateTablesAsync<QuestionUserInfo, QuestionAddition>();
                 });
             }
             catch (Exception ex)
             {
-                Log.SaveLog("CreateAllTablesAsync", ex);
+                Crashes.TrackError(ex);
             }
         }
 
@@ -60,9 +50,9 @@ namespace XamCnblogs.Portable.Helpers
         {
             return await db.Table<Model.Articles>().Where(a => a.BlogApp == blogApp).OrderByDescending(a => a.PostDate).Skip(0).Take(10).ToListAsync();
         }
-        public async Task<List<Model.Articles>> QueryArticlesByDigg(int pageSize)
+        public async Task<List<Model.Articles>> QueryArticlesByRecommend(int pageSize)
         {
-            return await db.Table<Model.Articles>().Where(a => a.DiggCount > 20).OrderByDescending(a => a.PostDate).Skip(0).Take(pageSize).ToListAsync();
+            return await db.Table<Model.Articles>().Where(a => a.IsRecommend).OrderByDescending(a => a.PostDate).Skip(0).Take(pageSize).ToListAsync();
         }
         public async Task UpdateArticles(List<Model.Articles> lists)
         {
@@ -78,7 +68,7 @@ namespace XamCnblogs.Portable.Helpers
                         }
                         catch (Exception ex)
                         {
-                            Log.SaveLog("UpdateArticles.Index", ex);
+                            Crashes.TrackError(ex);
                         }
                     }
                     else
@@ -96,7 +86,7 @@ namespace XamCnblogs.Portable.Helpers
             }
             catch (Exception ex)
             {
-                Log.SaveLog("UpdateArticle", ex);
+                Crashes.TrackError(ex);
             }
         }
         #endregion
@@ -132,7 +122,7 @@ namespace XamCnblogs.Portable.Helpers
                         }
                         catch (Exception ex)
                         {
-                            Log.SaveLog("UpdateNews.Insert", ex);
+                            Crashes.TrackError(ex);
                         }
                     }
                     else
@@ -150,7 +140,7 @@ namespace XamCnblogs.Portable.Helpers
             }
             catch (Exception ex)
             {
-                Log.SaveLog("UpdateNew", ex);
+                Crashes.TrackError(ex);
             }
         }
         #endregion
@@ -178,7 +168,7 @@ namespace XamCnblogs.Portable.Helpers
                         }
                         catch (Exception ex)
                         {
-                            Log.SaveLog("UpdateKbArticles.Insert", ex);
+                            Crashes.TrackError(ex);
                         }
                     }
                     else
@@ -196,7 +186,7 @@ namespace XamCnblogs.Portable.Helpers
             }
             catch (Exception ex)
             {
-                Log.SaveLog("UpdateKbArticle", ex);
+                Crashes.TrackError(ex);
             }
         }
         #endregion
@@ -224,7 +214,7 @@ namespace XamCnblogs.Portable.Helpers
                         }
                         catch (Exception ex)
                         {
-                            Log.SaveLog("UpdateStatuses.Insert", ex);
+                            Crashes.TrackError(ex);
                         }
                     }
                     else
@@ -242,7 +232,7 @@ namespace XamCnblogs.Portable.Helpers
             }
             catch (Exception ex)
             {
-                Log.SaveLog("UpdateStatus", ex);
+                Crashes.TrackError(ex);
             }
         }
         #endregion
@@ -324,7 +314,7 @@ namespace XamCnblogs.Portable.Helpers
                     }
                     catch (Exception ex)
                     {
-                        Log.SaveLog("UpdateQuestion.Insert", ex);
+                        Crashes.TrackError(ex);
                     }
                 }
                 else
@@ -335,7 +325,7 @@ namespace XamCnblogs.Portable.Helpers
                     }
                     catch (Exception ex)
                     {
-                        Log.SaveLog("UpdateQuestion.Update", ex);
+                        Crashes.TrackError(ex);
                     }
                 }
             });
@@ -348,7 +338,7 @@ namespace XamCnblogs.Portable.Helpers
             }
             catch (Exception ex)
             {
-                Log.SaveLog("DeleteQuestions", ex);
+                Crashes.TrackError(ex);
             }
         }
         #endregion
@@ -370,7 +360,7 @@ namespace XamCnblogs.Portable.Helpers
                     }
                     catch (Exception ex)
                     {
-                        Log.SaveLog("UpdateQuestionUserInfo.Insert", ex);
+                        Crashes.TrackError(ex);
                     }
                 }
                 else
@@ -381,7 +371,7 @@ namespace XamCnblogs.Portable.Helpers
                     }
                     catch (Exception ex)
                     {
-                        Log.SaveLog("UpdateQuestionUserInfo.Update", ex);
+                        Crashes.TrackError(ex);
                     }
                 }
             });
@@ -405,7 +395,7 @@ namespace XamCnblogs.Portable.Helpers
                     }
                     catch (Exception ex)
                     {
-                        Log.SaveLog("UpdateAddition.Insert", ex);
+                        Crashes.TrackError(ex);
                     }
                 }
                 else
@@ -416,7 +406,7 @@ namespace XamCnblogs.Portable.Helpers
                     }
                     catch (Exception ex)
                     {
-                        Log.SaveLog("UpdateAddition.Update", ex);
+                        Crashes.TrackError(ex);
                     }
                 }
             });

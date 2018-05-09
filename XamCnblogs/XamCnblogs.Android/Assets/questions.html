@@ -1,0 +1,160 @@
+﻿<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="css/default.css" />
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/vue.min.js"></script>
+</head>
+<body>
+    <div id="app" v-cloak v-show="hasContent">
+        <h2 class="title">{{ model.Title }}</h2>
+        <div class="authorinfo" v-if="model.QuestionUserInfo">
+            <span class="avatar-wrapper">
+                <img class="avatar" width="45" height="45" v-bind:src="model.QuestionUserInfo.IconDisplay">
+            </span>
+            <div class="authorInfo-content">
+                <div class="authorInfo-name" v-html="model.QuestionUserInfo.UserName"></div>
+                <span class="authorInfo-time">
+                    {{ model.QuestionUserInfo.QScoreName }} · {{ model.QuestionUserInfo.QScore }} 园豆 · {{ model.DateDisplay }}
+                </span>
+            </div>
+            <div class="dealflag">
+                <div class="award" v-if="model.Award >0"><img src="./images/ic_gold.png" />{{ model.Award }}</div>
+                <div v-if="model.Award ==0" style="height:13px;"></div>
+                <div class="dealflag1" v-if="model.DealFlag == 1">
+                    已解决
+                </div>
+                <div class="dealflag-1" v-else-if="model.DealFlag == -1">
+                    已关闭
+                </div>
+                <div class="dealflag0" v-else>
+                    待解决
+                </div>
+            </div>
+        </div>
+        <div class="content" v-html="model.ContentDisplay"></div>
+        <div class="tags" v-if="model.TagsDisplay"><img src="./images/ic_tab.png" />{{ model.TagsDisplay }}</div>
+        <div class="comments">
+            <div class="comment-header">
+                <div class="line"></div>
+                <div class="comment">所有回答</div>
+                <div class="line">
+                </div>
+            </div>
+            <section v-for="item in comments">
+                <div class="comments-item" v-on:click="itemSelected(item)">
+                    <span class="item-avatar"><img class="avatar" width="45" height="45" v-bind:src="item.AnswerUserInfo.IconDisplay" /></span>
+                    <div class="item-authorInfo">
+                        <div class="authorInfo-content">
+                            <div class="authorInfo-name">
+                                <span class="item-name">
+                                    {{ item.AnswerUserInfo.UserName }}
+                                </span>
+                                <span class="item-time">
+                                    {{ item.AnswerUserInfo.QScoreName }}   ·  {{ item.AnswerUserInfo.QScore }} 园豆
+                                </span>
+                            </div>
+                            <div class="dealflag" v-if="item.IsBest">
+                                最佳回答
+                            </div>
+                        </div>
+                        <div class="item-content" v-html="item.Answer"></div>
+                        <div class="item-actions">
+                            <span class="item-time">{{ item.DateDisplay}}</span>
+                            <div class="item-edit" v-if="item.IsLoginUser">
+                                <img src="./images/ic_edit.png" v-on:click.stop="editItem(item)" />
+                                <img src="./images/ic_delete.png" v-on:click.stop="deleteItem(item)" />
+                            </div>
+                            <div class="item-edit">
+                                <img src="./images/ic_reply.png" />
+                                <span v-if="item.CommentCounts>0">{{ item.CommentCounts }}</span>
+                                <span v-else>回复</span>
+                            </div>
+                        </div>
+                        <span class="item-line"></span>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="footer">
+            <div class="loading" v-if="loadStatus == 0||loadStatus == 1">
+                <img src="./images/loading.gif" class="loading-img" /><span class="loading-content">正在加载中</span>
+            </div>
+            <div class="nodata" v-else-if="loadStatus == 2">
+                - 还没有回答 -
+            </div>
+            <div class="nodata" v-else-if="loadStatus == 3">
+                - 没有更多回答了 -
+            </div>
+            <div class="error" v-else-if="loadStatus === 4||loadStatus === 5">
+                <span class="error-content">好像出现了问题</span>
+                <a href="javascript:void(0)" class="error-btn" v-on:click="reload">重新加载</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                hasContent: false,
+                model: {},
+                loadStatus: 0,
+                comments: []
+            },
+            methods: {
+                reload: function () {
+                    this.loadStatus = 1;
+                    reload();
+                },
+                editItem: function (item) {
+                    editItem(item.AnswerID);
+                },
+                deleteItem: function (item) {
+                    deleteItem(item.AnswerID);
+                },
+                itemSelected: function (item) {
+                    itemSelected(item.AnswerID);
+                }
+            }
+        });
+        $(window).scroll(function () {
+            loadReload();
+        });
+        function loadReload() {
+            if ($(document).scrollTop() + window.screen.height + 70 >= $(document).height()) {
+                if (app.loadStatus == 0 || app.loadStatus == 2)
+                    reload();
+            }
+        }
+        function updateModel(model) {
+            if (!app.hasContent) {
+                app.hasContent = true;
+
+                loadReload();
+            }
+            app.model = model;
+        }
+        function updateLoadStatus(loadStatus) {
+            app.loadStatus = loadStatus;
+        }
+        function updateComments(list) {
+            app.comments = app.comments.concat(list)
+        }
+        function updateComment(item) {
+            var b = true;
+            if (item.AnswerID > 0) {
+                for (var i = 0; i < app.comments.length; i++) {
+                    var element = app.comments[i];
+                    if (element.AnswerID == item.AnswerID) {
+                        b = false;
+                        element = item;
+                    }
+                }
+            }
+            if (b) {
+                app.comments = app.comments.concat(item);
+            }
+        }
+    </script>
+</body>
+</html>

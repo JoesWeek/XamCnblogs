@@ -2,18 +2,27 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
+             xmlns:webview="clr-namespace:Xam.Plugin.WebView.Abstractions;assembly=Xam.Plugin.WebView.Abstractions"
              x:Class="XamCnblogs.UI.Pages.Account.AuthorizePage"
              BackgroundColor="White">
     <AbsoluteLayout>
         <controls:AuthorizeView 
-            x:Name="authorizeView"
+            x:Name="formsWebView" 
+            ContentType="Internet" 
+            Source="https://www.google.co.uk"
             AbsoluteLayout.LayoutBounds="0,0,1,1"
             AbsoluteLayout.LayoutFlags="All"/>
-        <ActivityIndicator 
-            x:Name="activityIndicator"
-            VerticalOptions="CenterAndExpand"
-            HorizontalOptions="CenterAndExpand"
+        <StackLayout
+            x:Name="stackLayout"
+            HorizontalOptions="FillAndExpand" 
+            VerticalOptions="FillAndExpand" 
+            BackgroundColor="White"
             AbsoluteLayout.LayoutBounds="0.5,0.5,1,1"
-            AbsoluteLayout.LayoutFlags="All"/>
+            AbsoluteLayout.LayoutFlags="All">
+            <ActivityIndicator 
+                x:Name="activityIndicator"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand"/>
+        </StackLayout>
     </AbsoluteLayout>
 </ContentPage>

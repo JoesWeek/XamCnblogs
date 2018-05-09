@@ -1,0 +1,37 @@
+﻿<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="css/default.css" />
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/vue.min.js"></script>
+</head>
+<body>
+    <div id="app" v-cloak v-show="hasContent">
+        <h2 class="title">{{ model.Title }}</h2>
+        <div class="authorinfo">
+            <div class="authorInfo-content">
+                <span class="authorInfo-time">
+                    发布于 · {{ model.DateDisplay }}
+                </span>
+            </div>
+        </div>
+        <div class="content" v-html="model.Body"></div>
+    </div>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                hasContent: false,
+                model: {}
+            }
+        });
+        function updateModel(model) {
+            if (!app.hasContent) {
+                app.hasContent = true;
+            }
+            app.model = model;
+        }
+    </script>
+
+</body>
+</html>

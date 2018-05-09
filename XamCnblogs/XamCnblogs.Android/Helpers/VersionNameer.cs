@@ -1,4 +1,5 @@
 ﻿using Android.Widget;
+using Microsoft.AppCenter.Crashes;
 using Plugin.CurrentActivity;
 using Xamarin.Forms;
 using XamCnblogs.Droid.Helpers;
@@ -20,7 +21,7 @@ namespace XamCnblogs.Droid.Helpers
             }
             catch (System.Exception ex)
             {
-                DependencyService.Get<ILog>().SaveLog("VersionNameer" , ex);
+                Crashes.TrackError(ex);
             }
             return "";
         }

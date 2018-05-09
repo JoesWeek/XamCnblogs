@@ -9,12 +9,13 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 using System.Linq;
+using Microsoft.AppCenter.Crashes;
 
 namespace XamCnblogs.Portable.ViewModel
 {
     public class NewsDetailsViewModel : ViewModelBase
     {
-        public ObservableRangeCollection<NewsComments> NewsComments { get; } = new ObservableRangeCollection<NewsComments>();
+        public List<NewsComments> NewsComments { get; } = new List<NewsComments>();
         private News news;
         public DateTime NextRefreshTime { get; set; }
         private int pageIndex = 1;
@@ -32,110 +33,108 @@ namespace XamCnblogs.Portable.ViewModel
             get { return loadStatus; }
             set { SetProperty(ref loadStatus, value); }
         }
+        bool hasError;
+        public bool HasError
+        {
+            get { return hasError; }
+            set { SetProperty(ref hasError, value); }
+        }
+
 
         public NewsDetailsViewModel(News news)
         {
             this.news = news;
-            Title = news.Title;
+            Title = "新闻";
             NewsDetails = new NewsDetailsModel()
             {
                 DiggDisplay = news.DiggCount > 0 ? news.DiggCount.ToString() : "推荐",
                 CommentDisplay = news.CommentCount > 0 ? news.CommentCount.ToString() : "评论",
                 ViewDisplay = news.ViewCount > 0 ? news.ViewCount.ToString() : "阅读"
             };
+            IsBusy = true;
         }
-        ICommand refreshCommand;
-        public ICommand RefreshCommand =>
-            refreshCommand ?? (refreshCommand = new Command(async () =>
+        public async Task<News> RefreshNewsAsync()
+        {
+            try
             {
-                try
+                IsBusy = true;
+                pageIndex = 1;
+                HasError = false;
+                NextRefreshTime = DateTime.Now.AddMinutes(15);
+                var result = await StoreManager.NewsDetailsService.GetNewsAsync(news.Id);
+                if (result.Success)
                 {
-                    IsBusy = true;
-                    pageIndex = 1;
-                    NewsDetails.HasError = false;
-                    NextRefreshTime = DateTime.Now.AddMinutes(15);
-                    var result = await StoreManager.NewsDetailsService.GetNewsAsync(news.Id);
-                    if (result.Success)
-                    {
-                        news.Body = JsonConvert.DeserializeObject<string>(result.Message.ToString());
+                    news.Body = JsonConvert.DeserializeObject<string>(result.Message.ToString());
 
-                        NewsDetails.Title = news.Title;
-                        NewsDetails.Content = news.BodyDisplay;
-                        NewsDetails.DiggDisplay = news.DiggCount > 0 ? news.DiggCount.ToString() : "推荐";
-                        NewsDetails.CommentDisplay = news.CommentCount > 0 ? news.CommentCount.ToString() : "评论";
-                        NewsDetails.ViewDisplay = news.ViewCount > 0 ? news.ViewCount.ToString() : "阅读";
-                        NewsDetails.DateDisplay = "发布于 " + news.DateDisplay;
-                        NewsDetails.HasError = false;
-                    }
-                    else
+                    NewsDetails.DiggDisplay = news.DiggCount > 0 ? news.DiggCount.ToString() : "推荐";
+                    NewsDetails.CommentDisplay = news.CommentCount > 0 ? news.CommentCount.ToString() : "评论";
+                    NewsDetails.ViewDisplay = news.ViewCount > 0 ? news.ViewCount.ToString() : "阅读";
+                    NewsDetails.DateDisplay = "发布于 " + news.DateDisplay;
+                    HasError = false;
+                }
+                else
+                {
+                    HasError = true;
+                    Crashes.TrackError(new Exception() { Source = result.Message });
+                }
+            }
+            catch (Exception ex)
+            {
+                HasError = true;
+                Crashes.TrackError(ex);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+            return news;
+        }
+
+        public async Task<List<NewsComments>> ReloadCommentsAsync()
+        {
+            try
+            {
+                LoadStatus = LoadMoreStatus.StausLoading;
+
+                var result = await StoreManager.NewsDetailsService.GetCommentAsync(news.Id, pageIndex, pageSize);
+                if (result.Success)
+                {
+                    var newsComments = JsonConvert.DeserializeObject<List<NewsComments>>(result.Message.ToString());
+                    if (newsComments.Count > 0)
                     {
-                        if (NewsDetails.Content == null)
+                        if (pageIndex == 1)
+                            NewsComments.Clear();
+                        NewsComments.AddRange(newsComments);
+                        pageIndex++;
+                        if (newsComments.Count < pageSize)
                         {
-                            NewsDetails.HasError = true;
+                            LoadStatus = LoadMoreStatus.StausEnd;
                         }
                         else
                         {
-                            Toast.SendToast("好像出了点问题 - -");
-                        }
-                        Log.SaveLog("NewsDetailsViewModel.GetNewsAsync", new Exception() { Source = result.Message });
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Log.SaveLog("NewsDetailsViewModel.RefreshCommand", ex);
-                }
-                finally
-                {
-                    IsBusy = false;
-                }
-            }));
-        ICommand loadMoreCommand;
-        public ICommand LoadMoreCommand =>
-            loadMoreCommand ?? (loadMoreCommand = new Command(async () =>
-            {
-                try
-                {
-                    LoadStatus = LoadMoreStatus.StausLoading;
-
-                    var result = await StoreManager.NewsDetailsService.GetCommentAsync(news.Id, pageIndex, pageSize);
-                    if (result.Success)
-                    {
-                        var news = JsonConvert.DeserializeObject<List<NewsComments>>(result.Message.ToString());
-                        if (news.Count > 0)
-                        {
-                            if (pageIndex == 1 && NewsComments.Count > 0)
-                                NewsComments.Clear();
-                            NewsComments.AddRange(news);
-                            pageIndex++;
-                            if (NewsComments.Count >= pageSize)
-                            {
-                                LoadStatus = LoadMoreStatus.StausDefault;
-                                CanLoadMore = true;
-                            }
-                            else
-                            {
-                                LoadStatus = LoadMoreStatus.StausEnd;
-                                CanLoadMore = false;
-                            }
-                        }
-                        else
-                        {
-                            CanLoadMore = false;
-                            LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausEnd : LoadMoreStatus.StausNodata;
+                            LoadStatus = LoadMoreStatus.StausDefault;
                         }
                     }
                     else
                     {
-                        Log.SaveLog("NewsDetailsViewModel.GetCommentAsync", new Exception() { Source = result.Message });
-                        LoadStatus = LoadMoreStatus.StausError;
+                        LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausEnd : LoadMoreStatus.StausNodata;
                     }
                 }
-                catch (Exception)
+                else
                 {
+                    Crashes.TrackError(new Exception() { Source = result.Message });
                     LoadStatus = LoadMoreStatus.StausError;
                 }
-            }));
-        public async Task<bool> ExecuteCommentEditCommandAsync(int id, string content, bool hasEdit = false)
+            }
+            catch (Exception ex)
+            {
+                Crashes.TrackError(ex);
+                LoadStatus = LoadMoreStatus.StausError;
+            }
+            return NewsComments;
+        }
+
+        public async Task<bool> EditCommentAsync(int id, string content, bool hasEdit = false)
         {
             var result = await StoreManager.NewsDetailsService.PostCommentAsync(id, content.ToString(), hasEdit);
             if (result.Success)
@@ -144,18 +143,38 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SaveLog("NewsDetailsViewModel.PostCommentAsync", new Exception() { Source = result.Message });
+                Crashes.TrackError(new Exception() { Source = result.Message });
                 Toast.SendToast(result.Message.ToString());
             }
             return result.Success;
         }
-        public void AddComment(NewsComments comment)
+        public async Task<bool> DeleteCommentAsync(int id)
+        {
+            var newsComments = NewsComments.Where(n => n.CommentID == id).FirstOrDefault();
+            var result = await StoreManager.NewsDetailsService.DeleteCommentAsync(newsComments.CommentID);
+            if (result.Success)
+            {
+                var index = NewsComments.IndexOf(newsComments);
+                NewsComments.RemoveAt(index);
+                if (NewsComments.Count == 0)
+                    LoadStatus = LoadMoreStatus.StausNodata;
+                NewsDetails.CommentDisplay = (news.CommentCount = news.CommentCount - 1).ToString();
+            }
+            else
+            {
+                Crashes.TrackError(new Exception() { Source = result.Message });
+                Toast.SendToast("删除失败");
+            }
+            return result.Success;
+        }
+
+        public void EditComment(NewsComments comment)
         {
             var book = NewsComments.Where(b => b.CommentID == comment.CommentID).FirstOrDefault();
             if (book == null)
             {
                 NewsComments.Add(comment);
-                NewsDetails.CommentDisplay = (news.CommentCount = news.CommentCount + 1).ToString();
+                NewsDetails.CommentDisplay = (news.CommentCount + 1).ToString();
             }
             else
             {
@@ -165,33 +184,7 @@ namespace XamCnblogs.Portable.ViewModel
             if (LoadStatus == LoadMoreStatus.StausNodata)
                 LoadStatus = LoadMoreStatus.StausEnd;
         }
-        ICommand deleteCommand;
-        public ICommand DeleteCommand =>
-            deleteCommand ?? (deleteCommand = new Command<NewsComments>(async (comment) =>
-            {
-                var index = NewsComments.IndexOf(comment);
-                if (!NewsComments[index].IsDelete)
-                {
-                    NewsComments[index].IsDelete = true;
-                    var result = await StoreManager.NewsDetailsService.DeleteCommentAsync(comment.CommentID);
-                    if (result.Success)
-                    {
-                        await Task.Delay(1000);
-                        index = NewsComments.IndexOf(comment);
-                        NewsComments.RemoveAt(index);
-                        if (NewsComments.Count == 0)
-                            LoadStatus = LoadMoreStatus.StausNodata;
-                        NewsDetails.CommentDisplay = (news.CommentCount = news.CommentCount - 1).ToString();
-                    }
-                    else
-                    {
-                        Log.SaveLog("NewsDetailsViewModel.DeleteCommentAsync", new Exception() { Source = result.Message });
-                        index = NewsComments.IndexOf(comment);
-                        NewsComments[index].IsDelete = false;
-                        Toast.SendToast("删除失败");
-                    }
-                }
-            }));
+
         public class NewsDetailsModel : BaseViewModel
         {
             string diggDisplay;
@@ -223,12 +216,6 @@ namespace XamCnblogs.Portable.ViewModel
             {
                 get { return dateDisplay; }
                 set { SetProperty(ref dateDisplay, value); }
-            }
-            bool hasError;
-            public bool HasError
-            {
-                get { return hasError; }
-                set { SetProperty(ref hasError, value); }
             }
         }
     }

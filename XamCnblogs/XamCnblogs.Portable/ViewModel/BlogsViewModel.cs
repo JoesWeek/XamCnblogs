@@ -1,4 +1,5 @@
-﻿using MvvmHelpers;
+﻿using Microsoft.AppCenter.Crashes;
+using MvvmHelpers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace XamCnblogs.Portable.ViewModel
                 }
                 catch (Exception ex)
                 {
-                    Log.SaveLog("BlogsViewModel.RefreshCommand", ex);
+                    Crashes.TrackError(ex);
                     LoadStatus = LoadMoreStatus.StausFail;
                 }
                 finally
@@ -89,7 +90,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SaveLog("BlogsViewModel.GetArticlesAsync", new Exception() { Source = result.Message });
+                Crashes.TrackError(new Exception() { Source = result.Message });
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausEnd : LoadMoreStatus.StausNodata;
             }
         }

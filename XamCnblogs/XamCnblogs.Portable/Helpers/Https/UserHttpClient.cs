@@ -1,4 +1,5 @@
-﻿using ModernHttpClient;
+﻿using Microsoft.AppCenter.Crashes;
+using ModernHttpClient;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -63,8 +64,7 @@ namespace XamCnblogs.Portable.Helpers
             }
             catch (Exception ex)
             {
-
-                DependencyService.Get<ILog>().SaveLog("UserHttpClient:PatchAsync", ex);
+                Crashes.TrackError(ex);
                 responseMessage = new ResponseMessage() { Success = false, Message = ex.Message };
             }
             return responseMessage;
@@ -84,7 +84,7 @@ namespace XamCnblogs.Portable.Helpers
             }
             catch (Exception ex)
             {
-                DependencyService.Get<ILog>().SaveLog("UserHttpClient:RefreshTokenAsync", ex);
+                Crashes.TrackError(ex);
                 responseMessage = new ResponseMessage() { Success = false, Message = ex.Message };
             }
             return responseMessage;
@@ -102,7 +102,7 @@ namespace XamCnblogs.Portable.Helpers
                     var message = await response.Content.ReadAsStringAsync();
                     try
                     {
-                        DependencyService.Get<ILog>().SaveLog("UserHttpClient", new Exception() { Source = message });
+                        Crashes.TrackError(new Exception() { Source = message });
                         message = JsonConvert.DeserializeObject<Messages>(await response.Content.ReadAsStringAsync()).Message;
                     }
                     catch (Exception e)

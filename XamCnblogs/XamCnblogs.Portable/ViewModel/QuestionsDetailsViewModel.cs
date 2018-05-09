@@ -1,24 +1,21 @@
-﻿using XamCnblogs.Portable.Helpers;
-using XamCnblogs.Portable.Model;
-using XamCnblogs.Portable.Services;
+﻿using Microsoft.AppCenter.Crashes;
 using MvvmHelpers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Xamarin.Forms;
 using System.Linq;
+using System.Threading.Tasks;
+using XamCnblogs.Portable.Helpers;
+using XamCnblogs.Portable.Model;
 
 namespace XamCnblogs.Portable.ViewModel
 {
     public class QuestionsDetailsViewModel : ViewModelBase
     {
-        public ObservableRangeCollection<QuestionsAnswers> QuestionAnswers { get; } = new ObservableRangeCollection<QuestionsAnswers>();
+        public List<QuestionsAnswers> QuestionsAnswers { get; } = new List<QuestionsAnswers>();
         Questions questions;
         private int pageIndex = 1;
         private int pageSize = 20;
-        public DateTime NextRefreshTime { get; set; }
 
         QuestionsDetailsModel questionsDetails;
         public QuestionsDetailsModel QuestionsDetails
@@ -32,111 +29,105 @@ namespace XamCnblogs.Portable.ViewModel
             get { return loadStatus; }
             set { SetProperty(ref loadStatus, value); }
         }
+        bool hasError;
+        public bool HasError
+        {
+            get { return hasError; }
+            set { SetProperty(ref hasError, value); }
+        }
 
         public QuestionsDetailsViewModel(Questions questions)
         {
             this.questions = questions;
-            Title = questions.Title;
+            Title = "博问";
             QuestionsDetails = new QuestionsDetailsModel()
             {
                 DiggDisplay = questions.DiggCount > 0 ? questions.DiggCount.ToString() : "推荐",
                 CommentDisplay = questions.AnswerCount > 0 ? questions.AnswerCount.ToString() : "回答",
                 ViewDisplay = questions.ViewCount > 0 ? questions.ViewCount.ToString() : "阅读"
             };
+            IsBusy = true;
         }
-        ICommand refreshCommand;
-        public ICommand RefreshCommand =>
-            refreshCommand ?? (refreshCommand = new Command(async () =>
+
+        public async Task<Questions> RefreshQuestionsAsync()
+        {
+            try
             {
-                try
+                IsBusy = true;
+                pageIndex = 1;
+                HasError = false;
+                var result = await StoreManager.QuestionsDetailsService.GetQuestionsAsync(questions.Qid);
+                if (result.Success)
                 {
-                    IsBusy = true;
-                    pageIndex = 1;
-                    QuestionsDetails.HasError = false;
-                    NextRefreshTime = DateTime.Now.AddMinutes(15);
-                    var result = await StoreManager.QuestionsDetailsService.GetQuestionsAsync(questions.Qid);
-                    if (result.Success)
-                    {
-                        questions = JsonConvert.DeserializeObject<Questions>(result.Message.ToString());
+                    questions = JsonConvert.DeserializeObject<Questions>(result.Message.ToString());
 
-                        QuestionsDetails.Title = questions.Title;
-                        QuestionsDetails.UserName = questions.QuestionUserInfo.UserName;
-                        QuestionsDetails.UserDisplay = HtmlTemplate.GetScoreName(questions.QuestionUserInfo.QScore) + " · " + questions.QuestionUserInfo.QScore + "园豆" + " · 提问于 " + questions.DateDisplay;
-                        QuestionsDetails.Content = questions.ContentDisplay;
-                        QuestionsDetails.IconDisplay = questions.QuestionUserInfo.IconDisplay;
-                        QuestionsDetails.Award = questions.Award;
-                        QuestionsDetails.TagsDisplay = questions.TagsDisplay;
-                        QuestionsDetails.DealFlag = questions.DealFlag;
-                        QuestionsDetails.DiggDisplay = questions.DiggCount > 0 ? questions.DiggCount.ToString() : "推荐";
-                        QuestionsDetails.CommentDisplay = questions.AnswerCount > 0 ? questions.AnswerCount.ToString() : "回答";
-                        QuestionsDetails.ViewDisplay = questions.ViewCount > 0 ? questions.ViewCount.ToString() : "阅读";
-                        switch (questions.DealFlag)
-                        {
-                            case 1:
-                                QuestionsDetails.DealFlagDisplay = "已解决";
-                                break;
-                            case -1:
-                                QuestionsDetails.DealFlagDisplay = "已关闭";
-                                break;
-                            default:
-                                QuestionsDetails.DealFlagDisplay = "待解决";
-                                break;
-                        }
-                        QuestionsDetails.HasError = false;
-                    }
-                    else
-                    {
-                        if (QuestionsDetails.Content == null)
-                        {
-                            QuestionsDetails.HasError = true;
-                        }
-                        else
-                        {
-                            Toast.SendToast("好像出了点问题 - -");
-                        }
-                        Log.SaveLog("QuestionsDetailsViewModel.GetQuestionsAsync", new Exception() { Source = result.Message });
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Log.SaveLog("QuestionsDetailsViewModel.RefreshCommand", ex);
-                }
-                finally
-                {
-                    IsBusy = false;
-                }
-            }));
+                    QuestionsDetails.DiggDisplay = questions.DiggCount > 0 ? questions.DiggCount.ToString() : "推荐";
+                    QuestionsDetails.CommentDisplay = questions.AnswerCount > 0 ? questions.AnswerCount.ToString() : "回答";
+                    QuestionsDetails.ViewDisplay = questions.ViewCount > 0 ? questions.ViewCount.ToString() : "阅读";
 
-        ICommand loadMoreCommand;
-        public ICommand LoadMoreCommand =>
-            loadMoreCommand ?? (loadMoreCommand = new Command(async () =>
+                    HasError = false;
+                }
+                else
+                {
+                    HasError = true;
+                    Crashes.TrackError(new Exception() { Source = result.Message });
+                }
+            }
+            catch (Exception ex)
+            {
+                HasError = true;
+                Crashes.TrackError(ex);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+            return questions;
+        }
+
+        public async Task<List<QuestionsAnswers>> ReloadAnswersAsync()
+        {
+            try
             {
                 LoadStatus = LoadMoreStatus.StausLoading;
 
                 var result = await StoreManager.QuestionsDetailsService.GetAnswersAsync(questions.Qid, pageIndex, pageSize);
                 if (result.Success)
                 {
-                    var answers = JsonConvert.DeserializeObject<List<QuestionsAnswers>>(result.Message.ToString());
-                    if (answers.Count > 0)
+                    var questionsAnswers = JsonConvert.DeserializeObject<List<QuestionsAnswers>>(result.Message.ToString());
+                    if (questionsAnswers.Count > 0)
                     {
-                        if (QuestionAnswers.Count > 0)
-                            QuestionAnswers.Clear();
-                        QuestionAnswers.AddRange(answers);
-                        LoadStatus = LoadMoreStatus.StausEnd;
+                        if (pageIndex == 1)
+                            QuestionsAnswers.Clear();
+                        QuestionsAnswers.AddRange(questionsAnswers);
+                        pageIndex++;
+                        if (questionsAnswers.Count < pageSize)
+                        {
+                            LoadStatus = LoadMoreStatus.StausEnd;
+                        }
+                        else
+                        {
+                            LoadStatus = LoadMoreStatus.StausDefault;
+                        }
                     }
                     else
                     {
-                        LoadStatus = LoadMoreStatus.StausNodata;
+                        LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausEnd : LoadMoreStatus.StausNodata;
                     }
-                    CanLoadMore = false;
                 }
                 else
                 {
-                    Log.SaveLog("QuestionsDetailsViewModel.GetAnswersAsync", new Exception() { Source = result.Message });
+                    Crashes.TrackError(new Exception() { Source = result.Message });
                     LoadStatus = LoadMoreStatus.StausError;
                 }
-            })
-         );
+            }
+            catch (Exception ex)
+            {
+                Crashes.TrackError(ex);
+                LoadStatus = LoadMoreStatus.StausError;
+            }
+            return QuestionsAnswers;
+        }
 
         public async Task<bool> ExecuteCommentPostCommandAsync(int id, string content)
         {
@@ -147,11 +138,12 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SaveLog("QuestionsDetailsViewModel.PostAnswerAsync", new Exception() { Source = result.Message });
+                Crashes.TrackError(new Exception() { Source = result.Message });
                 Toast.SendToast(result.Message.ToString());
             }
             return result.Success;
         }
+
         public async Task<bool> ExecuteCommentEditCommandAsync(int questionId, int answerId, int userId, string content)
         {
             var result = await StoreManager.QuestionsDetailsService.EditAnswerAsync(questionId, answerId, userId, content.ToString());
@@ -161,109 +153,55 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SaveLog("QuestionsDetailsViewModel.EditAnswerAsync", new Exception() { Source = result.Message });
+                Crashes.TrackError(new Exception() { Source = result.Message });
                 Toast.SendToast(result.Message.ToString());
             }
             return result.Success;
         }
-        ICommand deleteCommand;
-        public ICommand DeleteCommand =>
-            deleteCommand ?? (deleteCommand = new Command<QuestionsAnswers>(async (comment) =>
-            {
-                var index = QuestionAnswers.IndexOf(comment);
-                if (!QuestionAnswers[index].IsDelete)
-                {
-                    QuestionAnswers[index].IsDelete = true;
-                    var result = await StoreManager.QuestionsDetailsService.DeleteAnswerAsync(comment.Qid, comment.AnswerID);
-                    if (result.Success)
-                    {
-                        await Task.Delay(1000);
-                        index = QuestionAnswers.IndexOf(comment);
-                        QuestionAnswers.RemoveAt(index);
-                        if (QuestionAnswers.Count == 0)
-                            LoadStatus = LoadMoreStatus.StausNodata;
-                        QuestionsDetails.CommentDisplay = (questions.AnswerCount = questions.AnswerCount - 1).ToString();
-                    }
-                    else
-                    {
-                        Log.SaveLog("QuestionsDetailsViewModel.DeleteAnswerAsync", new Exception() { Source = result.Message });
-                        index = QuestionAnswers.IndexOf(comment);
-                        QuestionAnswers[index].IsDelete = false;
-                        Toast.SendToast("删除失败");
-                    }
-                }
-            }));
-        public void EditComment(QuestionsAnswers answers)
+
+        public async Task<bool> DeleteQuestionAnswersAsync(int id)
         {
-            var book = QuestionAnswers.Where(b => b.AnswerID == answers.AnswerID).FirstOrDefault();
-            if (book == null)
+            var questionsAnswers = QuestionsAnswers.Where(n => n.AnswerID == id).FirstOrDefault();
+            var result = await StoreManager.QuestionsDetailsService.DeleteAnswerAsync(questionsAnswers.Qid, questionsAnswers.AnswerID);
+            if (result.Success)
             {
-                QuestionAnswers.Add(answers);
-                QuestionsDetails.CommentDisplay = (questions.AnswerCount = questions.AnswerCount + 1).ToString();
+                var index = QuestionsAnswers.IndexOf(questionsAnswers);
+                QuestionsAnswers.RemoveAt(index);
+                if (QuestionsAnswers.Count == 0)
+                    LoadStatus = LoadMoreStatus.StausNodata;
+                QuestionsDetails.CommentDisplay = (questions.AnswerCount = questions.AnswerCount - 1).ToString();
             }
             else
             {
-                var index = QuestionAnswers.IndexOf(book);
-                QuestionAnswers[index] = answers;
+                Crashes.TrackError(new Exception() { Source = result.Message });
+                Toast.SendToast("删除失败");
+            }
+            return result.Success;
+        }
+
+        public void EditComment(QuestionsAnswers comment)
+        {
+            var book = QuestionsAnswers.Where(b => b.AnswerID == comment.AnswerID).FirstOrDefault();
+            if (book == null)
+            {
+                QuestionsAnswers.Add(comment);
+                QuestionsDetails.CommentDisplay = (questions.AnswerCount + 1).ToString();
+            }
+            else
+            {
+                var index = QuestionsAnswers.IndexOf(book);
+                QuestionsAnswers[index] = comment;
             }
             if (LoadStatus == LoadMoreStatus.StausNodata)
                 LoadStatus = LoadMoreStatus.StausEnd;
         }
         public class QuestionsDetailsModel : BaseViewModel
         {
-            string userName;
-            public string UserName
-            {
-                get { return userName; }
-                set { SetProperty(ref userName, value); }
-            }
-            string userDisplay;
-            public string UserDisplay
-            {
-                get { return userDisplay; }
-                set { SetProperty(ref userDisplay, value); }
-            }
-            string iconDisplay;
-            public string IconDisplay
-            {
-                get { return iconDisplay; }
-                set { SetProperty(ref iconDisplay, value); }
-            }
             string diggDisplay;
             public string DiggDisplay
             {
                 get { return diggDisplay; }
                 set { SetProperty(ref diggDisplay, value); }
-            }
-            string content;
-            public string Content
-            {
-                get { return content; }
-                set { SetProperty(ref content, value); }
-            }
-            int award;
-            public int Award
-            {
-                get { return award; }
-                set { SetProperty(ref award, value); }
-            }
-            string tagsDisplay;
-            public string TagsDisplay
-            {
-                get { return tagsDisplay; }
-                set { SetProperty(ref tagsDisplay, value); }
-            }
-            int dealFlag;
-            public int DealFlag
-            {
-                get { return dealFlag; }
-                set { SetProperty(ref dealFlag, value); }
-            }
-            string dealFlagDisplay;
-            public string DealFlagDisplay
-            {
-                get { return dealFlagDisplay; }
-                set { SetProperty(ref dealFlagDisplay, value); }
             }
             string commentDisplay;
             public string CommentDisplay
@@ -276,18 +214,6 @@ namespace XamCnblogs.Portable.ViewModel
             {
                 get { return viewDisplay; }
                 set { SetProperty(ref viewDisplay, value); }
-            }
-            bool hasError;
-            public bool HasError
-            {
-                get { return hasError; }
-                set { SetProperty(ref hasError, value); }
-            }
-            bool hasContent;
-            public bool HasContent
-            {
-                get { return hasContent; }
-                set { SetProperty(ref hasContent, value); }
             }
         }
     }

@@ -9,7 +9,7 @@ using Xamarin.Forms.Xaml;
 
 namespace XamCnblogs.UI.Cells
 {
-    public partial class SearchItemCell : ContentView
+    public partial class SearchItemCell : ViewCell
     {
         public SearchItemCell()
         {

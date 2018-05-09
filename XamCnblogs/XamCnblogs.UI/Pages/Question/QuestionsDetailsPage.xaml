@@ -1,80 +1,58 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-	         xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
              xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
-             xmlns:question="clr-namespace:XamCnblogs.UI.Pages.Question;assembly=XamCnblogs.UI"
              xmlns:converter="clr-namespace:XamCnblogs.UI.Converters;assembly=XamCnblogs.UI"
-             xmlns:cells="clr-namespace:XamCnblogs.UI.Cells;assembly=XamCnblogs.UI"
              x:Class="XamCnblogs.UI.Pages.Question.QuestionsDetailsPage"
              x:Name="QuestionsDetailsPage"
              Title="{Binding Title}">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <converter:IsGoldConverter x:Key="IsGoldConverter" />
-            <converter:IsTagConverter x:Key="IsTagConverter" />
-            <converter:DealFlagConverter x:Key="DealFlagConverter" />
-        </ResourceDictionary>
-    </ContentPage.Resources>
     <StackLayout Spacing="0">
-        <AbsoluteLayout 
-            VerticalOptions="FillAndExpand">
-            <controls:LoadMoreListView
+        <AbsoluteLayout
+            VerticalOptions="FillAndExpand"
+            HorizontalOptions="FillAndExpand">
+            <controls:DetailsWebView 
+                x:Name="formsWebView"
+                ContentType="LocalFile" 
+                Source="questions.html"
+                LoadStatus="{Binding LoadStatus}" 
                 AbsoluteLayout.LayoutBounds="0,0,1,1"
-                AbsoluteLayout.LayoutFlags="All"
-                x:Name="QuestionsDetailsView"
-                ItemsSource="{Binding QuestionAnswers}"
-                Header="{Binding QuestionsDetails}"
-                HasUnevenRows="True"
-                IsPullToRefreshEnabled="True"
-                RefreshCommand="{Binding RefreshCommand}"
-                LoadMoreCommand="{Binding LoadMoreCommand}"
-                IsRefreshing="{Binding IsBusy}"
-                LoadStatus="{Binding LoadStatus}"
-                CanLoadMore="{Binding CanLoadMore}"
-                FailHeight="70"
+                AbsoluteLayout.LayoutFlags="All"/>
+            <StackLayout IsVisible="{Binding IsBusy}" 
+                HorizontalOptions="FillAndExpand" 
+                VerticalOptions="FillAndExpand" 
                 BackgroundColor="White"
-                SeparatorColor="{StaticResource Divider}">
-                <controls:LoadMoreListView.HeaderTemplate>
-                    <DataTemplate>
-                        <question:QuestionsDetailsHeader/>
-                    </DataTemplate>
-                </controls:LoadMoreListView.HeaderTemplate>
-                <controls:LoadMoreListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <cells:QuestionsAnswersItemCell
-                            EditCommand="{Binding Path=EditCommand, Source={x:Reference QuestionsDetailsPage}}"
-                            DeleteCommand="{Binding Path=BindingContext.DeleteCommand, Source={x:Reference QuestionsDetailsPage}}"/>
-                        </ViewCell>
-                    </DataTemplate>
-                </controls:LoadMoreListView.ItemTemplate>
-            </controls:LoadMoreListView>
-            <StackLayout
-                VerticalOptions="FillAndExpand"
-                HorizontalOptions="FillAndExpand"
+                AbsoluteLayout.LayoutBounds="0.5,0.5,1,1"
+                AbsoluteLayout.LayoutFlags="All">
+                <ActivityIndicator 
+                    IsRunning="{Binding IsBusy}"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalOptions="CenterAndExpand"
+                    AbsoluteLayout.LayoutBounds="0.5,0.5,1,1"
+                    AbsoluteLayout.LayoutFlags="All"/>
+            </StackLayout>
+            <StackLayout IsVisible="{Binding HasError}" 
+                HorizontalOptions="FillAndExpand" 
+                VerticalOptions="FillAndExpand" 
                 BackgroundColor="White"
-                AbsoluteLayout.LayoutBounds="0,0,1,1"
-                AbsoluteLayout.LayoutFlags="All"
-                IsVisible="{Binding QuestionsDetails.HasError}">
+                AbsoluteLayout.LayoutBounds="0.5,0.5,1,1"
+                AbsoluteLayout.LayoutFlags="All">
                 <StackLayout
-                        VerticalOptions="CenterAndExpand"
-                        HorizontalOptions="CenterAndExpand">
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalOptions="CenterAndExpand">
                     <Label
-                         Text="似乎出了点问题"
-                         Style="{StaticResource SecondaryTextStyle}"
-                         HorizontalOptions="CenterAndExpand" />
+                        Text="似乎出了点问题"
+                        Style="{StaticResource SecondaryTextStyle}"
+                        HorizontalOptions="CenterAndExpand" />
                     <Label
                          Text="重新加载"
                          Style="{StaticResource SecondaryTextStyle}"
                          TextColor="{StaticResource Primary}"
                          HorizontalOptions="CenterAndExpand">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnTapped"/>
-                        </Label.GestureRecognizers>
                     </Label>
                 </StackLayout>
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnReloadQuestions"/>
+                </StackLayout.GestureRecognizers>
             </StackLayout>
         </AbsoluteLayout>
         <StackLayout 
@@ -120,7 +98,7 @@
                     <Label Text="{Binding QuestionsDetails.ViewDisplay}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Style="{StaticResource MoreSecondaryStyle}"/>
                 </StackLayout>
                 <StackLayout  Grid.Row="0"  Grid.Column="4" Spacing="3" VerticalOptions="CenterAndExpand">
-                    <Image Source="icon_reply.png" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                    <Image Source="icon_reply.png" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"></Image>
                     <Label Text="{Binding QuestionsDetails.CommentDisplay}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Style="{StaticResource MoreSecondaryStyle}"></Label>
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnScrollComment"/>

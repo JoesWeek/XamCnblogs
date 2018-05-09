@@ -1,9 +1,7 @@
-﻿using XamCnblogs.Portable.Helpers;
-using Humanizer;
-using Newtonsoft.Json;
-using System;
-using System.Globalization;
+﻿using Newtonsoft.Json;
 using SQLite;
+using System;
+using XamCnblogs.Portable.Helpers;
 
 namespace XamCnblogs.Portable.Model
 {
@@ -23,24 +21,13 @@ namespace XamCnblogs.Portable.Model
         public bool IsRecommend { get; set; }
         public string Body { get; set; }
         [Ignore]
-        [JsonIgnore]
-        public string DateDisplay { get { return DateAdded.ToUniversalTime().Humanize(); } }
+        public string DateDisplay { get { return DateAdded.Format(); } }
         [Ignore]
-        [JsonIgnore]
         public string DiggValue
         {
             get
             {
                 return DiggCount + " 推荐 · " + CommentCount + " 评论 · " + ViewCount + " 阅读";
-            }
-        }
-        [Ignore]
-        [JsonIgnore]
-        public string BodyDisplay
-        {
-            get
-            {
-                return HtmlTemplate.ReplaceHtml(Body);
             }
         }
     }

@@ -29,6 +29,7 @@ namespace XamCnblogs.UI.Pages.New
                 this.Comment.Text = questionsAnswers.Answer;
             }
             this.Comment.Focus();
+            ViewModel.IsBusy = false;
         }
         private void OnClose(object sender, EventArgs e)
         {
@@ -74,6 +75,9 @@ namespace XamCnblogs.UI.Pages.New
                 SendButton.IsRunning = true;
                 if (questionsAnswers == null)
                 {
+                    if (AboutSettings.Current.WeibaToggled)
+                        comment += "<br/>" + AboutSettings.Current.WeibaContent;
+
                     if (await ViewModel.ExecuteCommentPostCommandAsync(questions.Qid, comment))
                     {
                         SendButton.IsRunning = false;

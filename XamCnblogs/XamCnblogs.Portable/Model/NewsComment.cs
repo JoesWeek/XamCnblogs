@@ -1,20 +1,15 @@
-﻿using Humanizer;
-using MvvmHelpers;
+﻿using MvvmHelpers;
 using Newtonsoft.Json;
 using System;
+using XamCnblogs.Portable.Helpers;
 
 namespace XamCnblogs.Portable.Model
 {
-    public class NewsComments : BaseViewModel
+    public class NewsComments
     {
         public int CommentID { get; set; }
         public int ContentID { get; set; }
-        private string commentContent;
-        public string CommentContent
-        {
-            get { return commentContent; }
-            set { SetProperty(ref commentContent, value); }
-        }
+        public string CommentContent { get; set; }
         public Guid UserGuid { get; set; }
         public int UserId { get; set; }
         public string UserName { get; set; }
@@ -25,15 +20,21 @@ namespace XamCnblogs.Portable.Model
         public int AntiCount { get; set; }
         public int ParentCommentID { get; set; }
         public NewsComments ParentComment { get; set; }
-        [JsonIgnore]
-        public string DateDisplay { get { return DateAdded.ToUniversalTime().Humanize(); } }
-
-        private bool isDelete;
-        [JsonIgnore]
-        public bool IsDelete
+        public string DateDisplay { get { return DateAdded.Format(); } }        
+        public bool IsDelete { get; set; }
+        public bool IsLoginUser
         {
-            get { return isDelete; }
-            set { SetProperty(ref isDelete, value); }
+            get
+            {
+                if (!UserTokenSettings.Current.HasExpiresIn() && CommentID > 0)
+                {
+                    return UserGuid.Equals(UserSettings.Current.UserId);
+                }
+                else
+                {
+                    return false;
+                }
+            }
         }
     }
 }

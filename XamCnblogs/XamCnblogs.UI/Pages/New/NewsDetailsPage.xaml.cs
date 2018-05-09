@@ -1,4 +1,5 @@
 ﻿using FormsToolkit;
+using Newtonsoft.Json;
 using Rg.Plugins.Popup.Extensions;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ namespace XamCnblogs.UI.Pages.New
         NewsDetailsViewModel ViewModel => vm ?? (vm = BindingContext as NewsDetailsViewModel);
         NewsDetailsViewModel vm;
         News news;
+
         public NewsDetailsPage(News news)
         {
             this.news = news;
@@ -40,31 +42,45 @@ namespace XamCnblogs.UI.Pages.New
             if (Device.Android == Device.RuntimePlatform)
                 cancel.Icon = "toolbar_share.png";
 
-        }
-
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-            UpdatePage();
-        }
-        private void UpdatePage()
-        {
-            bool forceRefresh = (DateTime.Now > (ViewModel?.NextRefreshTime ?? DateTime.Now));
-
-            if (forceRefresh)
+            formsWebView.OnContentLoaded += delegate (object sender, EventArgs e)
             {
-                //刷新
-                ViewModel.RefreshCommand.Execute(null);
-            }
+                RefreshNews();
+            };
+            formsWebView.AddLocalCallback("reload", async delegate (string obj)
+            {
+                if (formsWebView.LoadStatus == LoadMoreStatus.StausDefault || formsWebView.LoadStatus == LoadMoreStatus.StausError || formsWebView.LoadStatus == LoadMoreStatus.StausFail)
+                {
+                    var newsComments = JsonConvert.SerializeObject(await ViewModel.ReloadCommentsAsync());
+                    await formsWebView.InjectJavascriptAsync("updateComments(" + newsComments + ");");
+                }
+            });
+            formsWebView.AddLocalCallback("editItem", delegate (string id)
+           {
+               var newsComments = ViewModel.NewsComments.Where(n => n.CommentID == int.Parse(id)).FirstOrDefault();
+               Device.BeginInvokeOnMainThread(async () =>
+               {
+                   var page = new NewsCommentPopupPage(news, new Action<NewsComments>(OnResult), newsComments);
+                   await Navigation.PushPopupAsync(page);
+               });
+           });
+            formsWebView.AddLocalCallback("deleteItem", async delegate (string id)
+            {
+                var result = await ViewModel.DeleteCommentAsync(int.Parse(id));
+                await formsWebView.InjectJavascriptAsync("deleteComment(" + id + "," + result.ToString().ToLower() + ");");
+            });
         }
-        void OnTapped(object sender, EventArgs args)
+
+        async void RefreshNews()
         {
-            ViewModel.RefreshCommand.Execute(null);
+            var news = JsonConvert.SerializeObject(await ViewModel.RefreshNewsAsync());
+            await formsWebView.InjectJavascriptAsync("updateModel(" + news + ");");
+        }
+        void OnReloadNews(object sender, EventArgs args)
+        {
+            RefreshNews();
         }
         void OnScrollComment(object sender, EventArgs args)
         {
-            if (ViewModel.NewsComments.Count > 0)
-                NewsDetailsView.ScrollTo(ViewModel.NewsComments.First(), ScrollToPosition.Start, false);
         }
         async void OnShowComment(object sender, EventArgs args)
         {
@@ -78,12 +94,12 @@ namespace XamCnblogs.UI.Pages.New
                 await Navigation.PushPopupAsync(page);
             }
         }
-        private void OnResult(NewsComments result)
+        private async void OnResult(NewsComments result)
         {
             if (result != null)
             {
-                ViewModel.AddComment(result);
-                NewsDetailsView.ScrollTo(ViewModel.NewsComments.Last(), ScrollToPosition.Start, false);
+                ViewModel.EditComment(result);
+                await formsWebView.InjectJavascriptAsync("updateComment(" + JsonConvert.SerializeObject(result) + ");");
             }
         }
         async void OnBookmarks(object sender, EventArgs args)
@@ -96,17 +112,6 @@ namespace XamCnblogs.UI.Pages.New
             {
                 var url = "https://news.cnblogs.com/n/" + news.Id + "/";
                 await NavigationService.PushAsync(Navigation, new BookmarksEditPage(new Bookmarks() { Title = news.Title, LinkUrl = url, FromCNBlogs = true }));
-            }
-        }
-        public ICommand EditCommand
-        {
-            get
-            {
-                return new Command(async (e) =>
-                {
-                    var page = new NewsCommentPopupPage(news, new Action<NewsComments>(OnResult), e as NewsComments);
-                    await Navigation.PushPopupAsync(page);
-                });
             }
         }
     }

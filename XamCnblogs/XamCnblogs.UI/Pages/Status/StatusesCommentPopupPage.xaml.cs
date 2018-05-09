@@ -65,6 +65,10 @@ namespace XamCnblogs.UI.Pages.New
             else
             {
                 SendButton.IsRunning = true;
+
+                if (AboutSettings.Current.WeibaToggled)
+                    comment += "<br/>" + AboutSettings.Current.WeibaContent;
+
                 if (await ViewModel.ExecuteCommentEditCommandAsync(statuses.Id, comment))
                 {
                     SendButton.IsRunning = false;

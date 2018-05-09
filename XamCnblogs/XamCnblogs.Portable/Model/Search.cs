@@ -1,8 +1,6 @@
-﻿using Humanizer;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using XamCnblogs.Portable.Helpers;
 
 namespace XamCnblogs.Portable.Model
 {
@@ -19,7 +17,7 @@ namespace XamCnblogs.Portable.Model
         public string Uri { get; set; }
         public string Id { get; set; }
         [JsonIgnore]
-        public string DateDisplay { get { return PublishTime.ToUniversalTime().Humanize(); } }
+        public string DateDisplay { get { return PublishTime.Format(); } }
         [JsonIgnore]
         public string DiggValue
         {

@@ -1,10 +1,6 @@
-﻿using Humanizer;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using XamCnblogs.Portable.Helpers;
 
 namespace XamCnblogs.Portable.Model
 {
@@ -23,8 +19,8 @@ namespace XamCnblogs.Portable.Model
         public int Floor { get; set; }
 
         public DateTime DateAdded { get; set; }
-        [JsonIgnore]
-        public string DateDisplay { get { return DateAdded.ToUniversalTime().Humanize(); } }
+        
+        public string DateDisplay { get { return DateAdded.Format(); } }
         [JsonIgnore]
         public string FaceUrlDisplay { get { return FaceUrl == "" ? "https://pic.cnblogs.com/face/sample_face.gif" : FaceUrl; } }
     }

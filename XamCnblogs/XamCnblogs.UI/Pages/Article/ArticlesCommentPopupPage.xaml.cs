@@ -28,6 +28,7 @@ namespace XamCnblogs.UI.Pages.Article
             InitializeComponent();
             BindingContext = new ArticlesDetailsViewModel(articles);
             this.Comment.Focus();
+            ViewModel.IsBusy = false;
         }
         private void OnClose(object sender, EventArgs e)
         {
@@ -64,6 +65,10 @@ namespace XamCnblogs.UI.Pages.Article
             else
             {
                 SendButton.IsRunning = true;
+
+                if (AboutSettings.Current.WeibaToggled)
+                    comment += "<br/>" + AboutSettings.Current.WeibaContent;
+
                 if (await ViewModel.ExecuteCommentEditCommandAsync(articles.BlogApp, articles.Id, comment))
                 {
                     SendButton.IsRunning = false;

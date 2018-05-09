@@ -1,19 +1,14 @@
-﻿using Humanizer;
-using MvvmHelpers;
+﻿using MvvmHelpers;
 using Newtonsoft.Json;
 using System;
+using XamCnblogs.Portable.Helpers;
 
 namespace XamCnblogs.Portable.Model
 {
-    public class AnswersComment : BaseViewModel
+    public class AnswersComments
     {
         public int CommentID { get; set; }
-        private string content;
-        public string Content
-        {
-            get { return content; }
-            set { SetProperty(ref content, value); }
-        }
+        public string Content { get; set; }
         public string ConvertedContent { get; set; }
         public int FormatType { get; set; }
         public int ParentCommentId { get; set; }
@@ -26,15 +21,20 @@ namespace XamCnblogs.Portable.Model
         public QuestionUserInfo PostUserInfo { get; set; }
         public int DiggCount { get; set; }
         public int BuryCount { get; set; }
-        [JsonIgnore]
-        public string DateDisplay { get { return DateAdded.ToUniversalTime().Humanize(); } }
-
-        private bool isDelete;
-        [JsonIgnore]
-        public bool IsDelete
+        public string DateDisplay { get { return DateAdded.Format(); } }
+        public bool IsLoginUser
         {
-            get { return isDelete; }
-            set { SetProperty(ref isDelete, value); }
+            get
+            {
+                if (!UserTokenSettings.Current.HasExpiresIn() && CommentID > 0)
+                {
+                    return PostUserID.Equals(UserSettings.Current.SpaceUserId);
+                }
+                else
+                {
+                    return false;
+                }
+            }
         }
     }
 }

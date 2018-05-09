@@ -1,8 +1,10 @@
-﻿using Plugin.Settings;
+﻿using Newtonsoft.Json;
+using Plugin.Settings;
 using Plugin.Settings.Abstractions;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using XamCnblogs.Portable.Model;
 
 namespace XamCnblogs.Portable.Helpers
@@ -27,17 +29,16 @@ namespace XamCnblogs.Portable.Helpers
         /// </summary>
         public bool HasExpiresIn()
         {
-            if (UserToken == null)
+            if (UserToken == null || UserExpiresIn == 0)
             {
-                return true;
-            }
-            else if (UserTokenRefreshTime.AddSeconds(UserExpiresIn) < DateTime.Now)
-            {
-                UpdateUserToken(new Token());
                 return true;
             }
             else
             {
+                Task.Run(async () =>
+                {
+                   // await RefreshUserTokenAsync();
+                });
                 return false;
             }
         }
@@ -95,11 +96,32 @@ namespace XamCnblogs.Portable.Helpers
         }
         public void UpdateUserToken(Token token)
         {
-            UserToken = token.AccessToken;
-            UserExpiresIn = token.ExpiresIn;
-            UserTokenType = token.TokenType;
-            UserRefreshToken = token.RefreshToken;
-            UserTokenRefreshTime = token.RefreshTime;
+            Current.UserToken = token.AccessToken;
+            Current.UserExpiresIn = token.ExpiresIn;
+            Current.UserTokenType = token.TokenType;
+            Current.UserRefreshToken = token.RefreshToken;
+            Current.UserTokenRefreshTime = token.RefreshTime;
+        }
+        public async Task RefreshUserTokenAsync()
+        {
+            if (UserRefreshToken != null)
+            {
+                var result = await UserHttpClient.Current.RefreshTokenAsync();
+                if (result.Success)
+                {
+                    var token = JsonConvert.DeserializeObject<Token>(result.Message.ToString());
+                    token.RefreshTime = DateTime.Now;
+                    UpdateUserToken(token);
+
+                    var userResult = await UserHttpClient.Current.GetAsyn(Apis.Users);
+                    if (userResult.Success)
+                    {
+                        var user = JsonConvert.DeserializeObject<User>(userResult.Message.ToString());
+
+                        UserSettings.Current.UpdateUser(user);
+                    }
+                }
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

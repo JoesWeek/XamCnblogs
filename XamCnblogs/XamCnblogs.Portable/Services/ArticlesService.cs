@@ -4,6 +4,7 @@ using XamCnblogs.Portable.Helpers;
 using XamCnblogs.Portable.Model;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Microsoft.AppCenter.Crashes;
 
 namespace XamCnblogs.Portable.Services
 {
@@ -33,7 +34,7 @@ namespace XamCnblogs.Portable.Services
                 var result = new ResponseMessage();
                 result.Success = false;
                 result.Message = ex.Message;
-                DependencyService.Get<ILog>().SaveLog("ArticlesService.GetArticlesAsync", ex);
+                Crashes.TrackError(ex);
                 return result;
             }
         }

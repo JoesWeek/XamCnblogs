@@ -3,67 +3,53 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
              x:Class="XamCnblogs.UI.Pages.KbArticle.KbArticlesDetailsPage"
-             Title="{Binding Title}"
-             BackgroundColor="{StaticResource Background}">
+             Title="{Binding Title}">
     <StackLayout Spacing="0">
-        <AbsoluteLayout 
-            VerticalOptions="FillAndExpand">
-            <controls:LoadMoreListView
+        <AbsoluteLayout
+            VerticalOptions="FillAndExpand"
+            HorizontalOptions="FillAndExpand">
+            <controls:DetailsWebView 
+                x:Name="formsWebView"
+                ContentType="LocalFile" 
+                Source="kbarticles.html"
                 AbsoluteLayout.LayoutBounds="0,0,1,1"
-                AbsoluteLayout.LayoutFlags="All"
-                x:Name="KbArticlesDetailsView"
-                Header="{Binding KbArticlesDetails}"
-                HasUnevenRows="True"
-                IsPullToRefreshEnabled="True"
-                RefreshCommand="{Binding RefreshCommand}"
-                IsRefreshing="{Binding IsBusy}"
-                CanLoadMore="False"
+                AbsoluteLayout.LayoutFlags="All"/>
+            <StackLayout IsVisible="{Binding IsBusy}" 
+                HorizontalOptions="FillAndExpand" 
+                VerticalOptions="FillAndExpand" 
                 BackgroundColor="White"
-                SeparatorColor="{StaticResource Divider}">
-                <controls:LoadMoreListView.HeaderTemplate>
-                    <DataTemplate>
-                        <StackLayout>
-                            <StackLayout
-                                Padding="{StaticResource StandardPadding}">
-                                <Label
-                                    Text="{Binding Title}"
-                                    Style="{StaticResource TitleTextStyle}"/>
-                                <Label
-                                    Text="{Binding DateDisplay}"
-                                    Style="{StaticResource SecondaryTextStyle}"/>
-                            </StackLayout>
-                            <controls:DetailsView
-                                x:Name="detailsView"
-                                Source="{Binding Content}"
-                                HeightRequest="400"/>
-                        </StackLayout>
-                    </DataTemplate>
-                </controls:LoadMoreListView.HeaderTemplate>
-            </controls:LoadMoreListView>
-            <StackLayout
-                VerticalOptions="FillAndExpand"
-                HorizontalOptions="FillAndExpand"
+                AbsoluteLayout.LayoutBounds="0.5,0.5,1,1"
+                AbsoluteLayout.LayoutFlags="All">
+                <ActivityIndicator 
+                    IsRunning="{Binding IsBusy}"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalOptions="CenterAndExpand"
+                    AbsoluteLayout.LayoutBounds="0.5,0.5,1,1"
+                    AbsoluteLayout.LayoutFlags="All"/>
+            </StackLayout>
+            <StackLayout IsVisible="{Binding HasError}" 
+                HorizontalOptions="FillAndExpand" 
+                VerticalOptions="FillAndExpand" 
                 BackgroundColor="White"
-                AbsoluteLayout.LayoutBounds="0,0,1,1"
-                AbsoluteLayout.LayoutFlags="All"
-                IsVisible="{Binding KbArticlesDetails.HasError}">
+                AbsoluteLayout.LayoutBounds="0.5,0.5,1,1"
+                AbsoluteLayout.LayoutFlags="All">
                 <StackLayout
-                        VerticalOptions="CenterAndExpand"
-                        HorizontalOptions="CenterAndExpand">
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalOptions="CenterAndExpand">
                     <Label
-                         Text="似乎出了点问题"
-                         Style="{StaticResource SecondaryTextStyle}"
-                         HorizontalOptions="CenterAndExpand" />
+                        Text="似乎出了点问题"
+                        Style="{StaticResource SecondaryTextStyle}"
+                        HorizontalOptions="CenterAndExpand" />
                     <Label
                          Text="重新加载"
                          Style="{StaticResource SecondaryTextStyle}"
                          TextColor="{StaticResource Primary}"
                          HorizontalOptions="CenterAndExpand">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnTapped"/>
-                        </Label.GestureRecognizers>
                     </Label>
                 </StackLayout>
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnReloadKbArticles"/>
+                </StackLayout.GestureRecognizers>
             </StackLayout>
         </AbsoluteLayout>
         <StackLayout 

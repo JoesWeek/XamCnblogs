@@ -1,4 +1,5 @@
 ﻿using FormsToolkit;
+using Newtonsoft.Json;
 using System;
 
 using Xamarin.Forms;
@@ -15,6 +16,7 @@ namespace XamCnblogs.UI.Pages.KbArticle
         KbArticlesDetailsViewModel ViewModel => vm ?? (vm = BindingContext as KbArticlesDetailsViewModel);
         KbArticlesDetailsViewModel vm;
         KbArticles kbArticles;
+
         public KbArticlesDetailsPage(KbArticles kbArticles)
         {
             this.kbArticles = kbArticles;
@@ -33,26 +35,20 @@ namespace XamCnblogs.UI.Pages.KbArticle
 
             if (Device.Android == Device.RuntimePlatform)
                 cancel.Icon = "toolbar_share.png";
-        }
 
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-            UpdatePage();
-        }
-        private void UpdatePage()
-        {
-            bool forceRefresh = (DateTime.Now > (ViewModel?.NextRefreshTime ?? DateTime.Now));
-
-            if (forceRefresh)
+            formsWebView.OnContentLoaded += delegate (object sender, EventArgs e)
             {
-                //刷新
-                ViewModel.RefreshCommand.Execute(null);
-            }
+                RefreshKbArticles();
+            };
         }
-        void OnTapped(object sender, EventArgs args)
+        async void RefreshKbArticles()
         {
-            ViewModel.RefreshCommand.Execute(null);
+            var question = JsonConvert.SerializeObject(await ViewModel.RefreshKbArticlesAsync());
+            await formsWebView.InjectJavascriptAsync("updateModel(" + question + ");");
+        }
+        void OnReloadKbArticles(object sender, EventArgs args)
+        {
+            RefreshKbArticles();
         }
         async void OnBookmarks(object sender, EventArgs args)
         {

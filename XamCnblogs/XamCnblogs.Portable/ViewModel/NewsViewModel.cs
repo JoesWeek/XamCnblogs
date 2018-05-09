@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
+using Microsoft.AppCenter.Crashes;
 
 namespace XamCnblogs.Portable.ViewModel
 {
@@ -52,7 +53,7 @@ namespace XamCnblogs.Portable.ViewModel
                 }
                 catch (Exception ex)
                 {
-                    Log.SaveLog("NewsViewModel.RefreshCommand", ex);
+                    Crashes.TrackError(ex);
                     LoadStatus = LoadMoreStatus.StausFail;
                 }
                 finally
@@ -116,7 +117,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SaveLog("NewsViewModel.GetNewsAsync", new Exception() { Source = result.Message });
+                Crashes.TrackError(new Exception() { Source = result.Message });
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
             }
         }

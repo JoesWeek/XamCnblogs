@@ -1,13 +1,7 @@
-﻿using XamCnblogs.Portable.Helpers;
-using Humanizer;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MvvmHelpers;
+﻿using MvvmHelpers;
 using SQLite;
+using System;
+using XamCnblogs.Portable.Helpers;
 
 namespace XamCnblogs.Portable.Model
 {
@@ -15,12 +9,7 @@ namespace XamCnblogs.Portable.Model
     {
         [PrimaryKey]
         public int Id { get; set; }
-        private string content;
-        public string Content
-        {
-            get { return IsLucky ? content + "<img src='https://raw.githubusercontent.com/JoesWeek/XamCnblogs/master/XamCnblogs/XamCnblogs.Android/Assets/lucky-star.png' />" : content; }
-            set { SetProperty(ref content, value); }
-        }
+        public string Content { get; set; }
         public bool IsPrivate { get; set; }
         public bool IsLucky { get; set; }
         public int CommentCount { get; set; }
@@ -31,7 +20,6 @@ namespace XamCnblogs.Portable.Model
         public int UserId { get; set; }
         public Guid UserGuid { get; set; }
         [Ignore]
-        [JsonIgnore]
         public string CommentValue
         {
             get
@@ -40,15 +28,10 @@ namespace XamCnblogs.Portable.Model
             }
         }
         [Ignore]
-        [JsonIgnore]
-        public string DateDisplay { get { return DateAdded.ToUniversalTime().Humanize(); } }
-        [Ignore]
-        [JsonIgnore]
-        public List<StatusesComments> Comments { get; set; } = new List<StatusesComments>();
+        public string DateDisplay { get { return DateAdded.Format(); } }
 
         private bool isDelete;
         [Ignore]
-        [JsonIgnore]
         public bool IsDelete
         {
             get { return isDelete; }

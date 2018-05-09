@@ -47,18 +47,20 @@ namespace XamCnblogs.Portable.ViewModel
 
         protected IStoreManager StoreManager { get; } = DependencyService.Get<IStoreManager>();
         protected IToast Toast { get; } = DependencyService.Get<IToast>();
-        protected ILog Log { get; } = DependencyService.Get<ILog>();
         protected IShares Shares { get; } = DependencyService.Get<IShares>();
-        
+        public IHtmlTemplate HtmlTemplate { get; } = DependencyService.Get<IHtmlTemplate>();
+
         ICommand launchBrowserCommand;
         public ICommand LaunchBrowserCommand =>
-        launchBrowserCommand ?? (launchBrowserCommand = new Command<string>(async (t) => await ExecuteLaunchBrowserAsync(t)));
-
-        async Task ExecuteLaunchBrowserAsync(string arg)
+        launchBrowserCommand ?? (launchBrowserCommand = new Command<string>(async (t) =>
         {
             if (IsBusy)
                 return;
+            await ExecuteLaunchBrowserAsync(t);
+        }));
 
+        public async static Task ExecuteLaunchBrowserAsync(string arg)
+        {
             if (!arg.StartsWith("http://", StringComparison.OrdinalIgnoreCase) && !arg.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
                 arg = "http://" + arg;
 
@@ -80,11 +82,9 @@ namespace XamCnblogs.Portable.ViewModel
                     UseSafariWebViewController = true
                 });
             }
-            catch (Exception ex)
+            catch
             {
-                Log.SaveLog("LaunchBrowserCommand", ex);
             }
         }
-
     }
 }

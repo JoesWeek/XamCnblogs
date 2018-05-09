@@ -1,19 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FFImageLoading.Transformations;
 using System.Windows.Input;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+using XamCnblogs.Portable.Model;
 
 namespace XamCnblogs.UI.Cells
 {
-	public partial class StatusesItemCell : ContentView
-	{
+    public partial class StatusesItemCell : ViewCell
+    {
 		public StatusesItemCell ()
 		{
 			InitializeComponent ();
+            ffimageloading.Transformations.Add(new CircleTransformation());
+        }
+        protected override void OnBindingContextChanged()
+        {
+            this.ffimageloading.Source = null;
+            var item = BindingContext as Statuses;
+
+            if (item == null)
+                return;
+
+            this.ffimageloading.Source = item.UserIconUrl;
+
+            base.OnBindingContextChanged();
         }
         public static readonly BindableProperty DeleteCommandProperty =
             BindableProperty.Create(nameof(DeleteCommand), typeof(ICommand), typeof(StatusesItemCell), default(ICommand));

@@ -1,13 +1,10 @@
 ﻿using FormsToolkit;
+using Newtonsoft.Json;
 using Rg.Plugins.Popup.Extensions;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 using XamCnblogs.Portable.Helpers;
 using XamCnblogs.Portable.Interfaces;
 using XamCnblogs.Portable.Model;
@@ -41,43 +38,64 @@ namespace XamCnblogs.UI.Pages.Question
             if (Device.Android == Device.RuntimePlatform)
                 cancel.Icon = "toolbar_share.png";
 
-            this.QuestionsDetailsView.ItemSelected += async delegate
+            formsWebView.OnContentLoaded += delegate (object sender, EventArgs e)
             {
-                var answers = QuestionsDetailsView.SelectedItem as QuestionsAnswers;
-                if (answers == null)
-                    return;
-
-                var answersDetails = new AnswersDetailsPage(answers);
-                if (answers.AnswerID > 0)
-                    await NavigationService.PushAsync(Navigation, answersDetails);
-                this.QuestionsDetailsView.SelectedItem = null;
+                RefreshQuestions();
             };
-        }
 
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-            UpdatePage();
-        }
-
-        private void UpdatePage()
-        {
-            bool forceRefresh = (DateTime.Now > (ViewModel?.NextRefreshTime ?? DateTime.Now));
-
-            if (forceRefresh)
+            formsWebView.AddLocalCallback("reload", async delegate (string obj)
             {
-                //刷新
-                ViewModel.RefreshCommand.Execute(null);
-            }
+                if (formsWebView.LoadStatus == LoadMoreStatus.StausDefault || formsWebView.LoadStatus == LoadMoreStatus.StausError || formsWebView.LoadStatus == LoadMoreStatus.StausFail)
+                {
+                    var questionsComments = JsonConvert.SerializeObject(await ViewModel.ReloadAnswersAsync());
+                    await formsWebView.InjectJavascriptAsync("updateComments(" + questionsComments + ");");
+                }
+            });
+            formsWebView.AddLocalCallback("editItem", delegate (string id)
+            {
+                var questionsAnswers = ViewModel.QuestionsAnswers.Where(n => n.AnswerID == int.Parse(id)).FirstOrDefault();
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    var page = new QuestionsAnswersPopupPage(questions, new Action<QuestionsAnswers>(OnResult), questionsAnswers);
+                    await Navigation.PushPopupAsync(page);
+                });
+            });
+            formsWebView.AddLocalCallback("deleteItem", async delegate (string id)
+            {
+                var result = await ViewModel.DeleteQuestionAnswersAsync(int.Parse(id));
+                await formsWebView.InjectJavascriptAsync("deleteComment(" + id + "," + result.ToString().ToLower() + ");");
+            });
+            formsWebView.AddLocalCallback("itemSelected", delegate (string id)
+           {
+               var questionsAnswers = ViewModel.QuestionsAnswers.Where(n => n.AnswerID == int.Parse(id)).FirstOrDefault();
+               Device.BeginInvokeOnMainThread(async () =>
+               {
+                   var answersDetails = new AnswersDetailsPage(questionsAnswers);
+                   if (questionsAnswers.AnswerID > 0)
+                       await NavigationService.PushAsync(Navigation, answersDetails);
+               });
+           });
         }
-        void OnTapped(object sender, EventArgs args)
+
+        async void RefreshQuestions()
         {
-            ViewModel.RefreshCommand.Execute(null);
+            var question = JsonConvert.SerializeObject(await ViewModel.RefreshQuestionsAsync());
+            await formsWebView.InjectJavascriptAsync("updateModel(" + question + ");");
+        }
+        void OnReloadQuestions(object sender, EventArgs args)
+        {
+            RefreshQuestions();
+        }
+        async void OnResult(QuestionsAnswers result)
+        {
+            if (result != null)
+            {
+                ViewModel.EditComment(result);
+                await formsWebView.InjectJavascriptAsync("updateComment(" + JsonConvert.SerializeObject(result) + ");");
+            }
         }
         void OnScrollComment(object sender, EventArgs args)
         {
-            if (ViewModel.QuestionAnswers.Count > 0)
-                QuestionsDetailsView.ScrollTo(ViewModel.QuestionAnswers.Last(), ScrollToPosition.Start, false);
         }
         async void OnShowComment(object sender, EventArgs args)
         {
@@ -92,14 +110,6 @@ namespace XamCnblogs.UI.Pages.Question
                     await Navigation.PushPopupAsync(page);
             }
         }
-        private void OnResult(QuestionsAnswers result)
-        {
-            if (result != null)
-            {
-                ViewModel.EditComment(result);
-                QuestionsDetailsView.ScrollTo(ViewModel.QuestionAnswers.Last(), ScrollToPosition.Start, false);
-            }
-        }
         async void OnBookmarks(object sender, EventArgs args)
         {
             if (UserTokenSettings.Current.HasExpiresIn())
@@ -110,17 +120,6 @@ namespace XamCnblogs.UI.Pages.Question
             {
                 var url = "https://q.cnblogs.com/q/" + questions.Qid + "/";
                 await NavigationService.PushAsync(Navigation, new BookmarksEditPage(new Bookmarks() { Title = questions.Title, LinkUrl = url, FromCNBlogs = true }));
-            }
-        }
-        public ICommand EditCommand
-        {
-            get
-            {
-                return new Command(async (e) =>
-                {
-                    var page = new QuestionsAnswersPopupPage(questions, new Action<QuestionsAnswers>(OnResult), e as QuestionsAnswers);
-                    await Navigation.PushPopupAsync(page);
-                });
             }
         }
     }

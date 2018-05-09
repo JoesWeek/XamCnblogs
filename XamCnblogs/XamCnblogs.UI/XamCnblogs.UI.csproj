@@ -5,28 +5,24 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Pages\Account\BookmarksEditPage.xaml.cs~RF22a28604.TMP" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="FormsToolkit" Version="2.0.1" />
-    <PackageReference Include="Humanizer" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="1.5.0" />
-    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="1.5.0" />
-    <PackageReference Include="Microsoft.AppCenter.Push" Version="1.5.0" />
+    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="1.6.0" />
+    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="1.6.0" />
     <PackageReference Include="modernhttpclient-updated" Version="2.6.0" />
     <PackageReference Include="Naxam.TopTabbedPage.Forms" Version="0.0.3.3" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Plugin.Share" Version="7.1.1" />
     <PackageReference Include="Refractored.MvvmHelpers" Version="1.3.0" />
     <PackageReference Include="Rg.Plugins.Popup" Version="1.0.4" />
     <PackageReference Include="sqlite-net-pcl" Version="1.4.118" />
-    <PackageReference Include="SQLitePCLRaw.core" Version="1.1.9" />
+    <PackageReference Include="SQLitePCLRaw.core" Version="1.1.11" />
     <PackageReference Include="ThriveGmbH.BottomNavigationBar.XF" Version="1.0.2" />
-    <PackageReference Include="Xam.Plugins.Messaging" Version="5.1.0" />
-    <PackageReference Include="Xam.Plugins.Settings" Version="3.1.1" />
-    <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.3.4" />
-    <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.3.4" />
+    <PackageReference Include="Xam.Plugin.Connectivity" Version="3.1.1" />
+    <PackageReference Include="Xam.Plugin.WebView" Version="2.1.3" />
+    <PackageReference Include="Xam.Plugins.Messaging" Version="5.2.0" />
+    <PackageReference Include="Xam.Plugins.Settings" Version="4.0.0.7" />
+    <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.3.6" />
+    <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.3.6" />
     <PackageReference Include="Xamarin.Forms" Version="2.5.0.280555" />
   </ItemGroup>
 
@@ -35,168 +31,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Cells\SearchItemCell.xaml.cs">
-      <DependentUpon>SearchItemCell.xaml</DependentUpon>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="App.xaml.cs">
+      <DependentUpon>*.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Pages\Account\ArticlesPage.xaml.cs">
-      <DependentUpon>ArticlesPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Pages\Account\BookmarksDetailsPage.xaml.cs">
-      <DependentUpon>BookmarksDetailsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Pages\ActivityIndicatorPopupPage.xaml.cs">
-      <DependentUpon>ActivityIndicatorPopupPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Pages\Article\ArticlesDetailsHeader.xaml.cs">
-      <DependentUpon>ArticlesDetailsHeader.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Pages\Article\ArticlesDetailsPage.xaml.cs">
-      <DependentUpon>ArticlesDetailsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Pages\Article\ArticlesSearchPage.xaml.cs">
-      <DependentUpon>ArticlesSearchPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Pages\KbArticle\KbArticlesSearchPage.xaml.cs">
-      <DependentUpon>KbArticlesSearchPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Pages\New\NewsSearchPage.xaml.cs">
-      <DependentUpon>NewsSearchPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Pages\Question\QuestionsDetailsHeader.xaml.cs">
-      <DependentUpon>QuestionsDetailsHeader.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Pages\Question\QuestionsSearchPage.xaml.cs">
-      <DependentUpon>QuestionsSearchPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Pages\Question\QuestionsAnswersPopupPage.xaml.cs">
-      <DependentUpon>QuestionsAnswersPopupPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Pages\Question\AnswersCommentPopupPage.xaml.cs">
-      <DependentUpon>AnswersCommentPopupPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Pages\Status\StatusesCommentPopupPage.xaml.cs">
-      <DependentUpon>StatusesCommentPopupPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Pages\Status\StatusesEditPage.xaml.cs">
-      <DependentUpon>StatusesEditPage.xaml</DependentUpon>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="MainPage.xaml.cs">
+      <DependentUpon>*.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="App.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Cells\AnswersCommentItemCell.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Cells\ArticlesCommentItemCell.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Cells\BookmarksItemCell.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Cells\KbArticlesItemCell.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Cells\NewsCommentItemCell.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Cells\NewsItemCell.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Cells\QuestionsAnswersItemCell.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Cells\QuestionsItemCell.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Cells\StatusesCommentsItemCell.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Cells\StatusesItemCell.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Controls\ActivityIndicatorButton.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Controls\HeaderDivider.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Pages\About\AboutPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Pages\Article\ArticlesDetailsHeader.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Pages\Article\ArticlesSearchPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Pages\About\SettingPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Pages\About\SettingWeibaPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Pages\Account\AccountPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Pages\Account\BookmarksEditPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Pages\Account\BookmarksPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Pages\Account\ArticlesPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Pages\ActivityIndicatorPopupPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Pages\Article\ArticlesCommentPopupPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Pages\KbArticle\KbArticlesDetailsPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Pages\KbArticle\KbArticlesPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Pages\New\NewsCommentPopupPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Pages\New\NewsDetailsHeader.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Pages\New\NewsDetailsPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Pages\New\NewsPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Pages\Question\AnswersDetailsHeader.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Pages\Question\AnswersDetailsPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Pages\Question\QuestionsDetailsPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Pages\Question\QuestionsEditPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Pages\Question\QuestionsPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Pages\Status\StatusesDetailsPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Pages\Status\StatusesPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Pages\Status\StatusesEditPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
-
 </Project>

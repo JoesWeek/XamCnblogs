@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Rg.Plugins.Popup.Extensions;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using XamCnblogs.Portable.Helpers;
@@ -28,48 +29,61 @@ namespace XamCnblogs.UI.Pages.Account
             if (Device.Android == Device.RuntimePlatform)
                 cancel.Icon = "toolbar_close.png";
 
-            authorizeView.Source = string.Format(Apis.Authorize, TokenHttpClient.ClientId);
-
-            authorizeView.AuthorizeStarted += async (sender, e) =>
+            formsWebView.Source = string.Format(Apis.Authorize, TokenHttpClient.ClientId);
+            
+            formsWebView.OnNavigationCompleted += async delegate (object sender, string url)
             {
-                activityIndicator.IsRunning = true;
-
-                var result = await TokenHttpClient.Current.PostTokenAsync(e.Code);
-                if (result.Success)
+                stackLayout.IsVisible = false;
+                activityIndicator.IsRunning = false;
+                if (url.IndexOf("https://oauth.cnblogs.com/auth/callback#code=") > -1)
                 {
-                    var token = JsonConvert.DeserializeObject<Token>(result.Message.ToString());
-                    token.RefreshTime = DateTime.Now;
-                    UserTokenSettings.Current.UpdateUserToken(token);
-                    var userResult = await UserHttpClient.Current.GetAsyn(Apis.Users);
-                    if (userResult.Success)
-                    {
-                        var user = JsonConvert.DeserializeObject<User>(userResult.Message.ToString());
-                        UserSettings.Current.UpdateUser(user);
+                    formsWebView.IsVisible = false;
 
-                        activityIndicator.IsRunning = false;
+                    stackLayout.IsVisible = true;
+                    activityIndicator.IsRunning = true;
 
-                        await Navigation.PopModalAsync();
-                    }
-                    else
+                    var codeindex = url.IndexOf("#code=") + 6;
+                    var tokenindex = url.IndexOf("&id_token=");
+                    var code = url.Substring(codeindex, tokenindex - codeindex);
+                    if (code != "")
                     {
-                        activityIndicator.IsRunning = false;
-                        await DisplayAlert("登录", "登录失败", "确定");
+                        var result = await TokenHttpClient.Current.PostTokenAsync(code);
+                        if (result.Success)
+                        {
+                            var token = JsonConvert.DeserializeObject<Token>(result.Message.ToString());
+                            token.RefreshTime = DateTime.Now;
+                            UserTokenSettings.Current.UpdateUserToken(token);
+                            var userResult = await UserHttpClient.Current.GetAsyn(Apis.Users);
+                            if (userResult.Success)
+                            {
+                                var user = JsonConvert.DeserializeObject<User>(userResult.Message.ToString());
+                                UserSettings.Current.UpdateUser(user);
+
+                                stackLayout.IsVisible = false;
+                                activityIndicator.IsRunning = false;
+
+                                await Navigation.PopModalAsync();
+                            }
+                            else
+                            {
+                                stackLayout.IsVisible = false;
+                                activityIndicator.IsRunning = false;
+                                await DisplayAlert("登录", "登录失败", "确定");
+                            }
+                        }
+                        else
+                        {
+                            stackLayout.IsVisible = false;
+                            activityIndicator.IsRunning = false;
+                            await DisplayAlert("登录", "获取token失败", "确定");
+                        }
                     }
-                }
-                else
-                {
-                    activityIndicator.IsRunning = false;
-                    await DisplayAlert("登录", "获取token失败", "确定");
                 }
             };
 
+            stackLayout.IsVisible = true;
+            activityIndicator.IsRunning = true;
         }
 
-        protected override void OnDisappearing()
-        {
-            base.OnDisappearing();
-
-            activityIndicator.IsRunning = false;
-        }
     }
 }

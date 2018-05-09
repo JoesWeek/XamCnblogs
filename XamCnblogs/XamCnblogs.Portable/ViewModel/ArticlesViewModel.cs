@@ -1,4 +1,5 @@
-﻿using MvvmHelpers;
+﻿using Microsoft.AppCenter.Crashes;
+using MvvmHelpers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else if (position == 1)
             {
-                Articles.AddRange(await SqliteUtil.Current.QueryArticlesByDigg(pageSize));
+                Articles.AddRange(await SqliteUtil.Current.QueryArticlesByRecommend(pageSize));
             }
         }
         ICommand refreshCommand;
@@ -47,7 +48,7 @@ namespace XamCnblogs.Portable.ViewModel
                 }
                 catch (Exception ex)
                 {
-                    Log.SaveLog("ArticlesViewModel.RefreshCommand", ex);
+                    Crashes.TrackError(ex);
                     LoadStatus = LoadMoreStatus.StausFail;
                 }
                 finally
@@ -81,6 +82,8 @@ namespace XamCnblogs.Portable.ViewModel
                         Articles.Clear();
                     }
                     Articles.AddRange(articles);
+                    if (position == 1)
+                        articles.ForEach(s => s.IsRecommend = true);
                     await SqliteUtil.Current.UpdateArticles(articles);
                     pageIndex++;
                     if (Articles.Count >= pageSize)
@@ -102,7 +105,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SaveLog("ArticlesViewModel.GetArticlesAsync", new Exception() { Source = result.Message });
+                Crashes.TrackError(new Exception() { Source = result.Message });
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausError : LoadMoreStatus.StausFail;
             }
         }

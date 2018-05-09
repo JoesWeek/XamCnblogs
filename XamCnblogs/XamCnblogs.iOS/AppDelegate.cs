@@ -4,6 +4,7 @@ using System.Linq;
 using FFImageLoading.Forms.Touch;
 using FormsToolkit.iOS;
 using Foundation;
+using Naxam.Controls.Platform.iOS;
 using UIKit;
 using Xam.Plugin.WebView.iOS;
 
@@ -24,10 +25,11 @@ namespace XamCnblogs.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            global::Xamarin.Forms.Forms.Init();
             FormsWebViewRenderer.Initialize();
             Toolkit.Init();
+            TopTabbedRenderer.Init();
             CachedImageRenderer.Init();
-            global::Xamarin.Forms.Forms.Init();
             LoadApplication(new XamCnblogs.UI.App());
 
             return base.FinishedLaunching(app, options);

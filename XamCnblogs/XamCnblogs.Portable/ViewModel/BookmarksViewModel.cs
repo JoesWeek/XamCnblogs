@@ -1,4 +1,5 @@
-﻿using MvvmHelpers;
+﻿using Microsoft.AppCenter.Crashes;
+using MvvmHelpers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,7 @@ namespace XamCnblogs.Portable.ViewModel
                 }
                 catch (Exception ex)
                 {
-                    Log.SaveLog("BookmarksViewModel.RefreshCommand", ex);
+                    Crashes.TrackError(ex);
                     LoadStatus = LoadMoreStatus.StausFail;
                 }
                 finally
@@ -95,7 +96,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SaveLog("BookmarksViewModel.GetBookmarksAsync", new Exception() { Source = result.Message });
+                Crashes.TrackError(new Exception() { Source = result.Message });
                 LoadStatus = pageIndex > 1 ? LoadMoreStatus.StausEnd : LoadMoreStatus.StausNodata;
             }
         }
@@ -109,7 +110,7 @@ namespace XamCnblogs.Portable.ViewModel
             }
             else
             {
-                Log.SaveLog("BookmarksViewModel.EditBookmarkAsync", new Exception() { Source = result.Message });
+                Crashes.TrackError(new Exception() { Source = result.Message });
                 if (result.Message.ToString() == "Conflict")
                 {
                     Toast.SendToast("收藏的网址已经存在了");
@@ -158,7 +159,7 @@ namespace XamCnblogs.Portable.ViewModel
                     }
                     else
                     {
-                        Log.SaveLog("BookmarksViewModel.DeleteBookmarkAsync", new Exception() { Source = result.Message });
+                        Crashes.TrackError(new Exception() { Source = result.Message });
                         index = Bookmarks.IndexOf(bookmark);
                         Bookmarks[index].IsDelete = false;
                         Toast.SendToast("删除失败");

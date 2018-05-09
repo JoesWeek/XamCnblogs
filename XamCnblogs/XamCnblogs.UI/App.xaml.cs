@@ -3,15 +3,18 @@ using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json;
+using Plugin.Connectivity;
+using Plugin.Connectivity.Abstractions;
 using System;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using XamCnblogs.Portable.Helpers;
+using XamCnblogs.Portable.Interfaces;
 using XamCnblogs.Portable.Model;
 using XamCnblogs.Portable.ViewModel;
 using XamCnblogs.UI.Controls;
 using XamCnblogs.UI.Pages.Account;
 using XamCnblogs.UI.Pages.Article;
+using XamCnblogs.UI.Pages.KbArticle;
 using XamCnblogs.UI.Pages.New;
 using XamCnblogs.UI.Pages.Question;
 using XamCnblogs.UI.Pages.Status;
@@ -31,10 +34,13 @@ namespace XamCnblogs.UI
             ViewModelBase.Init();
 
             XamBottomBarPage bottomBarPage = new XamBottomBarPage() { Title = "博客园" };
-            bottomBarPage.BarTextColor = (Color)Application.Current.Resources["Primary"];
-            bottomBarPage.FixedMode = true;
 
-            bottomBarPage.BarTheme = XamBottomBarPage.BarThemeTypes.Light;
+            if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
+            {
+                bottomBarPage.BarTextColor = (Color)Application.Current.Resources["Primary"];
+                bottomBarPage.FixedMode = true;
+                bottomBarPage.BarTheme = XamBottomBarPage.BarThemeTypes.Light;
+            }
 
             bottomBarPage.Children.Add(new ArticlesTopTabbedPage());
             bottomBarPage.Children.Add(new NewsTopTabbedPage());
@@ -43,6 +49,7 @@ namespace XamCnblogs.UI
             bottomBarPage.Children.Add(new AccountPage());
 
             MainPage = new XamNavigationPage(bottomBarPage);
+            //MainPage = new NavigationPage(new Page1() { Title = "测试" });
         }
 
         protected override void OnStart()
@@ -52,11 +59,12 @@ namespace XamCnblogs.UI
         bool registered;
         protected async override void OnResume()
         {
-            await RefreshUserTokenAsync();
+            await UserTokenSettings.Current.RefreshUserTokenAsync();
 
             if (registered)
                 return;
             registered = true;
+            CrossConnectivity.Current.ConnectivityChanged += ConnectivityChanged;
 
             MessagingService.Current.Subscribe(MessageKeys.NavigateLogin, async m =>
             {
@@ -101,6 +109,46 @@ namespace XamCnblogs.UI
 
                 await NavigationService.PushModalAsync(nav, page);
             });
+            MessagingService.Current.Subscribe<string>(MessageKeys.NavigateNotification, async (m, message) =>
+            {
+                DependencyService.Get<IToast>().SendToast(message);
+                var nav = Application.Current?.MainPage?.Navigation;
+                if (nav == null)
+                    return;
+                Page page = null;
+                var notification = JsonConvert.DeserializeObject<Notification>(message);
+                if (notification != null)
+                {
+                    switch (notification.Type)
+                    {
+                        case "articles":
+                            page = new NavigationPage(new ArticlesDetailsPage(new Articles() { Title = notification.Title, Id = notification.ID }));
+                            break;
+                        case "news":
+                            page = new NavigationPage(new NewsDetailsPage(new News() { Title = notification.Title, Id = notification.ID }));
+                            break;
+                        case "kbarticles":
+                            page = new NavigationPage(new KbArticlesDetailsPage(new KbArticles() { Title = notification.Title, Id = notification.ID }));
+                            break;
+                        case "questions":
+                            page = new NavigationPage(new QuestionsDetailsPage(new Questions() { Title = notification.Title, Qid = notification.ID }));
+                            break;
+                        case "update":
+                            var versionCode = DependencyService.Get<IVersionCode>().GetVersionCode();
+                            if (notification.ID > versionCode)
+                            {
+                                if (await Application.Current?.MainPage.DisplayAlert("新版提示", notification.Title, "立即下载", "取消"))
+                                {
+                                    await ViewModelBase.ExecuteLaunchBrowserAsync(notification.Url);
+                                }
+                            }
+                            return;
+                        default:
+                            return;
+                    }
+                }
+                await NavigationService.PushAsync(nav, page);
+            });
         }
         protected override void OnSleep()
         {
@@ -111,28 +159,20 @@ namespace XamCnblogs.UI
             MessagingService.Current.Unsubscribe(MessageKeys.NavigateLogin);
             MessagingService.Current.Unsubscribe(MessageKeys.NavigateToken);
             MessagingService.Current.Unsubscribe(MessageKeys.NavigateAccount);
+            MessagingService.Current.Unsubscribe(MessageKeys.NavigateNotification);
+
+            CrossConnectivity.Current.ConnectivityChanged -= ConnectivityChanged;
         }
 
-        private async Task RefreshUserTokenAsync()
+        protected async void ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
-            if (UserTokenSettings.Current.UserRefreshToken != null)
+            if (!CrossConnectivity.Current.IsConnected)
             {
-                var result = await UserHttpClient.Current.RefreshTokenAsync();
-                if (result.Success)
-                {
-                    var token = JsonConvert.DeserializeObject<Token>(result.Message.ToString());
-                    token.RefreshTime = DateTime.Now;
-                    UserTokenSettings.Current.UpdateUserToken(token);
-
-                    var userResult = await UserHttpClient.Current.GetAsyn(Apis.Users);
-                    if (userResult.Success)
-                    {
-                        var user = JsonConvert.DeserializeObject<User>(userResult.Message.ToString());
-
-                        UserSettings.Current.UpdateUser(user);
-
-                    }
-                }
+                DependencyService.Get<IToast>().SendToast("网络不给你，请检查网络设置");
+            }
+            else
+            {
+                await UserTokenSettings.Current.RefreshUserTokenAsync();
             }
         }
     }

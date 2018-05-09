@@ -5,50 +5,10 @@
         public const string NavigateLogin = "navigate_login";
         public const string NavigateToken = "navigate_token";
         public const string NavigateAccount = "navigate_account";
+        public const string NavigateNotification = "navigate_notification";
     }
     public static class HtmlTemplate
     {
-        static readonly string header = @"<html>
-<head>
-    <title>Cnblogs</title>
-    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0, user-scalable=no"" />
-    <link rel=""stylesheet"" type=""text/css"" href=""default.css"" />
-</head>
-<body> 
-        <div class=""content"">#content#</div>";
-        static readonly string footer = @"</body></html>";
-        public static string ReplaceHtml(string body, bool hasComment = true)
-        {
-            var content = header;
-            if (hasComment)
-            {
-                content += @"<div class=""footer"">
-                                        <div class=""line""></div>
-                                        <div class=""comment"">所以评论</div>
-                                        <div class=""line""></div>
-                                    </div>";
-            }
-            content += footer;
-            return content.Replace("#content#", body);
-        }
-        public static string ReplaceHtml(string body, string tags)
-        {
-            var content = header;
-            if (tags != null)
-            {
-                content += @"<div class=""tags"">
-                                        <img src=""ic_tab.png"" /> " + tags +
-                                        "</div>";
-            }
-            content += @"<div class=""footer"">
-                                    <div class=""line""></div>
-                                    <div class=""comment"">所以回答</div>
-                                    <div class=""line""></div>
-                                </div>";
-            content += footer;
-            return content.Replace("#content#", body);
-        }
-
         public static string GetScoreName(int score)
         {
             if (score > 100000)
@@ -92,8 +52,8 @@
         StausDefault = 0,
         StausLoading = 1,
         StausNodata = 2,
-        StausFail = 3,
-        StausEnd = 4,
+        StausEnd = 3,
+        StausFail = 4,
         StausError = 5,
         StausNologin = 6
     }
