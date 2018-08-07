@@ -26,7 +26,7 @@
 
 ![screenshots](screenshots/ios1.png)
 ![screenshots](screenshots/ios2.png)
-![screenshots](screenshots/aios3.png)
+![screenshots](screenshots/ios3.png)
 ![screenshots](screenshots/ios4.png)
 ![screenshots](screenshots/ios5.png)
 
