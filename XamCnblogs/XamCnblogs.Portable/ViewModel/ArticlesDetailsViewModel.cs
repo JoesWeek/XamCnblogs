@@ -43,9 +43,7 @@ namespace XamCnblogs.Portable.ViewModel
             this.articles = articles;
             ArticlesDetails = new ArticlesDetailsModel()
             {
-                DiggDisplay = articles.DiggCount > 0 ? articles.DiggCount.ToString() : "推荐",
                 CommentDisplay = articles.CommentCount > 0 ? articles.CommentCount.ToString() : "评论",
-                ViewDisplay = articles.ViewCount > 0 ? articles.ViewCount.ToString() : "阅读"
             };
             IsBusy = true;
         }
@@ -62,9 +60,7 @@ namespace XamCnblogs.Portable.ViewModel
                 {
                     articles.Body = JsonConvert.DeserializeObject<string>(result.Message.ToString());
 
-                    ArticlesDetails.DiggDisplay = articles.DiggCount > 0 ? articles.DiggCount.ToString() : "推荐";
                     ArticlesDetails.CommentDisplay = articles.CommentCount > 0 ? articles.CommentCount.ToString() : "评论";
-                    ArticlesDetails.ViewDisplay = articles.ViewCount > 0 ? articles.ViewCount.ToString() : "阅读";
                 }
                 else
                 {
@@ -143,23 +139,11 @@ namespace XamCnblogs.Portable.ViewModel
         
         public class ArticlesDetailsModel : BaseViewModel
         {
-            string diggDisplay;
-            public string DiggDisplay
-            {
-                get { return diggDisplay; }
-                set { SetProperty(ref diggDisplay, value); }
-            }
             string commentDisplay;
             public string CommentDisplay
             {
                 get { return commentDisplay; }
                 set { SetProperty(ref commentDisplay, value); }
-            }
-            string viewDisplay;
-            public string ViewDisplay
-            {
-                get { return viewDisplay; }
-                set { SetProperty(ref viewDisplay, value); }
             }
         }
     }

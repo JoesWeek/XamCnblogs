@@ -12,10 +12,11 @@ namespace XamCnblogs.UI.Pages.Article
         public ArticlesSearchPage() : base()
         {
             InitializeComponent();
+            Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true);
             BindingContext = new SearchViewModel(0);
             this.SearchsListView.ItemSelected += async delegate
             {
-                var search = SearchsListView.SelectedItem as Search;
+                var search = SearchsListView.SelectedItem as Portable.Model.Search;
                 if (search == null)
                     return;
                 var articles = new Articles()

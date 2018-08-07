@@ -22,6 +22,8 @@ namespace XamCnblogs.UI.Controls
         private StackLayout nologinPage;
         public LoadMoreListView() : base(ListViewCachingStrategy.RecycleElement)
         {
+            Xamarin.Forms.PlatformConfiguration.iOSSpecific.ListView.SetSeparatorStyle(this, Xamarin.Forms.PlatformConfiguration.iOSSpecific.SeparatorStyle.FullWidth);
+
             loadingPage = new StackLayout
             {
                 Orientation = StackOrientation.Horizontal,
@@ -169,7 +171,6 @@ namespace XamCnblogs.UI.Controls
             };
             nologinPage.GestureRecognizers.Add(nologinGestureRecognizer);
 
-
             ItemAppearing += LoadMoreListView_ItemAppearing;
 
         }
@@ -244,9 +245,9 @@ namespace XamCnblogs.UI.Controls
                     this.Footer = nologinPage;
                     break;
                 default:
-                    this.Footer = loadingPage;
+                    this.Footer = null;
                     break;
             }
-        }        
+        }
     }
 }

@@ -11,10 +11,6 @@ namespace XamCnblogs.UI.Pages.Question
     {
         public QuestionsTopTabbedPage()
         {
-            BarTextColor = (Color)Application.Current.Resources["NavigationText"];
-            BarIndicatorColor = (Color)Application.Current.Resources["Divider"];
-            BarBackgroundColor = (Color)Application.Current.Resources["Primary"];
-
             Title = "博问";
             Icon = "menu_question.png";
             
@@ -24,18 +20,28 @@ namespace XamCnblogs.UI.Pages.Question
             this.Children.Add(new QuestionsPage(3) { Title = "已解决" });
             this.Children.Add(new QuestionsPage(4) { Title = "我的问题" });
 
-            var cancel = new ToolbarItem
+            if (Device.iOS == Device.RuntimePlatform)
             {
-                Text = "搜索",
-                Command = new Command(async () =>
-                {
-                    await NavigationService.PushAsync(Navigation, new QuestionsSearchPage());
-                })
-            };
-            ToolbarItems.Add(cancel);
+                BarTextColor = (Color)Application.Current.Resources["PrimaryText"];
+                BarIndicatorColor = (Color)Application.Current.Resources["SecondaryText"];
+                BarBackgroundColor = (Color)Application.Current.Resources["NavigationText"];
 
-            if (Device.Android == Device.RuntimePlatform)
-                cancel.Icon = "toolbar_search.png";
+                var cancel = new ToolbarItem
+                {
+                    Text = "搜索",
+                    Command = new Command(async () =>
+                    {
+                        await NavigationService.PushAsync(Navigation, new QuestionsSearchPage());
+                    }),
+                    Icon = "toolbar_search.png"
+                };
+                ToolbarItems.Add(cancel);
+            }
+            else {
+                BarTextColor = (Color)Application.Current.Resources["NavigationText"];
+                BarIndicatorColor = (Color)Application.Current.Resources["Divider"];
+                BarBackgroundColor = (Color)Application.Current.Resources["Primary"];
+            }
         }
     }
 }

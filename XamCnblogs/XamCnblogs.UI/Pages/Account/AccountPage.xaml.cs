@@ -1,8 +1,7 @@
 ﻿using FFImageLoading.Transformations;
 using FormsToolkit;
-using Plugin.Messaging;
 using System;
-
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using XamCnblogs.Portable.Helpers;
 using XamCnblogs.Portable.Interfaces;
@@ -99,14 +98,23 @@ namespace XamCnblogs.UI.Pages.Account
         {
             Navigation.PushAsync(new AboutPage());
         }
-        void OnEmail(object sender, EventArgs args)
+        async void OnEmail(object sender, EventArgs args)
         {
-            var emailMessenger = CrossMessaging.Current.EmailMessenger;
-            if (emailMessenger.CanSendEmail)
+            try
             {
-                emailMessenger.SendEmail("476920650@qq.com", "来自 XamCnblogs - "+ DependencyService.Get<IVersionName>().GetVersionName() + " 的客户端反馈", "");
+                var message = new EmailMessage
+                {
+                    Subject = "来自 XamCnblogs - " + VersionTracking.CurrentVersion + " 的客户端反馈",
+                    Body = "",
+                    To = new System.Collections.Generic.List<string>() { "476920650@qq.com" }
+                };
+                await Email.ComposeAsync(message);
             }
-            else
+            catch (FeatureNotSupportedException)
+            {
+                DependencyService.Get<IToast>().SendToast("系统中没有安装邮件客户端");
+            }
+            catch (Exception)
             {
                 DependencyService.Get<IToast>().SendToast("系统中没有安装邮件客户端");
             }

@@ -23,6 +23,7 @@ namespace XamCnblogs.UI.Pages.Question
         {
             InitializeComponent();
 
+            Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true);
             BindingContext = new QuestionsViewModel(position);
 
             var cancel = new ToolbarItem

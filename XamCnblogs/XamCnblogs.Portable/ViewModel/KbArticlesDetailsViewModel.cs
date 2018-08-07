@@ -16,21 +16,10 @@ namespace XamCnblogs.Portable.ViewModel
     {
         private KbArticles articles;
 
-        KbArticlesDetailsModel articlesDetailsModel;
-        public KbArticlesDetailsModel KbArticlesDetails
-        {
-            get { return articlesDetailsModel; }
-            set { SetProperty(ref articlesDetailsModel, value); }
-        }
         public KbArticlesDetailsViewModel(KbArticles articles)
         {
             this.articles = articles;
             Title = "知识库";
-            KbArticlesDetails = new KbArticlesDetailsModel()
-            {
-                DiggDisplay = articles.DiggCount > 0 ? articles.DiggCount.ToString() : "推荐",
-                ViewDisplay = articles.ViewCount > 0 ? articles.ViewCount.ToString() : "阅读"
-            };
         }
         bool hasError;
         public bool HasError
@@ -49,10 +38,6 @@ namespace XamCnblogs.Portable.ViewModel
                 if (result.Success)
                 {
                     articles.Body = JsonConvert.DeserializeObject<string>(result.Message.ToString());
-
-                    KbArticlesDetails.DiggDisplay = articles.DiggCount > 0 ? articles.DiggCount.ToString() : "推荐";
-                    KbArticlesDetails.ViewDisplay = articles.ViewCount > 0 ? articles.ViewCount.ToString() : "阅读";
-
                     HasError = false;
                 }
                 else
@@ -71,22 +56,6 @@ namespace XamCnblogs.Portable.ViewModel
                 IsBusy = false;
             }
             return articles;
-        }
-
-        public class KbArticlesDetailsModel : BaseViewModel
-        {
-            string diggDisplay;
-            public string DiggDisplay
-            {
-                get { return diggDisplay; }
-                set { SetProperty(ref diggDisplay, value); }
-            }
-            string viewDisplay;
-            public string ViewDisplay
-            {
-                get { return viewDisplay; }
-                set { SetProperty(ref viewDisplay, value); }
-            }
         }
     }
 }

@@ -25,8 +25,9 @@ namespace XamCnblogs.UI.Pages.New
 
         public NewsDetailsPage(News news)
         {
-            this.news = news;
             InitializeComponent();
+            Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true);
+            this.news = news;
             BindingContext = new NewsDetailsViewModel(news);
 
             var cancel = new ToolbarItem

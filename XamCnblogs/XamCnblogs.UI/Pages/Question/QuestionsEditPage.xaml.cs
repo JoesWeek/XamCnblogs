@@ -29,8 +29,9 @@ namespace XamCnblogs.UI.Pages.Question
         }
         void Init(Questions questions)
         {
-            this.questions = questions;
             InitializeComponent();
+            Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true);
+            this.questions = questions;
             BindingContext = new QuestionsViewModel();
             if (questions.Qid > 0)
             {
@@ -74,7 +75,7 @@ namespace XamCnblogs.UI.Pages.Question
             else
             {
                 if (AboutSettings.Current.WeibaToggled && questions.Qid == 0)
-                    content += "<br/>" + AboutSettings.Current.WeibaContent;
+                    content += "\r\n[" + AboutSettings.Current.WeibaContent + "]";
 
                 questions.Title = title;
                 questions.Tags = tags;

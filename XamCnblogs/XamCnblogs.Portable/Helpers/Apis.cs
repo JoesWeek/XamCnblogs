@@ -6,7 +6,7 @@
         public const string Api = "api";
         public const string Token = "https://oauth.cnblogs.com/connect/token";
 
-        public const string Authorize = "https://oauth.cnblogs.com/connect/authorize?client_id={0}&scope=openid profile CnBlogsApi offline_access&response_type=code id_token&redirect_uri=https://oauth.cnblogs.com/auth/callback&state=cnblogs.com&nonce=cnblogs.com";
+        public const string Authorize = "https://oauth.cnblogs.com/connect/authorize?client_id={0}&scope=openid+profile+CnBlogsApi+offline_access&response_type=code+id_token&redirect_uri=https://oauth.cnblogs.com/auth/callback&state=cnblogs.com&nonce=cnblogs.com";
 
         public const string Users = Api + "/Users";
 

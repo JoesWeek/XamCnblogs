@@ -6,8 +6,9 @@ using Android.OS;
 using Android.Runtime;
 using Com.Tencent.Android.Tpush;
 using Com.Umeng.Socialize;
-using FFImageLoading.Forms.Droid;
+using FFImageLoading.Forms.Platform;
 using FormsToolkit.Droid;
+using Rg.Plugins.Popup;
 using Xam.Plugin.WebView.Droid;
 using XamCnblogs.Droid.Helpers;
 
@@ -25,9 +26,12 @@ namespace XamCnblogs.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(bundle);
+            Xamarin.Essentials.Platform.Init(this, bundle);
+            Popup.Init(this, bundle);
 
             FormsWebViewRenderer.Initialize();
             Toolkit.Init();
+
             CachedImageRenderer.Init(true);
 
             Shares.Init(this);
@@ -52,6 +56,12 @@ namespace XamCnblogs.Droid
         {
             base.OnActivityResult(requestCode, resultCode, data);
             UMShareAPI.Get(this).OnActivityResult(requestCode, (int)resultCode, data);
+        }
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
+        {
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 }

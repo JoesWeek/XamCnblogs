@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
              x:Class="XamCnblogs.UI.Pages.Status.StatusesDetailsPage"
-             x:Name="StatusesDetailsPage"
              Title="{Binding Title}">
     <StackLayout Spacing="0">
         <AbsoluteLayout
@@ -28,31 +27,22 @@
                 VerticalOptions="CenterAndExpand"
                 Padding="4">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="45" />
+                    <RowDefinition Height="35" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="70" />
                 </Grid.ColumnDefinitions>
                 <StackLayout  Grid.Row="0"  Grid.Column="0"  Spacing="0" VerticalOptions="CenterAndExpand" Orientation="Horizontal">
                     <Image Source="icon_edit.png" VerticalOptions="CenterAndExpand"></Image>
-                    <Label Text="想说点什么" VerticalOptions="CenterAndExpand"></Label>
+                    <Label Text="想说点什么" VerticalOptions="CenterAndExpand" Style="{StaticResource SecondaryTextStyle}"></Label>
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnShowComment"/>
                     </StackLayout.GestureRecognizers>
                 </StackLayout>
-                <StackLayout  Grid.Row="0" Grid.Column="1" Spacing="3" VerticalOptions="CenterAndExpand">
-                </StackLayout>
-                <StackLayout  Grid.Row="0" Grid.Column="2" Spacing="3" VerticalOptions="CenterAndExpand">
-                </StackLayout>
-                <StackLayout  Grid.Row="0" Grid.Column="3" Spacing="3" VerticalOptions="CenterAndExpand">
-                </StackLayout>
-                <StackLayout  Grid.Row="0"  Grid.Column="4" Spacing="3" VerticalOptions="CenterAndExpand">
-                    <Image Source="icon_reply.png" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
-                    <Label Text="{Binding CommentDisplay}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Style="{StaticResource MoreSecondaryStyle}"></Label>
+                <StackLayout  Grid.Row="0"  Grid.Column="1" Spacing="3" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Orientation="Horizontal">
+                    <Image Source="icon_reply.png" VerticalOptions="CenterAndExpand"></Image>
+                    <Label Text="{Binding CommentDisplay}"  VerticalOptions="CenterAndExpand" Style="{StaticResource SecondaryTextStyle}"></Label>
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnScrollComment"/>
                     </StackLayout.GestureRecognizers>

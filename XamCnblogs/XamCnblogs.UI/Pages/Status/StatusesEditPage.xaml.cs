@@ -29,8 +29,9 @@ namespace XamCnblogs.UI.Pages.Status
         }
         void Init(Statuses statuses)
         {
-            this.statuses = statuses;
             InitializeComponent();
+            Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true);
+            this.statuses = statuses;
             BindingContext = new StatusesViewModel();
             if (statuses.Id > 0)
             {
@@ -70,7 +71,7 @@ namespace XamCnblogs.UI.Pages.Status
             else
             {
                 if (AboutSettings.Current.WeibaToggled && statuses.Id == 0)
-                    content += "<br/>" + AboutSettings.Current.WeibaContent;
+                    content += "\r\n[" + AboutSettings.Current.WeibaContent+"]";
 
                 statuses.Content = content;
                 statuses.DateAdded = DateTime.Now;

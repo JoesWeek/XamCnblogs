@@ -21,24 +21,26 @@ namespace XamCnblogs.UI.Pages.Article
 
         public ArticlesDetailsPage(Articles articles)
         {
-            this.articles = articles;
             InitializeComponent();
-            
+            Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true);
+
+            this.articles = articles;
+
             BindingContext = new ArticlesDetailsViewModel(articles);
 
-            var cancel = new ToolbarItem
-            {
-                Text = "分享",
-                Command = new Command(() =>
-                {
-                    DependencyService.Get<IShares>().Shares(articles.Url, articles.Title);
-                })
-            };
-            ToolbarItems.Add(cancel);
-
             if (Device.Android == Device.RuntimePlatform)
-                cancel.Icon = "toolbar_share.png";
-
+            {
+                var cancel = new ToolbarItem
+                {
+                    Text = "分享",
+                    Command = new Command(() =>
+                    {
+                        DependencyService.Get<IShares>().Shares(articles.Url, articles.Title);
+                    }),
+                    Icon = "toolbar_share.png"
+                };
+                ToolbarItems.Add(cancel);
+            }
             formsWebView.OnContentLoaded += delegate (object sender, EventArgs e)
             {
                 RefreshArticles();

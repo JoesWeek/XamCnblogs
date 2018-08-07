@@ -1,10 +1,8 @@
 ﻿using MvvmHelpers;
-using Plugin.Share;
-using Plugin.Share.Abstractions;
-using SQLite;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using XamCnblogs.Portable.Helpers;
 using XamCnblogs.Portable.Interfaces;
@@ -59,28 +57,16 @@ namespace XamCnblogs.Portable.ViewModel
             await ExecuteLaunchBrowserAsync(t);
         }));
 
-        public async static Task ExecuteLaunchBrowserAsync(string arg)
+        public async static Task ExecuteLaunchBrowserAsync(string uri)
         {
-            if (!arg.StartsWith("http://", StringComparison.OrdinalIgnoreCase) && !arg.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
-                arg = "http://" + arg;
+            if (!uri.StartsWith("http://", StringComparison.OrdinalIgnoreCase) && !uri.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+                uri = "http://" + uri;
 
-            var lower = arg.ToLowerInvariant();
+            var lower = uri.ToLowerInvariant();
 
             try
             {
-                await CrossShare.Current.OpenBrowser(arg, new BrowserOptions
-                {
-                    ChromeShowTitle = true,
-                    ChromeToolbarColor = new ShareColor
-                    {
-                        A = 255,
-                        R = 118,
-                        G = 53,
-                        B = 235
-                    },
-                    UseSafariReaderMode = true,
-                    UseSafariWebViewController = true
-                });
+                await Browser.OpenAsync(uri, BrowserLaunchType.SystemPreferred);
             }
             catch
             {

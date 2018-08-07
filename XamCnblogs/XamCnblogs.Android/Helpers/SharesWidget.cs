@@ -27,9 +27,9 @@ namespace XamCnblogs.Droid.Helpers
         public void Onclick(SnsPlatform snsPlatform, SHARE_MEDIA media)
         {
             new ShareAction(context).WithMedia(umWeb)
-                .SetPlatform(media)
-                .SetCallback(this)
-                .Share();
+            .SetPlatform(media)
+            .SetCallback(this)
+            .Share();
         }
         public void Open(string url, string title, object icon = null)
         {

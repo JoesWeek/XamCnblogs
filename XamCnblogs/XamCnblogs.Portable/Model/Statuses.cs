@@ -29,6 +29,18 @@ namespace XamCnblogs.Portable.Model
         }
         [Ignore]
         public string DateDisplay { get { return DateAdded.Format(); } }
+        [Ignore]
+        public string ContentDisplay
+        {
+            get
+            {
+                if (IsLucky)
+                {
+                    Content += string.Format(@"<img src='https://common.cnblogs.com/images/ing/lucky-star-20170120.png' class='ing-icon'/>");
+                }
+                return Content;
+            }
+        }
 
         private bool isDelete;
         [Ignore]

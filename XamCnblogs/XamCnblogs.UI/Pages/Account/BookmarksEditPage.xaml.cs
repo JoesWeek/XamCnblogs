@@ -28,8 +28,9 @@ namespace XamCnblogs.UI.Pages.Account
         }
         void Init(Bookmarks bookmarks)
         {
-            this.bookmarks = bookmarks;
             InitializeComponent();
+            Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true);
+            this.bookmarks = bookmarks;
             BindingContext = new BookmarksViewModel();
             if (bookmarks.WzLinkId > 0)
             {
@@ -45,12 +46,11 @@ namespace XamCnblogs.UI.Pages.Account
                 Command = new Command(async () =>
                 {
                     await ExecuteBookmarkEditAsync();
-                })
+                }),
+                Icon = "menu_send.png"
             };
             ToolbarItems.Add(cancel);
 
-            if (Device.Android == Device.RuntimePlatform)
-                cancel.Icon = "menu_send.png";
 
             this.EditorSummary.Text = bookmarks.Summary;
             this.EntryTitle.Text = bookmarks.Title;
@@ -94,7 +94,7 @@ namespace XamCnblogs.UI.Pages.Account
                     popupPage = new ActivityIndicatorPopupPage();
                 }
                 await Navigation.PushPopupAsync(popupPage);
-                
+
                 if (await ViewModel.ExecuteBookmarkEditCommandAsync(bookmarks))
                 {
                     await Navigation.RemovePopupPageAsync(popupPage);

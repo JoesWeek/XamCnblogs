@@ -21,22 +21,24 @@ namespace XamCnblogs.UI.Pages.Question
         Questions questions;
         public QuestionsDetailsPage(Questions questions)
         {
-            this.questions = questions;
             InitializeComponent();
+            Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true);
+            this.questions = questions;
             BindingContext = new QuestionsDetailsViewModel(questions);
 
-            var cancel = new ToolbarItem
-            {
-                Text = "分享",
-                Command = new Command(() =>
-                {
-                    DependencyService.Get<IShares>().Shares("https://q.cnblogs.com/q/" + questions.Qid + "/", questions.Title);
-                })
-            };
-            ToolbarItems.Add(cancel);
-
             if (Device.Android == Device.RuntimePlatform)
-                cancel.Icon = "toolbar_share.png";
+            {
+                var cancel = new ToolbarItem
+                {
+                    Text = "分享",
+                    Command = new Command(() =>
+                    {
+                        DependencyService.Get<IShares>().Shares("https://q.cnblogs.com/q/" + questions.Qid + "/", questions.Title);
+                    }),
+                    Icon = "toolbar_share.png"
+                };
+                ToolbarItems.Add(cancel);
+            }
 
             formsWebView.OnContentLoaded += delegate (object sender, EventArgs e)
             {

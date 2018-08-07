@@ -21,6 +21,7 @@ namespace XamCnblogs.UI.Pages.Status
         public StatusesPage(int position = 0) : base()
         {
             InitializeComponent();
+            Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true);
             BindingContext = new StatusesViewModel(position);
 
             var cancel = new ToolbarItem

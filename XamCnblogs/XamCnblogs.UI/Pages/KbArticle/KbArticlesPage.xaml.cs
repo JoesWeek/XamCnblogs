@@ -19,6 +19,7 @@ namespace XamCnblogs.UI.Pages.KbArticle
         public KbArticlesPage()
         {
             InitializeComponent();
+            Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true);
             BindingContext = new KbArticlesViewModel();
 
             Title = "知识库";

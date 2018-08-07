@@ -2,13 +2,12 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-             xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
              xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
              x:Class="XamCnblogs.UI.Pages.Account.AccountPage"
              Title="我">
     <StackLayout >
         <StackLayout ></StackLayout>
-        <Frame Padding="10">
+        <controls:CardView Padding="10">
             <StackLayout Orientation="Horizontal" VerticalOptions="CenterAndExpand" Padding="5">
                 <ffimageloading:CachedImage 
                     x:Name="ffimageloading"
@@ -44,8 +43,8 @@
                     </StackLayout.GestureRecognizers>
                 </StackLayout>
             </StackLayout>
-        </Frame>
-        <Frame Padding="0">
+        </controls:CardView>
+        <controls:CardView Padding="0">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50" />
@@ -78,8 +77,8 @@
                     </StackLayout.GestureRecognizers>
                 </StackLayout>
             </Grid>
-        </Frame>
-        <Frame Padding="0">
+        </controls:CardView>
+        <controls:CardView Padding="0">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50" />
@@ -125,7 +124,7 @@
                     </StackLayout.GestureRecognizers>
                 </StackLayout>
             </Grid>
-        </Frame>
+        </controls:CardView>
         <StackLayout
                     x:Name="LogoutLayout"
                     HorizontalOptions="CenterAndExpand"

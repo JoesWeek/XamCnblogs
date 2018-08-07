@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<base:BaseSearchPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+		     xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
+             xmlns:cells="clr-namespace:XamCnblogs.UI.Cells;assembly=XamCnblogs.UI"
+             xmlns:base="clr-namespace:XamCnblogs.UI.Pages.Search;assembly=XamCnblogs.UI"
+             x:Class="XamCnblogs.UI.Pages.Search.QuestionsSearchPage"
+             Title="搜索博问">
+    <controls:LoadMoreListView 
+                    x:Name="SearchsListView"
+                    ItemsSource="{Binding Searchs}"
+                    RefreshCommand="{Binding RefreshCommand}"
+                    IsRefreshing="{Binding IsBusy}"
+                    HasUnevenRows="True"
+                    IsPullToRefreshEnabled="True"
+                    LoadMoreCommand="{Binding LoadMoreCommand}"
+                    LoadStatus="{Binding LoadStatus}"
+                    CanLoadMore="{Binding CanLoadMore}"
+                    BackgroundColor="White"
+                    SeparatorColor="{StaticResource Divider}">
+        <controls:LoadMoreListView.ItemTemplate>
+            <DataTemplate>
+                <cells:SearchItemCell/>
+            </DataTemplate>
+        </controls:LoadMoreListView.ItemTemplate>
+    </controls:LoadMoreListView>
+</base:BaseSearchPage>

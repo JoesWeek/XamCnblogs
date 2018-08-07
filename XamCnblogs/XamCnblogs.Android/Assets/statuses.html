@@ -36,7 +36,7 @@
                                 {{ item.UserDisplayName }}
                             </span>
                         </div>
-                        <div class="item-content" v-html="item.Content"></div>
+                        <div class="item-content" v-html="item.ContentDisplay"></div>
                         <div class="item-actions">
                             <span class="item-time">{{ item.DateDisplay}}</span>
                             <div class="item-edit" v-if="item.IsLoginUser">

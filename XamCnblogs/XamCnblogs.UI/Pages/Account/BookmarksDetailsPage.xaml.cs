@@ -11,18 +11,19 @@ namespace XamCnblogs.UI.Pages.Account
             InitializeComponent();
             Title = bookmarks.Title;
 
-            var cancel = new ToolbarItem
-            {
-                Text = "分享",
-                Command = new Command(() =>
-                {
-                    DependencyService.Get<IShares>().Shares(bookmarks.LinkUrl, bookmarks.Title);
-                })
-            };
-            ToolbarItems.Add(cancel);
-
             if (Device.Android == Device.RuntimePlatform)
-                cancel.Icon = "toolbar_share.png";
+            {
+                var cancel = new ToolbarItem
+                {
+                    Text = "分享",
+                    Command = new Command(() =>
+                    {
+                        DependencyService.Get<IShares>().Shares(bookmarks.LinkUrl, bookmarks.Title);
+                    }),
+                    Icon = "toolbar_share.png"
+                };
+                ToolbarItems.Add(cancel);
+            }
 
             authorizeView.Source = bookmarks.LinkUrl;
         }

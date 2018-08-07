@@ -6,7 +6,7 @@ namespace XamCnblogs.Portable.Helpers
     public static class NavigationService
     {
         static bool navigating;
-        public static async Task PushAsync(INavigation navigation, Page page, bool animate = true)
+        public static async Task PushAsync(INavigation navigation, Page page, bool animate = false)
         {
             if (navigating)
                 return;
@@ -16,7 +16,7 @@ namespace XamCnblogs.Portable.Helpers
             navigating = false;
         }
 
-        public static async Task PushModalAsync(INavigation navigation, Page page, bool animate = true)
+        public static async Task PushModalAsync(INavigation navigation, Page page, bool animate = false)
         {
             if (navigating)
                 return;

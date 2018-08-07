@@ -24,8 +24,9 @@ namespace XamCnblogs.UI.Pages.Status
 
         public StatusesDetailsPage(Statuses statuses)
         {
-            this.statuses = statuses;
             InitializeComponent();
+            Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true);
+            this.statuses = statuses;
             Title = statuses.UserDisplayName + "的闪存";
             BindingContext = new StatusesDetailsViewModel(statuses);
 

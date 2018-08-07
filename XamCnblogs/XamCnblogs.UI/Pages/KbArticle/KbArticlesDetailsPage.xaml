@@ -63,28 +63,17 @@
                 VerticalOptions="CenterAndExpand"
                 Padding="4">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="45" />
+                    <RowDefinition Height="35" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="70" />
                 </Grid.ColumnDefinitions>
-                <StackLayout  Grid.Row="0" Grid.Column="1" Spacing="3" VerticalOptions="CenterAndExpand">
-                    <Image Source="icon_bookmarks.png" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
-                    <Label Text="收藏" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Style="{StaticResource MoreSecondaryStyle}"/>
+                <StackLayout  Grid.Row="0"  Grid.Column="1" VerticalOptions="CenterAndExpand"  HorizontalOptions="CenterAndExpand" Orientation="Horizontal">
+                    <Image Source="icon_bookmarks.png" VerticalOptions="CenterAndExpand"/>
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnBookmarks"/>
                     </StackLayout.GestureRecognizers>
-                </StackLayout>
-                <StackLayout  Grid.Row="0" Grid.Column="2" Spacing="3" VerticalOptions="CenterAndExpand">
-                    <Image Source="icon_digg.png" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
-                    <Label Text="{Binding KbArticlesDetails.DiggDisplay}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Style="{StaticResource MoreSecondaryStyle}"/>
-                </StackLayout>
-                <StackLayout  Grid.Row="0" Grid.Column="3" Spacing="3" VerticalOptions="CenterAndExpand">
-                    <Image Source="icon_read.png" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
-                    <Label Text="{Binding KbArticlesDetails.ViewDisplay}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Style="{StaticResource MoreSecondaryStyle}"/>
                 </StackLayout>
             </Grid>
         </StackLayout>

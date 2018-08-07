@@ -12,11 +12,11 @@
 
 ## 截图
 
-![screenshots](screenshots/Screenshot0.png)
-![screenshots](screenshots/Screenshot1.png)
-![screenshots](screenshots/Screenshot2.png)
-![screenshots](screenshots/Screenshot3.png)
-![screenshots](screenshots/Screenshot4.png)
+![screenshots](screenshots/android1.png)
+![screenshots](screenshots/android2.png)
+![screenshots](screenshots/android3.png)
+![screenshots](screenshots/android4.png)
+![screenshots](screenshots/android5.png)
 
 ## 下载
 
@@ -24,9 +24,11 @@
 
 # 关于IOS版
 
-```
-IOS版本暂时没有进行适配...
-```
+![screenshots](screenshots/ios1.png)
+![screenshots](screenshots/ios2.png)
+![screenshots](screenshots/aios3.png)
+![screenshots](screenshots/ios4.png)
+![screenshots](screenshots/ios5.png)
 
 # 支持功能
 

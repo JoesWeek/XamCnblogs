@@ -5,8 +5,7 @@
 	         xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
              xmlns:converter="clr-namespace:XamCnblogs.UI.Converters;assembly=XamCnblogs.UI"
              xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
-             x:Class="XamCnblogs.UI.Cells.QuestionsItemCell"
-             x:Name="QuestionsItemCell">
+             x:Class="XamCnblogs.UI.Cells.QuestionsItemCell">
     <Grid  
              x:Name="GridView"
              Padding="{StaticResource StandardPadding}" 

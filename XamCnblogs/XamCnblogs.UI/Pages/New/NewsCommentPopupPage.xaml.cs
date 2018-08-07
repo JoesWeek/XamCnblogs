@@ -24,10 +24,11 @@ namespace XamCnblogs.UI.Pages.New
         NewsComments comments;
         public NewsCommentPopupPage(News news, Action<NewsComments> result, NewsComments comments = null)
         {
+            InitializeComponent();
+            Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true);
             this.news = news;
             this.comments = comments;
             this.result = result;
-            InitializeComponent();
             BindingContext = new NewsDetailsViewModel(news);
             if (comments != null)
             {
@@ -79,7 +80,7 @@ namespace XamCnblogs.UI.Pages.New
                 SendButton.IsRunning = true;
 
                 if (AboutSettings.Current.WeibaToggled && comments == null)
-                    comment += "<br/>" + AboutSettings.Current.WeibaContent;
+                    comment += "\r\n[" + AboutSettings.Current.WeibaContent + "]";
 
                 if (await ViewModel.EditCommentAsync(news.Id, comment, comments != null))
                 {

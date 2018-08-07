@@ -4,7 +4,6 @@
 		     xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
              xmlns:cells="clr-namespace:XamCnblogs.UI.Cells;assembly=XamCnblogs.UI"
              x:Class="XamCnblogs.UI.Pages.Account.BookmarksDetailsPage"
-             x:Name="BookmarksDetailsPage"
              Title="我的收藏">
     <controls:AuthorizeView x:Name="authorizeView"/>
 </ContentPage>

@@ -78,6 +78,7 @@ Global
 		{A62E6EC9-0417-4F2D-A982-25D29C46CB5A}.AppStore|iPhoneSimulator.ActiveCfg = AppStore|iPhoneSimulator
 		{A62E6EC9-0417-4F2D-A982-25D29C46CB5A}.AppStore|iPhoneSimulator.Build.0 = AppStore|iPhoneSimulator
 		{A62E6EC9-0417-4F2D-A982-25D29C46CB5A}.Debug|Any CPU.ActiveCfg = Debug|iPhone
+		{A62E6EC9-0417-4F2D-A982-25D29C46CB5A}.Debug|Any CPU.Build.0 = Debug|iPhone
 		{A62E6EC9-0417-4F2D-A982-25D29C46CB5A}.Debug|iPhone.ActiveCfg = Debug|iPhone
 		{A62E6EC9-0417-4F2D-A982-25D29C46CB5A}.Debug|iPhone.Build.0 = Debug|iPhone
 		{A62E6EC9-0417-4F2D-A982-25D29C46CB5A}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
@@ -189,5 +190,40 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {24D57663-EC7B-4FA2-82DE-4F97273953B1}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 6
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://xamcnblogs.visualstudio.com/
+		SccProjectUniqueName0 = XamCnblogs\\XamCnblogs.Android\\XamCnblogs.Android.csproj
+		SccProjectName0 = XamCnblogs/XamCnblogs.Android
+		SccAuxPath0 = https://xamcnblogs.visualstudio.com
+		SccLocalPath0 = XamCnblogs\\XamCnblogs.Android
+		SccProvider0 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName1 = XamCnblogs\\XamCnblogs.iOS\\XamCnblogs.iOS.csproj
+		SccProjectName1 = XamCnblogs/XamCnblogs.iOS
+		SccAuxPath1 = https://xamcnblogs.visualstudio.com
+		SccLocalPath1 = XamCnblogs\\XamCnblogs.iOS
+		SccProvider1 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName2 = XamCnblogs\\UMeng.Share.Android\\UMeng.Share.Android.csproj
+		SccProjectName2 = XamCnblogs/UMeng.Share.Android
+		SccAuxPath2 = https://xamcnblogs.visualstudio.com
+		SccLocalPath2 = XamCnblogs\\UMeng.Share.Android
+		SccProvider2 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName3 = XamCnblogs\\XamCnblogs.Android\\AndroidBindings\\Binding_XgPush\\Binding_XgPush.csproj
+		SccProjectName3 = XamCnblogs/XamCnblogs.Android/AndroidBindings/Binding_XgPush
+		SccAuxPath3 = https://xamcnblogs.visualstudio.com
+		SccLocalPath3 = XamCnblogs\\XamCnblogs.Android\\AndroidBindings\\Binding_XgPush
+		SccProvider3 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName4 = XamCnblogs\\XamCnblogs.Portable\\XamCnblogs.Portable.csproj
+		SccProjectName4 = XamCnblogs/XamCnblogs.Portable
+		SccAuxPath4 = https://xamcnblogs.visualstudio.com
+		SccLocalPath4 = XamCnblogs\\XamCnblogs.Portable
+		SccProvider4 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName5 = XamCnblogs\\XamCnblogs.UI\\XamCnblogs.UI.csproj
+		SccProjectName5 = XamCnblogs/XamCnblogs.UI
+		SccAuxPath5 = https://xamcnblogs.visualstudio.com
+		SccLocalPath5 = XamCnblogs\\XamCnblogs.UI
+		SccProvider5 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 	EndGlobalSection
 EndGlobal

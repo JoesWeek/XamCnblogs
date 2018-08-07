@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using XamCnblogs.Portable.Interfaces;
@@ -17,21 +17,24 @@ namespace XamCnblogs.UI.Pages.About
         public AboutPage()
         {
             InitializeComponent();
+            Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true);
             BindingContext = vm = new AboutViewModel();
-            var cancel = new ToolbarItem
-            {
-                Text = "分享",
-                Command = new Command(() =>
-                {
-                    DependencyService.Get<IShares>().Shares("https://github.com/JoesWeek/XamCnblogs", "博客园第三方客户端，Xamarin.Forms App，支持IOS，Android");
-                })
-            };
-            ToolbarItems.Add(cancel);
 
             if (Device.Android == Device.RuntimePlatform)
-                cancel.Icon = "toolbar_share.png";
+            {
+                var cancel = new ToolbarItem
+                {
+                    Text = "分享",
+                    Command = new Command(() =>
+                    {
+                        DependencyService.Get<IShares>().Shares("https://github.com/JoesWeek/XamCnblogs", "博客园第三方客户端，Xamarin.Forms App，支持IOS，Android");
+                    }),
+                    Icon = "toolbar_share.png"
+                };
+                ToolbarItems.Add(cancel);
+            }
 
-            this.VersionName.Text = DependencyService.Get<IVersionName>().GetVersionName();
+            this.VersionName.Text = VersionTracking.CurrentVersion;
         }
     }
 }

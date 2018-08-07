@@ -19,10 +19,11 @@ namespace XamCnblogs.UI.Pages.New
         QuestionsAnswers questionsAnswers;
         public QuestionsAnswersPopupPage(Questions questions, Action<QuestionsAnswers> result, QuestionsAnswers questionsAnswers = null)
         {
+            InitializeComponent();
+            Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true);
             this.questions = questions;
             this.questionsAnswers = questionsAnswers;
             this.result = result;
-            InitializeComponent();
             BindingContext = new QuestionsDetailsViewModel(questions);
             if (questionsAnswers != null)
             {
@@ -76,7 +77,7 @@ namespace XamCnblogs.UI.Pages.New
                 if (questionsAnswers == null)
                 {
                     if (AboutSettings.Current.WeibaToggled)
-                        comment += "<br/>" + AboutSettings.Current.WeibaContent;
+                        comment += "\r\n[" + AboutSettings.Current.WeibaContent + "]";
 
                     if (await ViewModel.ExecuteCommentPostCommandAsync(questions.Qid, comment))
                     {

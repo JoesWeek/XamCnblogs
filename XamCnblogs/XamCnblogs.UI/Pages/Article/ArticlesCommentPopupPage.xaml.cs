@@ -23,9 +23,10 @@ namespace XamCnblogs.UI.Pages.Article
         Articles articles;
         public ArticlesCommentPopupPage(Articles articles, Action<ArticlesComments> result)
         {
+            InitializeComponent();
+            Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true);
             this.articles = articles;
             this.result = result;
-            InitializeComponent();
             BindingContext = new ArticlesDetailsViewModel(articles);
             this.Comment.Focus();
             ViewModel.IsBusy = false;
@@ -67,7 +68,7 @@ namespace XamCnblogs.UI.Pages.Article
                 SendButton.IsRunning = true;
 
                 if (AboutSettings.Current.WeibaToggled)
-                    comment += "<br/>" + AboutSettings.Current.WeibaContent;
+                    comment += "\r\n[" + AboutSettings.Current.WeibaContent + "]";
 
                 if (await ViewModel.ExecuteCommentEditCommandAsync(articles.BlogApp, articles.Id, comment))
                 {

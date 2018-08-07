@@ -19,8 +19,9 @@ namespace XamCnblogs.UI.Pages.Question
 
         public AnswersDetailsPage(QuestionsAnswers answers)
         {
-            this.answers = answers;
             InitializeComponent();
+            Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true);
+            this.answers = answers;
             BindingContext = new AnswersDetailsViewModel(answers);
             
             formsWebView.OnContentLoaded += delegate (object sender, EventArgs e)

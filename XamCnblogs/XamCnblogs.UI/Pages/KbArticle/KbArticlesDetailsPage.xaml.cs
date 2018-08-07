@@ -19,22 +19,24 @@ namespace XamCnblogs.UI.Pages.KbArticle
 
         public KbArticlesDetailsPage(KbArticles kbArticles)
         {
-            this.kbArticles = kbArticles;
             InitializeComponent();
+            Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true);
+            this.kbArticles = kbArticles;
             BindingContext = new KbArticlesDetailsViewModel(kbArticles);
 
-            var cancel = new ToolbarItem
-            {
-                Text = "分享",
-                Command = new Command(() =>
-                {
-                    DependencyService.Get<IShares>().Shares("http://kb.cnblogs.com/page/" + kbArticles.Id + "/", kbArticles.Title);
-                })
-            };
-            ToolbarItems.Add(cancel);
-
             if (Device.Android == Device.RuntimePlatform)
-                cancel.Icon = "toolbar_share.png";
+            {
+                var cancel = new ToolbarItem
+                {
+                    Text = "分享",
+                    Command = new Command(() =>
+                    {
+                        DependencyService.Get<IShares>().Shares("http://kb.cnblogs.com/page/" + kbArticles.Id + "/", kbArticles.Title);
+                    }),
+                    Icon = "toolbar_share.png"
+                };
+                ToolbarItems.Add(cancel);
+            }
 
             formsWebView.OnContentLoaded += delegate (object sender, EventArgs e)
             {

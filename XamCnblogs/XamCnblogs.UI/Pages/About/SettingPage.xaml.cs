@@ -17,18 +17,21 @@ namespace XamCnblogs.UI.Pages.About
         {
             InitializeComponent();
 
-            var cancel = new ToolbarItem
-            {
-                Text = "分享",
-                Command = new Command(() =>
-                {
-                    DependencyService.Get<IShares>().Shares("https://github.com/JoesWeek/XamCnblogs", "博客园第三方客户端，Xamarin.Forms App，支持IOS，Android");
-                })
-            };
-            ToolbarItems.Add(cancel);
+            Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true);
 
             if (Device.Android == Device.RuntimePlatform)
-                cancel.Icon = "toolbar_share.png";
+            {
+                var cancel = new ToolbarItem
+                {
+                    Text = "分享",
+                    Command = new Command(() =>
+                    {
+                        DependencyService.Get<IShares>().Shares("https://github.com/JoesWeek/XamCnblogs", "博客园第三方客户端，Xamarin.Forms App，支持IOS，Android");
+                    }),
+                    Icon = "toolbar_share.png"
+                };
+                ToolbarItems.Add(cancel);
+            }
 
             WeibaSwitchToggled(AboutSettings.Current.WeibaToggled);
 

@@ -26,12 +26,7 @@ namespace XamCnblogs.UI.Controls
         {
             if (Device.RuntimePlatform == Device.iOS)
             {
-                BarBackgroundColor = Color.FromHex("FAFAFA");
-            }
-            else
-            {
-                BarBackgroundColor = (Color)Application.Current.Resources["Primary"];
-                BarTextColor = (Color)Application.Current.Resources["NavigationText"];
+                BarBackgroundColor = (Color)Application.Current.Resources["NavigationText"];
             }
         }
 
@@ -39,6 +34,12 @@ namespace XamCnblogs.UI.Controls
         {
             if (Device.RuntimePlatform == Device.Android && this.RootPage == this.CurrentPage)
             {
+                var rootpage = this.RootPage as Pages.Android.RootPage;
+                if (rootpage != null && rootpage.SelectedSearch)
+                {
+                    rootpage.SelectedSearch = false;
+                    return true;
+                }
                 if (firstBackPressedTime == DateTime.MinValue || firstBackPressedTime.AddSeconds(3) < DateTime.Now)
                 {
                     DependencyService.Get<IToast>().SendToast("再按一次退出程序");

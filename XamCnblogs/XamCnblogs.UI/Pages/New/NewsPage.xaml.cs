@@ -15,6 +15,7 @@ namespace XamCnblogs.UI.Pages.New
         public NewsPage(int position = 0) : base()
         {
             InitializeComponent();
+            Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true);
             BindingContext = new NewsViewModel(position);
             this.NewsListView.ItemSelected += async delegate
             {

@@ -47,9 +47,7 @@ namespace XamCnblogs.Portable.ViewModel
             Title = "新闻";
             NewsDetails = new NewsDetailsModel()
             {
-                DiggDisplay = news.DiggCount > 0 ? news.DiggCount.ToString() : "推荐",
-                CommentDisplay = news.CommentCount > 0 ? news.CommentCount.ToString() : "评论",
-                ViewDisplay = news.ViewCount > 0 ? news.ViewCount.ToString() : "阅读"
+                CommentDisplay = news.CommentCount > 0 ? news.CommentCount.ToString() : "评论"
             };
             IsBusy = true;
         }
@@ -66,9 +64,7 @@ namespace XamCnblogs.Portable.ViewModel
                 {
                     news.Body = JsonConvert.DeserializeObject<string>(result.Message.ToString());
 
-                    NewsDetails.DiggDisplay = news.DiggCount > 0 ? news.DiggCount.ToString() : "推荐";
                     NewsDetails.CommentDisplay = news.CommentCount > 0 ? news.CommentCount.ToString() : "评论";
-                    NewsDetails.ViewDisplay = news.ViewCount > 0 ? news.ViewCount.ToString() : "阅读";
                     NewsDetails.DateDisplay = "发布于 " + news.DateDisplay;
                     HasError = false;
                 }
@@ -187,29 +183,11 @@ namespace XamCnblogs.Portable.ViewModel
 
         public class NewsDetailsModel : BaseViewModel
         {
-            string diggDisplay;
-            public string DiggDisplay
-            {
-                get { return diggDisplay; }
-                set { SetProperty(ref diggDisplay, value); }
-            }
             string commentDisplay;
             public string CommentDisplay
             {
                 get { return commentDisplay; }
                 set { SetProperty(ref commentDisplay, value); }
-            }
-            string viewDisplay;
-            public string ViewDisplay
-            {
-                get { return viewDisplay; }
-                set { SetProperty(ref viewDisplay, value); }
-            }
-            string content;
-            public string Content
-            {
-                get { return content; }
-                set { SetProperty(ref content, value); }
             }
             string dateDisplay;
             public string DateDisplay

@@ -10,6 +10,7 @@ namespace XamCnblogs.UI.Pages.About
         public SettingWeibaPage()
         {
             InitializeComponent();
+            Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true);
             var cancel = new ToolbarItem
             {
                 Text = "默认小尾巴",

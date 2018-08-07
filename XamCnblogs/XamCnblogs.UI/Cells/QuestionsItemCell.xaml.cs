@@ -6,9 +6,9 @@ namespace XamCnblogs.UI.Cells
 {
     public partial class QuestionsItemCell : ViewCell
     {
-		public QuestionsItemCell ()
-		{
-			InitializeComponent ();
+        public QuestionsItemCell()
+        {
+            InitializeComponent();
             ffimageloading.Transformations.Add(new CircleTransformation());
         }
         protected override void OnBindingContextChanged()
@@ -18,8 +18,8 @@ namespace XamCnblogs.UI.Cells
 
             if (item == null)
                 return;
-
-            this.ffimageloading.Source = item.QuestionUserInfo.IconDisplay;
+            if (item.QuestionUserInfo != null)
+                this.ffimageloading.Source = item.QuestionUserInfo.IconDisplay;
 
             base.OnBindingContextChanged();
         }

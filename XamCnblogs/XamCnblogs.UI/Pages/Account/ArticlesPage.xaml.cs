@@ -20,6 +20,8 @@ namespace XamCnblogs.UI.Pages.Account
         public ArticlesPage(string blogApp) : base()
         {
             InitializeComponent();
+            Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true);
+
             BindingContext = new BlogsViewModel(blogApp);
             this.ArticlesListView.ItemSelected += async delegate
             {

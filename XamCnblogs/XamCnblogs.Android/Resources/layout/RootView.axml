@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+    <FrameLayout
+        android:id="@+id/search_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#2196F3"
+        android:paddingLeft="10dp"
+        android:paddingTop="8dp"
+        android:paddingRight="10dp">
+        <android.support.v7.widget.CardView
+            android:id="@+id/search_box_collapsed"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:alpha="0.5"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="2dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <ImageButton
+                android:id="@+id/search_back_button"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/toolbar_search"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="false" />
+            <EditText
+                android:id="@+id/search_edit_content"
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:textColor="#ffffff"
+                android:textColorHint="#ffffff"
+                android:textCursorDrawable="@drawable/color_cursor"
+                android:background="@null"
+                android:inputType="textFilter"
+                android:singleLine="true"
+                android:imeOptions="actionSearch"
+                android:hint="搜索你想知道的" />
+            <ImageButton
+                android:id="@+id/search_close_button"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/toolbar_close"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:importantForAccessibility="no"
+                android:visibility="gone" />
+        </LinearLayout>
+    </FrameLayout>
+    <FrameLayout
+        android:id="@+id/root_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

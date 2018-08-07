@@ -3,10 +3,10 @@ using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json;
-using Plugin.Connectivity;
-using Plugin.Connectivity.Abstractions;
 using System;
+using Xamarin.Essentials;
 using Xamarin.Forms;
+using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 using XamCnblogs.Portable.Helpers;
 using XamCnblogs.Portable.Interfaces;
 using XamCnblogs.Portable.Model;
@@ -17,39 +17,47 @@ using XamCnblogs.UI.Pages.Article;
 using XamCnblogs.UI.Pages.KbArticle;
 using XamCnblogs.UI.Pages.New;
 using XamCnblogs.UI.Pages.Question;
+using XamCnblogs.UI.Pages.Search;
 using XamCnblogs.UI.Pages.Status;
 
 namespace XamCnblogs.UI
 {
-    public partial class App : Application
+    public partial class App : Xamarin.Forms.Application
     {
         public App()
         {
             InitializeComponent();
 
+            VersionTracking.Track();
+
             SqliteUtil.Current.CreateAllTablesAsync();
 
-            AppCenter.Start("android=edece6f4-538e-4a97-b9f7-5a24c95a00d8;ios=8b7847a8-ceae-4e21-bc51-a9da9a6e7ecc;", typeof(Analytics), typeof(Crashes));
+            AppCenter.Start("", typeof(Analytics), typeof(Crashes));
 
             ViewModelBase.Init();
 
-            XamBottomBarPage bottomBarPage = new XamBottomBarPage() { Title = "博客园" };
-
-            if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
-            {
-                bottomBarPage.BarTextColor = (Color)Application.Current.Resources["Primary"];
-                bottomBarPage.FixedMode = true;
-                bottomBarPage.BarTheme = XamBottomBarPage.BarThemeTypes.Light;
-            }
-
+            var bottomBarPage = new HomeTabbedPage() { Title = "博客园" };
+            bottomBarPage.BackgroundColor = Color.White;
+            bottomBarPage.On<Xamarin.Forms.PlatformConfiguration.Android>().SetToolbarPlacement(ToolbarPlacement.Bottom).SetOffscreenPageLimit(5).SetElevation(5F);
             bottomBarPage.Children.Add(new ArticlesTopTabbedPage());
             bottomBarPage.Children.Add(new NewsTopTabbedPage());
             bottomBarPage.Children.Add(new StatusesTopTabbedPage());
             bottomBarPage.Children.Add(new QuestionsTopTabbedPage());
             bottomBarPage.Children.Add(new AccountPage());
 
-            MainPage = new XamNavigationPage(bottomBarPage);
-            //MainPage = new NavigationPage(new Page1() { Title = "测试" });
+            if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
+            {
+                var rootPage = new Pages.Android.RootPage();
+                rootPage.Children.Add(bottomBarPage);
+
+                rootPage.Children.Add(new SearchPage());
+
+                MainPage = new XamNavigationPage(rootPage);
+            }
+            else if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.iOS)
+            {
+                MainPage = new XamNavigationPage(bottomBarPage);
+            }
         }
 
         protected override void OnStart()
@@ -64,13 +72,13 @@ namespace XamCnblogs.UI
             if (registered)
                 return;
             registered = true;
-            CrossConnectivity.Current.ConnectivityChanged += ConnectivityChanged;
+            Connectivity.ConnectivityChanged += ConnectivityChanged;
 
             MessagingService.Current.Subscribe(MessageKeys.NavigateLogin, async m =>
             {
                 Page page = new NavigationPage(new AuthorizePage());
 
-                var nav = Application.Current?.MainPage?.Navigation;
+                var nav = Xamarin.Forms.Application.Current?.MainPage?.Navigation;
                 if (nav == null)
                     return;
 
@@ -92,7 +100,7 @@ namespace XamCnblogs.UI
 
                         UserSettings.Current.UpdateUser(user);
 
-                        var nav = Application.Current?.MainPage?.Navigation;
+                        var nav = Xamarin.Forms.Application.Current?.MainPage?.Navigation;
                         if (nav == null)
                             return;
                         await nav.PopModalAsync();
@@ -103,7 +111,7 @@ namespace XamCnblogs.UI
             {
                 Page page = new NavigationPage(new AccountPage());
 
-                var nav = Application.Current?.MainPage?.Navigation;
+                var nav = Xamarin.Forms.Application.Current?.MainPage?.Navigation;
                 if (nav == null)
                     return;
 
@@ -112,7 +120,7 @@ namespace XamCnblogs.UI
             MessagingService.Current.Subscribe<string>(MessageKeys.NavigateNotification, async (m, message) =>
             {
                 DependencyService.Get<IToast>().SendToast(message);
-                var nav = Application.Current?.MainPage?.Navigation;
+                var nav = Xamarin.Forms.Application.Current?.MainPage?.Navigation;
                 if (nav == null)
                     return;
                 Page page = null;
@@ -134,10 +142,9 @@ namespace XamCnblogs.UI
                             page = new NavigationPage(new QuestionsDetailsPage(new Questions() { Title = notification.Title, Qid = notification.ID }));
                             break;
                         case "update":
-                            var versionCode = DependencyService.Get<IVersionCode>().GetVersionCode();
-                            if (notification.ID > versionCode)
+                            if (notification.ID > int.Parse(VersionTracking.CurrentBuild))
                             {
-                                if (await Application.Current?.MainPage.DisplayAlert("新版提示", notification.Title, "立即下载", "取消"))
+                                if (await Xamarin.Forms.Application.Current?.MainPage.DisplayAlert("新版提示", notification.Title, "立即下载", "取消"))
                                 {
                                     await ViewModelBase.ExecuteLaunchBrowserAsync(notification.Url);
                                 }
@@ -150,6 +157,19 @@ namespace XamCnblogs.UI
                 await NavigationService.PushAsync(nav, page);
             });
         }
+
+        private async void ConnectivityChanged(Xamarin.Essentials.ConnectivityChangedEventArgs e)
+        {
+            if (Connectivity.NetworkAccess != NetworkAccess.Internet)
+            {
+                DependencyService.Get<IToast>().SendToast("网络不给你，请检查网络设置");
+            }
+            else
+            {
+                await UserTokenSettings.Current.RefreshUserTokenAsync();
+            }
+        }
+
         protected override void OnSleep()
         {
             if (!registered)
@@ -161,19 +181,8 @@ namespace XamCnblogs.UI
             MessagingService.Current.Unsubscribe(MessageKeys.NavigateAccount);
             MessagingService.Current.Unsubscribe(MessageKeys.NavigateNotification);
 
-            CrossConnectivity.Current.ConnectivityChanged -= ConnectivityChanged;
+            Connectivity.ConnectivityChanged -= ConnectivityChanged;
         }
 
-        protected async void ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
-        {
-            if (!CrossConnectivity.Current.IsConnected)
-            {
-                DependencyService.Get<IToast>().SendToast("网络不给你，请检查网络设置");
-            }
-            else
-            {
-                await UserTokenSettings.Current.RefreshUserTokenAsync();
-            }
-        }
     }
 }

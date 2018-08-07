@@ -8,10 +8,6 @@ namespace XamCnblogs.UI.Pages.New
     {
         public NewsTopTabbedPage()
         {
-            BarTextColor = (Color)Application.Current.Resources["NavigationText"];
-            BarIndicatorColor = (Color)Application.Current.Resources["Divider"];
-            BarBackgroundColor = (Color)Application.Current.Resources["Primary"];
-
             Title = "新闻";
             Icon = "menu_news.png";
 
@@ -19,18 +15,29 @@ namespace XamCnblogs.UI.Pages.New
             this.Children.Add(new NewsPage(1) { Title = "推荐新闻" });
             this.Children.Add(new NewsPage(2) { Title = "本周热门" });
 
-            var cancel = new ToolbarItem
+            if (Device.iOS == Device.RuntimePlatform)
             {
-                Text = "搜索",
-                Command = new Command(async () =>
-                {
-                    await NavigationService.PushAsync(Navigation, new NewsSearchPage());
-                })
-            };
-            ToolbarItems.Add(cancel);
+                BarTextColor = (Color)Application.Current.Resources["PrimaryText"];
+                BarIndicatorColor = (Color)Application.Current.Resources["SecondaryText"];
+                BarBackgroundColor = (Color)Application.Current.Resources["NavigationText"];
 
-            if (Device.Android == Device.RuntimePlatform)
-                cancel.Icon = "toolbar_search.png";
+                var cancel = new ToolbarItem
+                {
+                    Text = "搜索",
+                    Command = new Command(async () =>
+                    {
+                        await NavigationService.PushAsync(Navigation, new NewsSearchPage());
+                    }),
+                    Icon = "toolbar_search.png"
+                };
+                ToolbarItems.Add(cancel);
+            }
+            else
+            {
+                BarTextColor = (Color)Application.Current.Resources["NavigationText"];
+                BarIndicatorColor = (Color)Application.Current.Resources["Divider"];
+                BarBackgroundColor = (Color)Application.Current.Resources["Primary"];
+            }
         }
     }
 }

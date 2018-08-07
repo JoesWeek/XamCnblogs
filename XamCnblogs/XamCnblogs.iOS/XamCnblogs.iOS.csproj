@@ -13,6 +13,10 @@
     <AssemblyName>XamCnblogs.iOS</AssemblyName>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -26,6 +30,8 @@
     <MtouchArch>x86_64</MtouchArch>
     <MtouchLink>None</MtouchLink>
     <MtouchDebug>true</MtouchDebug>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignProvision />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -87,19 +93,20 @@
     <CodesignKey>iPhone Distribution</CodesignKey>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
+    <AppExtensionDebugBundleId />
+  </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Helpers\Settings.cs" />
     <Compile Include="Helpers\SQLite_iOS.cs" />
+    <Compile Include="Helpers\Toaster.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="Renderers\HomeTabbedPageRenderer.cs" />
+    <Compile Include="Renderers\AuthorizeViewRenderer.cs" />
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <ImageAsset Include="Media.xcassets\AppIcon.appiconset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Media.xcassets\LaunchImage.launchimage\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Default-568h%402x.png" />
@@ -111,12 +118,6 @@
     <BundleResource Include="Resources\Icon-60%403x.png" />
     <BundleResource Include="Resources\Icon-76.png" />
     <BundleResource Include="Resources\Icon-76%402x.png" />
-    <BundleResource Include="Resources\Icon-Small-40.png" />
-    <BundleResource Include="Resources\Icon-Small-40%402x.png" />
-    <BundleResource Include="Resources\Icon-Small-40%403x.png" />
-    <BundleResource Include="Resources\Icon-Small.png" />
-    <BundleResource Include="Resources\Icon-Small%402x.png" />
-    <BundleResource Include="Resources\Icon-Small%403x.png" />
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
   </ItemGroup>
   <ItemGroup>
@@ -130,13 +131,13 @@
       <Version>2.0.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AppCenter.Analytics">
-      <Version>1.6.0</Version>
+      <Version>1.7.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AppCenter.Crashes">
-      <Version>1.6.0</Version>
+      <Version>1.7.0</Version>
     </PackageReference>
     <PackageReference Include="modernhttpclient-updated">
-      <Version>2.6.0</Version>
+      <Version>2.7.2</Version>
     </PackageReference>
     <PackageReference Include="Naxam.TopTabbedPage.Forms">
       <Version>0.0.3.3</Version>
@@ -144,14 +145,11 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>11.0.2</Version>
     </PackageReference>
-    <PackageReference Include="Plugin.Share">
-      <Version>7.1.1</Version>
-    </PackageReference>
     <PackageReference Include="Refractored.MvvmHelpers">
       <Version>1.3.0</Version>
     </PackageReference>
     <PackageReference Include="Rg.Plugins.Popup">
-      <Version>1.0.4</Version>
+      <Version>1.1.4.168</Version>
     </PackageReference>
     <PackageReference Include="sqlite-net-pcl">
       <Version>1.4.118</Version>
@@ -162,28 +160,25 @@
     <PackageReference Include="SQLitePCLRaw.core">
       <Version>1.1.11</Version>
     </PackageReference>
-    <PackageReference Include="ThriveGmbH.BottomNavigationBar.XF">
-      <Version>1.0.2</Version>
-    </PackageReference>
-    <PackageReference Include="Xam.Plugin.Connectivity">
-      <Version>3.1.1</Version>
+    <PackageReference Include="Toast.iOS">
+      <Version>1.1.0</Version>
     </PackageReference>
     <PackageReference Include="Xam.Plugin.WebView">
       <Version>2.1.3</Version>
     </PackageReference>
-    <PackageReference Include="Xam.Plugins.Messaging">
-      <Version>5.2.0</Version>
-    </PackageReference>
     <PackageReference Include="Xam.Plugins.Settings">
       <Version>4.0.0.7</Version>
     </PackageReference>
+    <PackageReference Include="Xamarin.Essentials">
+      <Version>0.8.0-preview</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.FFImageLoading.Forms">
-      <Version>2.3.6</Version>
+      <Version>2.4.3.840</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.FFImageLoading.Transformations">
-      <Version>2.3.6</Version>
+      <Version>2.4.3.840</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="2.5.0.280555" />
+    <PackageReference Include="Xamarin.Forms" Version="3.1.0.637273" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\XamCnblogs.Portable\XamCnblogs.Portable.csproj">
@@ -194,143 +189,6 @@
       <Project>{9faf5c61-8aae-4cb5-b293-e57af6156750}</Project>
       <Name>XamCnblogs.UI</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ImageAsset Include="Media.xcassets\AppIcon.appiconset\Icon-1024.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <ImageAsset Include="Media.xcassets\AppIcon.appiconset\Icon-20.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <ImageAsset Include="Media.xcassets\AppIcon.appiconset\Icon-20%402x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <ImageAsset Include="Media.xcassets\AppIcon.appiconset\Icon-20%403x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <ImageAsset Include="Media.xcassets\AppIcon.appiconset\Icon-29.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <ImageAsset Include="Media.xcassets\AppIcon.appiconset\Icon-29%402x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <ImageAsset Include="Media.xcassets\AppIcon.appiconset\Icon-29%403x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <ImageAsset Include="Media.xcassets\AppIcon.appiconset\Icon-40.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <ImageAsset Include="Media.xcassets\AppIcon.appiconset\Icon-40%402x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <ImageAsset Include="Media.xcassets\AppIcon.appiconset\Icon-40%403x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <ImageAsset Include="Media.xcassets\AppIcon.appiconset\Icon-60%402x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <ImageAsset Include="Media.xcassets\AppIcon.appiconset\Icon-60%403x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <ImageAsset Include="Media.xcassets\AppIcon.appiconset\Icon-76.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <ImageAsset Include="Media.xcassets\AppIcon.appiconset\Icon-76%402x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <ImageAsset Include="Media.xcassets\AppIcon.appiconset\Icon-83.5%402x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <ImageAsset Include="Media.xcassets\AppIcon.appiconset\Icon-Small-40.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <ImageAsset Include="Media.xcassets\LaunchImage.launchimage\Default-568h%402x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <ImageAsset Include="Media.xcassets\LaunchImage.launchimage\Default-Landscape.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <ImageAsset Include="Media.xcassets\LaunchImage.launchimage\Default-Landscape%402x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <ImageAsset Include="Media.xcassets\LaunchImage.launchimage\Default-Portrait.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <ImageAsset Include="Media.xcassets\LaunchImage.launchimage\Default-Portrait%402x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <ImageAsset Include="Media.xcassets\LaunchImage.launchimage\Default%402x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\answers.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\articles.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\avatar_placeholder.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\avatar_placeholder%402x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\avatar_placeholder%403x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\bg.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\bg%402x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\bg%403x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\Default-Landscape.png" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Default-Landscape%402x.png" />
@@ -381,39 +239,6 @@
     <BundleResource Include="Resources\ic_tab%403x.png" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\Icon-1024.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\Icon-20.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\Icon-20%402x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\Icon-20%403x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\Icon-29.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\Icon-29%402x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\Icon-29%403x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\Icon-40.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\Icon-40%402x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\Icon-40%403x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\Icon-83.5%402x.png" />
-  </ItemGroup>
-  <ItemGroup>
     <BundleResource Include="Resources\icon_bookmarks.png" />
   </ItemGroup>
   <ItemGroup>
@@ -457,6 +282,39 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\icon_reply%403x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Icon-20.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Icon-20%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Icon-20%403x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Icon-29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Icon-29%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Icon-29%403x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Icon-40.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Icon-40%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Icon-40%403x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Icon-83.5%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Icon-1024.png" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\kbarticles.html" />
@@ -666,7 +524,31 @@
     <BundleResource Include="Resources\js\vue.min.js" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Renderers\" />
+    <BundleResource Include="Resources\answers.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\articles.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\avatar_placeholder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\avatar_placeholder%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\avatar_placeholder%403x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\bg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\bg%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\bg%403x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Default-Landscape.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

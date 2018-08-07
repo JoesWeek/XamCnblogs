@@ -6,7 +6,7 @@
              xmlns:converter="clr-namespace:XamCnblogs.UI.Converters;assembly=XamCnblogs.UI"
              xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
              x:Class="XamCnblogs.UI.Cells.StatusesItemCell"
-             x:Name="StatusesItemCell">
+             x:Name="StatusesCell">
     <Grid  
              x:Name="GridView"
              Padding="{StaticResource StandardPadding}" 
@@ -71,7 +71,7 @@
                         VerticalOptions="CenterAndExpand"
                         IsVisible="{Binding Id, Converter={StaticResource IsVisibleConverter}}">
                     <controls:ActivityIndicatorButton.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding Path=DeleteCommand, Source={x:Reference StatusesItemCell}}"
+                        <TapGestureRecognizer Command="{Binding Path=DeleteCommand, Source={x:Reference StatusesCell}}"
                                           CommandParameter="{Binding .}"/>
                     </controls:ActivityIndicatorButton.GestureRecognizers>
                 </controls:ActivityIndicatorButton>

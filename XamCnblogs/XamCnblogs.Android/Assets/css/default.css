@@ -120,11 +120,18 @@ body {
         display: block;
         cursor: zoom-in;
     }
-.statuses {
-    font-size: 110%;
-    padding: 10px;
-    line-height: 1.67;
-}
+    .content .ing-icon {
+        width: 24px;
+        margin-left: 5px;
+        vertical-align: middle;
+        display: initial;
+        max-width:  initial;
+    }
+    .statuses {
+        font-size: 110%;
+        padding: 10px;
+        line-height: 1.67;
+    }
     .statuses img {
         width: 18px;
         height: 18px;

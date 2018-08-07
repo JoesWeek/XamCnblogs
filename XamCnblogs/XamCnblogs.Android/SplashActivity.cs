@@ -12,7 +12,10 @@ namespace XamCnblogs.Droid
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
+            StartMain();
+        }
+        void StartMain()
+        {
             var intent = new Intent(this, typeof(MainActivity));
             StartActivity(intent);
             Finish();

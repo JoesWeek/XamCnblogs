@@ -20,6 +20,8 @@ namespace XamCnblogs.UI.Pages.Account
         public BookmarksPage() : base()
         {
             InitializeComponent();
+            Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true);
+
             BindingContext = new BookmarksViewModel();
 
             var cancel = new ToolbarItem

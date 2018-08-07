@@ -13,7 +13,9 @@ namespace XamCnblogs.UI.Pages.Article
         public ArticlesPage(int position = 0) : base()
         {
             InitializeComponent();
+            Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true);
             BindingContext = new ArticlesViewModel(position);
+            
             this.ArticlesListView.ItemSelected += async delegate
             {
                 var articles = ArticlesListView.SelectedItem as Articles;

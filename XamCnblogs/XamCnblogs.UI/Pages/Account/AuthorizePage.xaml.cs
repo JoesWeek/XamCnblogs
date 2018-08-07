@@ -22,12 +22,10 @@ namespace XamCnblogs.UI.Pages.Account
                 Command = new Command(async () =>
                 {
                     await Navigation.PopModalAsync();
-                })
+                }),
+                Icon = "toolbar_close.png"
             };
             ToolbarItems.Add(cancel);
-
-            if (Device.Android == Device.RuntimePlatform)
-                cancel.Icon = "toolbar_close.png";
 
             formsWebView.Source = string.Format(Apis.Authorize, TokenHttpClient.ClientId);
             

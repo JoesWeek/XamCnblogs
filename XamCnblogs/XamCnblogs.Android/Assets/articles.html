@@ -17,7 +17,7 @@
             </span>
             <div class="authorInfo-content">
                 <div class="authorInfo-name" v-html="model.Author"></div>
-                <span class="authorInfo-time">发布于 · {{ model.DateDisplay }}</span>
+                <span class="authorInfo-time">发布于 · {{ model.DateDisplay }} · {{ model.DiggCount }} 推荐 · {{ model.ViewCount }} 阅读</span>
             </div>
         </div>
         <div class="content" v-html="model.Body"></div>

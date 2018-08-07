@@ -12,7 +12,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <SearchBar Grid.Row="0"
-                       Text="{Binding KeyWords, Mode=TwoWay}" 
+                       Text="{Binding SearchValue, Mode=TwoWay}" 
                        Placeholder="搜索你想知道的"
                        SearchCommand="{Binding RefreshCommand}"
                        FontSize="Small" >

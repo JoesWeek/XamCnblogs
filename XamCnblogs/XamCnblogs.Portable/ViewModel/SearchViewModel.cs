@@ -21,6 +21,7 @@ namespace XamCnblogs.Portable.ViewModel
         public SearchViewModel(int position)
         {
             this.position = position;
+            LoadStatus = LoadMoreStatus.StausDefault;
         }
         LoadMoreStatus loadStatus;
         public LoadMoreStatus LoadStatus
@@ -28,15 +29,11 @@ namespace XamCnblogs.Portable.ViewModel
             get { return loadStatus; }
             set { SetProperty(ref loadStatus, value); }
         }
-        string keyWords;
-        public string KeyWords
+        string searchValue;
+        public string SearchValue
         {
-            get { return keyWords; }
-            set
-            {
-                if (SetProperty(ref keyWords, value))
-                    ExecuteSearchCommandAsync();
-            }
+            get { return searchValue; }
+            set { SetProperty(ref searchValue, value); }
         }
         ICommand refreshCommand;
         public ICommand RefreshCommand =>
@@ -44,8 +41,11 @@ namespace XamCnblogs.Portable.ViewModel
             {
                 try
                 {
-                    IsBusy = true;
-                    await ExecuteSearchCommandAsync();
+                    if (SearchValue != null && SearchValue != "")
+                    {
+                        IsBusy = true;
+                        await ExecuteRefreshCommandAsync();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -63,7 +63,14 @@ namespace XamCnblogs.Portable.ViewModel
             {
                 try
                 {
-                    await ExecuteRefreshCommandAsync();
+                    if (SearchValue != null && SearchValue != "")
+                    {
+                        await ExecuteRefreshCommandAsync();
+                    }
+                    else
+                    {
+                        LoadStatus = LoadMoreStatus.StausDefault;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -74,7 +81,7 @@ namespace XamCnblogs.Portable.ViewModel
 
         async Task ExecuteRefreshCommandAsync()
         {
-            var result = await StoreManager.SearchService.GetSearchAsync(position, KeyWords, pageIndex, pageSize);
+            var result = await StoreManager.SearchService.GetSearchAsync(position, SearchValue, pageIndex, pageSize);
             if (result.Success)
             {
                 var articles = JsonConvert.DeserializeObject<List<Search>>(result.Message.ToString());
@@ -108,19 +115,23 @@ namespace XamCnblogs.Portable.ViewModel
             }
         }
 
-        async Task ExecuteSearchCommandAsync()
+        public async Task ExecuteSearchCommandAsync(string value)
         {
-            pageIndex = 1;
-            CanLoadMore = false;
-            if (KeyWords != "")
+            if (value != SearchValue)
             {
-                await ExecuteRefreshCommandAsync();
-            }
-            else
-            {
-                if (Searchs.Count > 0)
-                    Searchs.Clear();
-                LoadStatus = LoadMoreStatus.StausNodata;
+                searchValue = value;
+                pageIndex = 1;
+                CanLoadMore = false;
+                if (searchValue != "")
+                {
+                    await ExecuteRefreshCommandAsync();
+                }
+                else
+                {
+                    if (Searchs.Count > 0)
+                        Searchs.Clear();
+                    LoadStatus = LoadMoreStatus.StausDefault;
+                }
             }
         }
     }

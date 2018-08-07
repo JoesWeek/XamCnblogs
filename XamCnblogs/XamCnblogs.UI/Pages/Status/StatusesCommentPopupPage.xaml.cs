@@ -25,9 +25,10 @@ namespace XamCnblogs.UI.Pages.New
         int id;
         public StatusesCommentPopupPage(Statuses statuses, Action<StatusesComments> result)
         {
+            InitializeComponent();
+            Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true);
             this.statuses = statuses;
             this.result = result;
-            InitializeComponent();
             BindingContext = new StatusesDetailsViewModel(statuses);
             this.Comment.Focus();
         }
@@ -67,7 +68,7 @@ namespace XamCnblogs.UI.Pages.New
                 SendButton.IsRunning = true;
 
                 if (AboutSettings.Current.WeibaToggled)
-                    comment += "<br/>" + AboutSettings.Current.WeibaContent;
+                    comment += "\r\n[" + AboutSettings.Current.WeibaContent + "]";
 
                 if (await ViewModel.ExecuteCommentEditCommandAsync(statuses.Id, comment))
                 {
