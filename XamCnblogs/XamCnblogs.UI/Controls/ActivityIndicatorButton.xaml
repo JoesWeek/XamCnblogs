@@ -1,25 +1,25 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="XamCnblogs.UI.Controls.ActivityIndicatorButton">
-    <ContentView.Content>
-        <StackLayout
-            Spacing="0"
-            Padding="0"
-             Orientation="Horizontal"
-             HorizontalOptions="CenterAndExpand"
-             VerticalOptions="CenterAndExpand">
-            <ActivityIndicator
-                x:Name="Indicator"
-                IsRunning="False"
-                IsVisible="False"
-                Color="{StaticResource SecondaryText}"
-                VerticalOptions="CenterAndExpand"
-                HorizontalOptions="CenterAndExpand"/>
-            <Image
-                x:Name="Send"
-                VerticalOptions="CenterAndExpand"
-                HorizontalOptions="CenterAndExpand"/>
-        </StackLayout>
-    </ContentView.Content>
+  <ContentView.Content>
+    <StackLayout
+        Spacing="0"
+        Padding="0"
+         Orientation="Horizontal"
+         HorizontalOptions="CenterAndExpand"
+         VerticalOptions="CenterAndExpand">
+      <ActivityIndicator
+          x:Name="Indicator"
+          IsRunning="False"
+          IsVisible="False"
+          Color="{StaticResource ActionText}"
+          VerticalOptions="CenterAndExpand"
+          HorizontalOptions="CenterAndExpand"/>
+      <Image
+          x:Name="Send"
+          VerticalOptions="CenterAndExpand"
+          HorizontalOptions="CenterAndExpand"/>
+    </StackLayout>
+  </ContentView.Content>
 </ContentView>

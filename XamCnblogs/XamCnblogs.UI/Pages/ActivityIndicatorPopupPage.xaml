@@ -31,13 +31,13 @@
              RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView,ElementName=bgImage,Property=Y,Factor=0,Constant=0}">
             <ActivityIndicator
                 IsRunning="True"
-                Color="{StaticResource SecondaryText}"
+                Color="{StaticResource ActionText}"
                 WidthRequest="35"
                 HeightRequest="35"
                 VerticalOptions="CenterAndExpand"/>
             <Label Grid.Row="0"
                 Text="加载中"
-                Style="{StaticResource PrimaryTextStyle}"
+                Style="{StaticResource TitleTextStyle}"
                 VerticalOptions="CenterAndExpand"/>
         </StackLayout>
     </RelativeLayout>

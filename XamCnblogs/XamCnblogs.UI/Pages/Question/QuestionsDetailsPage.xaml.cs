@@ -19,6 +19,7 @@ namespace XamCnblogs.UI.Pages.Question
         QuestionsDetailsViewModel ViewModel => vm ?? (vm = BindingContext as QuestionsDetailsViewModel);
         QuestionsDetailsViewModel vm;
         Questions questions;
+        QuestionsAnswersPopupPage popupPage;
         public QuestionsDetailsPage(Questions questions)
         {
             InitializeComponent();
@@ -96,8 +97,8 @@ namespace XamCnblogs.UI.Pages.Question
                 await formsWebView.InjectJavascriptAsync("updateComment(" + JsonConvert.SerializeObject(result) + ");");
             }
         }
-        void OnScrollComment(object sender, EventArgs args)
-        {
+        async void OnScrollComment(object sender, EventArgs args) {
+            await formsWebView.InjectJavascriptAsync("scrollToComments();");
         }
         async void OnShowComment(object sender, EventArgs args)
         {
@@ -107,9 +108,9 @@ namespace XamCnblogs.UI.Pages.Question
             }
             else
             {
-                var page = new QuestionsAnswersPopupPage(questions, new Action<QuestionsAnswers>(OnResult));
-                if (page != null && Navigation != null)
-                    await Navigation.PushPopupAsync(page);
+                popupPage = new QuestionsAnswersPopupPage(questions, new Action<QuestionsAnswers>(OnResult));
+                if (popupPage != null && Navigation != null)
+                    await Navigation.PushPopupAsync(popupPage);
             }
         }
         async void OnBookmarks(object sender, EventArgs args)
@@ -123,6 +124,14 @@ namespace XamCnblogs.UI.Pages.Question
                 var url = "https://q.cnblogs.com/q/" + questions.Qid + "/";
                 await NavigationService.PushAsync(Navigation, new BookmarksEditPage(new Bookmarks() { Title = questions.Title, LinkUrl = url, FromCNBlogs = true }));
             }
+        }
+        protected override bool OnBackButtonPressed() {
+            if (popupPage != null) {
+                Navigation.RemovePopupPageAsync(popupPage);
+                popupPage = null;
+                return true;
+            }
+            return base.OnBackButtonPressed();
         }
     }
 }

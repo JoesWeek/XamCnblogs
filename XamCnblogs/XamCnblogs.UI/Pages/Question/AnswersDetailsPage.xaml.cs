@@ -16,6 +16,7 @@ namespace XamCnblogs.UI.Pages.Question
         AnswersDetailsViewModel ViewModel => vm ?? (vm = BindingContext as AnswersDetailsViewModel);
         AnswersDetailsViewModel vm;
         QuestionsAnswers answers;
+        AnswersCommentPopupPage popupPage;
 
         public AnswersDetailsPage(QuestionsAnswers answers)
         {
@@ -57,9 +58,8 @@ namespace XamCnblogs.UI.Pages.Question
             var answer = JsonConvert.SerializeObject(answers);
             await formsWebView.InjectJavascriptAsync("updateModel(" + answer + ");");
         }
-        void OnScrollComment(object sender, EventArgs args)
-        {
-
+        async void OnScrollComment(object sender, EventArgs args) {
+            await formsWebView.InjectJavascriptAsync("scrollToComments();");
         }
         async void OnShowComment(object sender, EventArgs args)
         {
@@ -69,9 +69,9 @@ namespace XamCnblogs.UI.Pages.Question
             }
             else
             {
-                var page = new AnswersCommentPopupPage(answers, new Action<AnswersComments>(OnResult));
-                if (page != null && Navigation != null)
-                    await Navigation.PushPopupAsync(page);
+                popupPage = new AnswersCommentPopupPage(answers, new Action<AnswersComments>(OnResult));
+                if (popupPage != null && Navigation != null)
+                    await Navigation.PushPopupAsync(popupPage);
             }
         }
         async void OnResult(AnswersComments result)
@@ -81,6 +81,14 @@ namespace XamCnblogs.UI.Pages.Question
                 ViewModel.EditComment(result);
                 await formsWebView.InjectJavascriptAsync("updateComment(" + JsonConvert.SerializeObject(result) + ");");
             }
+        }
+        protected override bool OnBackButtonPressed() {
+            if (popupPage != null) {
+                Navigation.RemovePopupPageAsync(popupPage);
+                popupPage = null;
+                return true;
+            }
+            return base.OnBackButtonPressed();
         }
     }
 }

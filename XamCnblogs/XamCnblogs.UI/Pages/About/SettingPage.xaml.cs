@@ -44,11 +44,11 @@ namespace XamCnblogs.UI.Pages.About
         {
             if (toggled)
             {
-                WeibaButton.TextColor = (Color)Application.Current.Resources["PrimaryText"];
+                WeibaButton.TextColor = (Color)Application.Current.Resources["ItemBarText"];
             }
             else
             {
-                WeibaButton.TextColor = (Color)Application.Current.Resources["SecondaryText"];
+                WeibaButton.TextColor = (Color)Application.Current.Resources["ActionText"];
             }
             AboutSettings.Current.WeibaToggled = WeibaSwitch.IsToggled = toggled;
         }

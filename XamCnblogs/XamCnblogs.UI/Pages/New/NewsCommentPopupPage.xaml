@@ -24,7 +24,7 @@
             <controls:CommentEditor
                 x:Name="Comment"
                 Placeholder ="随便说点什么吧"
-                TextColor="{StaticResource PrimaryText}"
+                TextColor="{StaticResource TitleText}"
                 IsEnabled="{Binding IsBusy, Converter={StaticResource OppositeConverter}}"
                 HeightRequest="100"/>
             <controls:ActivityIndicatorButton

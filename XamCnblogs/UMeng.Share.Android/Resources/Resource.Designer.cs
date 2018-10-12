@@ -285,161 +285,167 @@ namespace UMeng.Share.Android
 			// aapt resource value: 0x7f040000
 			public static int Hello = 2130968576;
 			
-			// aapt resource value: 0x7f040013
-			public static int umeng_example_home_btn_plus = 2130968595;
-			
-			// aapt resource value: 0x7f040016
-			public static int umeng_socialize_cancel_btn_str = 2130968598;
-			
 			// aapt resource value: 0x7f040015
-			public static int umeng_socialize_content_hint = 2130968597;
-			
-			// aapt resource value: 0x7f040018
-			public static int umeng_socialize_female = 2130968600;
-			
-			// aapt resource value: 0x7f04001b
-			public static int umeng_socialize_mail = 2130968603;
-			
-			// aapt resource value: 0x7f040019
-			public static int umeng_socialize_male = 2130968601;
-			
-			// aapt resource value: 0x7f040017
-			public static int umeng_socialize_send_btn_str = 2130968599;
-			
-			// aapt resource value: 0x7f04001a
-			public static int umeng_socialize_share = 2130968602;
-			
-			// aapt resource value: 0x7f040003
-			public static int umeng_socialize_sharetodouban = 2130968579;
-			
-			// aapt resource value: 0x7f040007
-			public static int umeng_socialize_sharetolinkin = 2130968583;
-			
-			// aapt resource value: 0x7f040004
-			public static int umeng_socialize_sharetorenren = 2130968580;
+			public static int umeng_example_home_btn_plus = 2130968597;
 			
 			// aapt resource value: 0x7f040002
-			public static int umeng_socialize_sharetosina = 2130968578;
+			public static int umeng_sharebutton_copy = 2130968578;
 			
-			// aapt resource value: 0x7f040005
-			public static int umeng_socialize_sharetotencent = 2130968581;
+			// aapt resource value: 0x7f040003
+			public static int umeng_sharebutton_copyurl = 2130968579;
 			
-			// aapt resource value: 0x7f040006
-			public static int umeng_socialize_sharetotwitter = 2130968582;
+			// aapt resource value: 0x7f040018
+			public static int umeng_socialize_cancel_btn_str = 2130968600;
+			
+			// aapt resource value: 0x7f040017
+			public static int umeng_socialize_content_hint = 2130968599;
+			
+			// aapt resource value: 0x7f04001a
+			public static int umeng_socialize_female = 2130968602;
 			
 			// aapt resource value: 0x7f04001d
-			public static int umeng_socialize_sina = 2130968605;
+			public static int umeng_socialize_mail = 2130968605;
+			
+			// aapt resource value: 0x7f04001b
+			public static int umeng_socialize_male = 2130968603;
+			
+			// aapt resource value: 0x7f040019
+			public static int umeng_socialize_send_btn_str = 2130968601;
 			
 			// aapt resource value: 0x7f04001c
-			public static int umeng_socialize_sms = 2130968604;
+			public static int umeng_socialize_share = 2130968604;
 			
-			// aapt resource value: 0x7f040012
-			public static int umeng_socialize_text_add_custom_platform = 2130968594;
-			
-			// aapt resource value: 0x7f04002f
-			public static int umeng_socialize_text_alipay_key = 2130968623;
-			
-			// aapt resource value: 0x7f040033
-			public static int umeng_socialize_text_dingding_key = 2130968627;
-			
-			// aapt resource value: 0x7f04000e
-			public static int umeng_socialize_text_douban_key = 2130968590;
-			
-			// aapt resource value: 0x7f040035
-			public static int umeng_socialize_text_dropbox_key = 2130968629;
-			
-			// aapt resource value: 0x7f040021
-			public static int umeng_socialize_text_evernote_key = 2130968609;
-			
-			// aapt resource value: 0x7f040023
-			public static int umeng_socialize_text_facebook_key = 2130968611;
-			
-			// aapt resource value: 0x7f040024
-			public static int umeng_socialize_text_facebookmessager_key = 2130968612;
-			
-			// aapt resource value: 0x7f04002d
-			public static int umeng_socialize_text_flickr_key = 2130968621;
-			
-			// aapt resource value: 0x7f04002a
-			public static int umeng_socialize_text_foursquare_key = 2130968618;
-			
-			// aapt resource value: 0x7f040031
-			public static int umeng_socialize_text_googleplus_key = 2130968625;
-			
-			// aapt resource value: 0x7f040026
-			public static int umeng_socialize_text_instagram_key = 2130968614;
-			
-			// aapt resource value: 0x7f040030
-			public static int umeng_socialize_text_kakao_key = 2130968624;
-			
-			// aapt resource value: 0x7f040020
-			public static int umeng_socialize_text_laiwangdynamic_key = 2130968608;
-			
-			// aapt resource value: 0x7f04002c
-			public static int umeng_socialize_text_line_key = 2130968620;
-			
-			// aapt resource value: 0x7f040029
-			public static int umeng_socialize_text_linkedin_key = 2130968617;
-			
-			// aapt resource value: 0x7f040032
-			public static int umeng_socialize_text_more_key = 2130968626;
-			
-			// aapt resource value: 0x7f040027
-			public static int umeng_socialize_text_pinterest_key = 2130968615;
-			
-			// aapt resource value: 0x7f040028
-			public static int umeng_socialize_text_pocket_key = 2130968616;
-			
-			// aapt resource value: 0x7f04000b
-			public static int umeng_socialize_text_qq_key = 2130968587;
-			
-			// aapt resource value: 0x7f04000c
-			public static int umeng_socialize_text_qq_zone_key = 2130968588;
-			
-			// aapt resource value: 0x7f04000d
-			public static int umeng_socialize_text_renren_key = 2130968589;
-			
-			// aapt resource value: 0x7f04000a
-			public static int umeng_socialize_text_sina_key = 2130968586;
-			
-			// aapt resource value: 0x7f040008
-			public static int umeng_socialize_text_tencent_key = 2130968584;
-			
-			// aapt resource value: 0x7f04002e
-			public static int umeng_socialize_text_tumblr_key = 2130968622;
-			
-			// aapt resource value: 0x7f040025
-			public static int umeng_socialize_text_twitter_key = 2130968613;
-			
-			// aapt resource value: 0x7f040034
-			public static int umeng_socialize_text_vkontakte_key = 2130968628;
-			
-			// aapt resource value: 0x7f040014
-			public static int umeng_socialize_text_waitting_share = 2130968596;
-			
-			// aapt resource value: 0x7f040010
-			public static int umeng_socialize_text_weixin_circle_key = 2130968592;
-			
-			// aapt resource value: 0x7f040011
-			public static int umeng_socialize_text_weixin_fav_key = 2130968593;
-			
-			// aapt resource value: 0x7f04000f
-			public static int umeng_socialize_text_weixin_key = 2130968591;
+			// aapt resource value: 0x7f040005
+			public static int umeng_socialize_sharetodouban = 2130968581;
 			
 			// aapt resource value: 0x7f040009
-			public static int umeng_socialize_text_wenxin_fav = 2130968585;
+			public static int umeng_socialize_sharetolinkin = 2130968585;
 			
-			// aapt resource value: 0x7f04002b
-			public static int umeng_socialize_text_whatsapp_key = 2130968619;
+			// aapt resource value: 0x7f040006
+			public static int umeng_socialize_sharetorenren = 2130968582;
 			
-			// aapt resource value: 0x7f040022
-			public static int umeng_socialize_text_ydnote_key = 2130968610;
+			// aapt resource value: 0x7f040004
+			public static int umeng_socialize_sharetosina = 2130968580;
 			
-			// aapt resource value: 0x7f04001e
-			public static int umeng_socialize_text_yixin_key = 2130968606;
+			// aapt resource value: 0x7f040007
+			public static int umeng_socialize_sharetotencent = 2130968583;
+			
+			// aapt resource value: 0x7f040008
+			public static int umeng_socialize_sharetotwitter = 2130968584;
 			
 			// aapt resource value: 0x7f04001f
-			public static int umeng_socialize_text_yixincircle_key = 2130968607;
+			public static int umeng_socialize_sina = 2130968607;
+			
+			// aapt resource value: 0x7f04001e
+			public static int umeng_socialize_sms = 2130968606;
+			
+			// aapt resource value: 0x7f040014
+			public static int umeng_socialize_text_add_custom_platform = 2130968596;
+			
+			// aapt resource value: 0x7f040031
+			public static int umeng_socialize_text_alipay_key = 2130968625;
+			
+			// aapt resource value: 0x7f040035
+			public static int umeng_socialize_text_dingding_key = 2130968629;
+			
+			// aapt resource value: 0x7f040010
+			public static int umeng_socialize_text_douban_key = 2130968592;
+			
+			// aapt resource value: 0x7f040037
+			public static int umeng_socialize_text_dropbox_key = 2130968631;
+			
+			// aapt resource value: 0x7f040023
+			public static int umeng_socialize_text_evernote_key = 2130968611;
+			
+			// aapt resource value: 0x7f040025
+			public static int umeng_socialize_text_facebook_key = 2130968613;
+			
+			// aapt resource value: 0x7f040026
+			public static int umeng_socialize_text_facebookmessager_key = 2130968614;
+			
+			// aapt resource value: 0x7f04002f
+			public static int umeng_socialize_text_flickr_key = 2130968623;
+			
+			// aapt resource value: 0x7f04002c
+			public static int umeng_socialize_text_foursquare_key = 2130968620;
+			
+			// aapt resource value: 0x7f040033
+			public static int umeng_socialize_text_googleplus_key = 2130968627;
+			
+			// aapt resource value: 0x7f040028
+			public static int umeng_socialize_text_instagram_key = 2130968616;
+			
+			// aapt resource value: 0x7f040032
+			public static int umeng_socialize_text_kakao_key = 2130968626;
+			
+			// aapt resource value: 0x7f040022
+			public static int umeng_socialize_text_laiwangdynamic_key = 2130968610;
+			
+			// aapt resource value: 0x7f04002e
+			public static int umeng_socialize_text_line_key = 2130968622;
+			
+			// aapt resource value: 0x7f04002b
+			public static int umeng_socialize_text_linkedin_key = 2130968619;
+			
+			// aapt resource value: 0x7f040034
+			public static int umeng_socialize_text_more_key = 2130968628;
+			
+			// aapt resource value: 0x7f040029
+			public static int umeng_socialize_text_pinterest_key = 2130968617;
+			
+			// aapt resource value: 0x7f04002a
+			public static int umeng_socialize_text_pocket_key = 2130968618;
+			
+			// aapt resource value: 0x7f04000d
+			public static int umeng_socialize_text_qq_key = 2130968589;
+			
+			// aapt resource value: 0x7f04000e
+			public static int umeng_socialize_text_qq_zone_key = 2130968590;
+			
+			// aapt resource value: 0x7f04000f
+			public static int umeng_socialize_text_renren_key = 2130968591;
+			
+			// aapt resource value: 0x7f04000c
+			public static int umeng_socialize_text_sina_key = 2130968588;
+			
+			// aapt resource value: 0x7f04000a
+			public static int umeng_socialize_text_tencent_key = 2130968586;
+			
+			// aapt resource value: 0x7f040030
+			public static int umeng_socialize_text_tumblr_key = 2130968624;
+			
+			// aapt resource value: 0x7f040027
+			public static int umeng_socialize_text_twitter_key = 2130968615;
+			
+			// aapt resource value: 0x7f040036
+			public static int umeng_socialize_text_vkontakte_key = 2130968630;
+			
+			// aapt resource value: 0x7f040016
+			public static int umeng_socialize_text_waitting_share = 2130968598;
+			
+			// aapt resource value: 0x7f040012
+			public static int umeng_socialize_text_weixin_circle_key = 2130968594;
+			
+			// aapt resource value: 0x7f040013
+			public static int umeng_socialize_text_weixin_fav_key = 2130968595;
+			
+			// aapt resource value: 0x7f040011
+			public static int umeng_socialize_text_weixin_key = 2130968593;
+			
+			// aapt resource value: 0x7f04000b
+			public static int umeng_socialize_text_wenxin_fav = 2130968587;
+			
+			// aapt resource value: 0x7f04002d
+			public static int umeng_socialize_text_whatsapp_key = 2130968621;
+			
+			// aapt resource value: 0x7f040024
+			public static int umeng_socialize_text_ydnote_key = 2130968612;
+			
+			// aapt resource value: 0x7f040020
+			public static int umeng_socialize_text_yixin_key = 2130968608;
+			
+			// aapt resource value: 0x7f040021
+			public static int umeng_socialize_text_yixincircle_key = 2130968609;
 			
 			static String()
 			{

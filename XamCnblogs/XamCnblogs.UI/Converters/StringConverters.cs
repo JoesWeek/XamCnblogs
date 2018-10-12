@@ -11,11 +11,11 @@ namespace XamCnblogs.UI.Converters
             switch ((int)value)
             {
                 case 1:
-                    return (Color)Application.Current.Resources["Primary"];
+                    return (Color)Application.Current.Resources["ItemBarText"];
                 case -1:
                     return Color.Red;
                 default:
-                    return (Color)Application.Current.Resources["PrimaryText"];
+                    return (Color)Application.Current.Resources["TitleText"];
             }
         }
 

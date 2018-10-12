@@ -6,8 +6,7 @@ using Rg.Plugins.Popup;
 using UIKit;
 using Xam.Plugin.WebView.iOS;
 
-namespace XamCnblogs.iOS
-{
+namespace XamCnblogs.iOS {
     // The UIApplicationDelegate for the application. This class is responsible for launching the 
     // User Interface of the application, as well as listening (and optionally responding) to 
     // application events from iOS.

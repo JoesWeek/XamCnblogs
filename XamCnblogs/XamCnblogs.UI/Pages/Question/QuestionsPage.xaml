@@ -5,7 +5,11 @@
 		     xmlns:controls="clr-namespace:XamCnblogs.UI.Controls;assembly=XamCnblogs.UI"
              x:Class="XamCnblogs.UI.Pages.Question.QuestionsPage"
              Title="博问">
-    <controls:LoadMoreListView
+    <AbsoluteLayout
+        x:Name="AbsoluteLayout"
+        VerticalOptions="FillAndExpand"
+        HorizontalOptions="FillAndExpand">
+        <controls:LoadMoreListView
             x:Name="QuestionsListView"
             ItemsSource="{Binding Questions}"
             HasUnevenRows="True"
@@ -15,12 +19,15 @@
             LoadMoreCommand="{Binding LoadMoreCommand}"
             LoadStatus="{Binding LoadStatus}"
             CanLoadMore="{Binding CanLoadMore}"
-            BackgroundColor="White"
-            SeparatorColor="{StaticResource Divider}">
-        <controls:LoadMoreListView.ItemTemplate>
-            <DataTemplate>
-                <cells:QuestionsItemCell/>
-            </DataTemplate>
-        </controls:LoadMoreListView.ItemTemplate>
-    </controls:LoadMoreListView>
+            BackgroundColor="{StaticResource Background}"
+            SeparatorColor="{StaticResource Background}"
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All">
+            <controls:LoadMoreListView.ItemTemplate>
+                <DataTemplate>
+                    <cells:QuestionsItemCell/>
+                </DataTemplate>
+            </controls:LoadMoreListView.ItemTemplate>
+        </controls:LoadMoreListView>
+    </AbsoluteLayout>
 </ContentPage>

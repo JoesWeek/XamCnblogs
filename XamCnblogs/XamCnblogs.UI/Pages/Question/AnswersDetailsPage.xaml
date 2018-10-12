@@ -38,7 +38,7 @@
                 </Grid.ColumnDefinitions>
                 <StackLayout  Grid.Row="0"  Grid.Column="0"  Spacing="0" VerticalOptions="CenterAndExpand" Orientation="Horizontal">
                     <Image Source="icon_edit.png" VerticalOptions="CenterAndExpand"></Image>
-                    <Label Text="想说点什么" VerticalOptions="CenterAndExpand" Style="{StaticResource SecondaryTextStyle}"></Label>
+                    <Label Text="想说点什么" VerticalOptions="CenterAndExpand" Style="{StaticResource ActionTextStyle}"></Label>
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnShowComment"/>
                     </StackLayout.GestureRecognizers>
@@ -49,11 +49,11 @@
                 </StackLayout>
                 <StackLayout  Grid.Row="0" Grid.Column="3" Spacing="3" VerticalOptions="CenterAndExpand">
                     <Image Source="icon_digg.png" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
-                    <Label Text="{Binding AnswersDetails.DiggDisplay}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Style="{StaticResource MoreSecondaryStyle}"/>
+                    <Label Text="{Binding AnswersDetails.DiggDisplay}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Style="{StaticResource ActionTextStyle}"/>
                 </StackLayout>
                 <StackLayout  Grid.Row="0"  Grid.Column="4" Spacing="3" VerticalOptions="CenterAndExpand">
                     <Image Source="icon_reply.png" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
-                    <Label Text="{Binding AnswersDetails.CommentDisplay}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Style="{StaticResource MoreSecondaryStyle}"></Label>
+                    <Label Text="{Binding AnswersDetails.CommentDisplay}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Style="{StaticResource ActionTextStyle}"></Label>
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnScrollComment"/>
                     </StackLayout.GestureRecognizers>

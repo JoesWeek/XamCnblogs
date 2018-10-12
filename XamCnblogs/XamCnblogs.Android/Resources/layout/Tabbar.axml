@@ -4,9 +4,9 @@
     android:id="@+id/sliding_tabs"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/colorPrimary"
+    android:background="@color/navigation_text"
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-    app:tabIndicatorColor="@android:color/white"
+    app:tabIndicatorColor="@color/action_text"
     android:elevation="5dp"
     app:tabGravity="fill"
     app:tabMode="fixed" />

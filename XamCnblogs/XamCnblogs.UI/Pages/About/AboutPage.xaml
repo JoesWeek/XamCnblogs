@@ -9,20 +9,20 @@
             <StackLayout Padding="10" Spacing="10">
                 <Label 
                             Text="当前版本"
-                            Style="{StaticResource PrimaryTextStyle}"/>
+                            Style="{StaticResource DescriptionTextStyle}"/>
                 <Label 
                     x:Name="VersionName"
                             Text="2.0.0"
-                            Style="{StaticResource SecondaryTextStyle}"/>
+                            Style="{StaticResource ActionTextStyle}"/>
             </StackLayout>
             <controls:HeaderDivider HorizontalOptions="FillAndExpand"/>
             <StackLayout Padding="10" Spacing="10">
                 <Label 
                             Text="项目开源主页"
-                            Style="{StaticResource PrimaryTextStyle}"/>
+                            Style="{StaticResource DescriptionTextStyle}"/>
                 <Label 
                             Text="https://github.com/JoesWeek/XamCnblogs"
-                            Style="{StaticResource SecondaryTextStyle}"/>
+                            Style="{StaticResource ActionTextStyle}"/>
                 <StackLayout.GestureRecognizers>
                     <TapGestureRecognizer 
                             Command="{Binding LaunchBrowserCommand}" 
@@ -33,10 +33,10 @@
             <StackLayout Padding="10" Spacing="10">
                 <Label 
                             Text="关于博客园"
-                            Style="{StaticResource PrimaryTextStyle}"/>
+                            Style="{StaticResource DescriptionTextStyle}"/>
                 <Label 
                             Text="https://www.cnblogs.com/AboutUS.aspx"
-                            Style="{StaticResource SecondaryTextStyle}"/>
+                            Style="{StaticResource ActionTextStyle}"/>
                 <StackLayout.GestureRecognizers>
                     <TapGestureRecognizer 
                             Command="{Binding LaunchBrowserCommand}" 
@@ -47,10 +47,10 @@
             <StackLayout Padding="10" Spacing="10">
                 <Label 
                             Text="意见反馈与交流"
-                            Style="{StaticResource PrimaryTextStyle}"/>
+                            Style="{StaticResource DescriptionTextStyle}"/>
                 <Label 
                             Text="欢迎加入QQ群：181050206"
-                            Style="{StaticResource SecondaryTextStyle}"/>
+                            Style="{StaticResource ActionTextStyle}"/>
                 <StackLayout.GestureRecognizers>
                     <TapGestureRecognizer 
                             Command="{Binding LaunchBrowserCommand}" 
@@ -61,7 +61,7 @@
             <StackLayout Padding="10" Spacing="10" HorizontalOptions="CenterAndExpand">
                 <Label 
                             Text="Copyright © 2017 JoesWeek"
-                            Style="{StaticResource SecondaryTextStyle}"/>
+                            Style="{StaticResource ActionTextStyle}"/>
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>

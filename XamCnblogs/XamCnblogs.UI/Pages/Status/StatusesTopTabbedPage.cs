@@ -1,35 +1,29 @@
 ﻿using Naxam.Controls.Forms;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xamarin.Forms;
 
-namespace XamCnblogs.UI.Pages.Status
-{
-    public class StatusesTopTabbedPage : TopTabbedPage
-    {
-        public StatusesTopTabbedPage()
-        {
-            if (Device.iOS == Device.RuntimePlatform)
-            {
-                BarTextColor = (Color)Application.Current.Resources["PrimaryText"];
-                BarIndicatorColor = (Color)Application.Current.Resources["SecondaryText"];
-                BarBackgroundColor = (Color)Application.Current.Resources["NavigationText"];
-            }
-            else
-            {
-                BarTextColor = (Color)Application.Current.Resources["NavigationText"];
-                BarIndicatorColor = (Color)Application.Current.Resources["Divider"];
-                BarBackgroundColor = (Color)Application.Current.Resources["Primary"];
-            }
+namespace XamCnblogs.UI.Pages.Status {
+    public class StatusesTopTabbedPage : TopTabbedPage {
+        bool hasInitialization;
+        public StatusesTopTabbedPage() {
+            BarTextColor = (Color)Application.Current.Resources["TitleText"];
+            BarIndicatorColor = (Color)Application.Current.Resources["TitleText"];
+            BarBackgroundColor = (Color)Application.Current.Resources["NavigationText"];
+
             Title = "闪存";
             Icon = "menu_statuses.png";
-            
-            this.Children.Add(new StatusesPage() { Title = "全站" });
-            this.Children.Add(new StatusesPage(1) { Title = "关注" });
-            this.Children.Add(new StatusesPage(2) { Title = "我的" });
-            this.Children.Add(new StatusesPage(3) { Title = "我回应" });
-            this.Children.Add(new StatusesPage(6) { Title = "回复我" });
+        }
+        protected override void OnAppearing() {
+            base.OnAppearing();
+
+            if (!hasInitialization) {
+                this.Children.Add(new StatusesPage() { Title = "全站" });
+                this.Children.Add(new StatusesPage(1) { Title = "关注" });
+                this.Children.Add(new StatusesPage(2) { Title = "我的" });
+                this.Children.Add(new StatusesPage(3) { Title = "我回应" });
+                this.Children.Add(new StatusesPage(6) { Title = "回复我" });
+
+                hasInitialization = true;
+            }
         }
     }
 }

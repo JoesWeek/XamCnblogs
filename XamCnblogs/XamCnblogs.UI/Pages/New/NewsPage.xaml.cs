@@ -12,29 +12,36 @@ namespace XamCnblogs.UI.Pages.New
     {
         NewsViewModel ViewModel => vm ?? (vm = BindingContext as NewsViewModel);
         NewsViewModel vm;
+        bool hasInitialization;
+        int position = 0;
         public NewsPage(int position = 0) : base()
         {
+            this.position = position;
             InitializeComponent();
             Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true);
-            BindingContext = new NewsViewModel(position);
-            this.NewsListView.ItemSelected += async delegate
-            {
-                var news = NewsListView.SelectedItem as News;
-                if (news == null)
-                    return;
-
-                var newsDetails = new NewsDetailsPage(news);
-
-                await NavigationService.PushAsync(Navigation, newsDetails);
-                this.NewsListView.SelectedItem = null;
-            };
-            ViewModel.GetClientNewsAsync();
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
 
+            if (!hasInitialization) {
+                BindingContext = new NewsViewModel(position);
+                this.NewsListView.ItemSelected += async delegate
+                {
+                    var news = NewsListView.SelectedItem as News;
+                    this.NewsListView.SelectedItem = null;
+                    if (news == null)
+                        return;
+
+                    var newsDetails = new NewsDetailsPage(news);
+
+                    await NavigationService.PushAsync(Navigation, newsDetails);
+                };
+                ViewModel.GetClientNewsAsync();
+
+                hasInitialization = true;
+            }
             UpdatePage();
         }
         private void UpdatePage()

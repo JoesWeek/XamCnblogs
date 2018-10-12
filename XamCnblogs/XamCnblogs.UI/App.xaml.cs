@@ -18,14 +18,10 @@ using XamCnblogs.UI.Pages.KbArticle;
 using XamCnblogs.UI.Pages.New;
 using XamCnblogs.UI.Pages.Question;
 using XamCnblogs.UI.Pages.Search;
-using XamCnblogs.UI.Pages.Status;
 
-namespace XamCnblogs.UI
-{
-    public partial class App : Xamarin.Forms.Application
-    {
-        public App()
-        {
+namespace XamCnblogs.UI {
+    public partial class App : Xamarin.Forms.Application {
+        public App() {
             InitializeComponent();
 
             VersionTracking.Track();
@@ -33,40 +29,34 @@ namespace XamCnblogs.UI
             SqliteUtil.Current.CreateAllTablesAsync();
 
             AppCenter.Start("", typeof(Analytics), typeof(Crashes));
+        }
 
+        protected override void OnStart() {
             ViewModelBase.Init();
 
             var bottomBarPage = new HomeTabbedPage() { Title = "博客园" };
-            bottomBarPage.BackgroundColor = Color.White;
-            bottomBarPage.On<Xamarin.Forms.PlatformConfiguration.Android>().SetToolbarPlacement(ToolbarPlacement.Bottom).SetOffscreenPageLimit(5).SetElevation(5F);
-            bottomBarPage.Children.Add(new ArticlesTopTabbedPage());
-            bottomBarPage.Children.Add(new NewsTopTabbedPage());
-            bottomBarPage.Children.Add(new StatusesTopTabbedPage());
-            bottomBarPage.Children.Add(new QuestionsTopTabbedPage());
-            bottomBarPage.Children.Add(new AccountPage());
+            bottomBarPage.BackgroundColor = (Color)Xamarin.Forms.Application.Current.Resources["NavigationText"];
+            bottomBarPage.On<Xamarin.Forms.PlatformConfiguration.Android>().SetToolbarPlacement(ToolbarPlacement.Bottom).SetOffscreenPageLimit(5).SetElevation(5);
 
-            if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android)
-            {
+            if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.Android) {
                 var rootPage = new Pages.Android.RootPage();
                 rootPage.Children.Add(bottomBarPage);
 
                 rootPage.Children.Add(new SearchPage());
 
-                MainPage = new XamNavigationPage(rootPage);
+                var navigationPage = new XamNavigationPage(rootPage);
+                navigationPage.BarTextColor = (Color)Xamarin.Forms.Application.Current.Resources["TitleText"];
+                navigationPage.BarBackgroundColor = (Color)Xamarin.Forms.Application.Current.Resources["NavigationText"];
+
+                MainPage = navigationPage;
             }
-            else if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.iOS)
-            {
+            else if (Xamarin.Forms.Device.RuntimePlatform == Xamarin.Forms.Device.iOS) {
                 MainPage = new XamNavigationPage(bottomBarPage);
             }
-        }
-
-        protected override void OnStart()
-        {
             OnResume();
         }
         bool registered;
-        protected async override void OnResume()
-        {
+        protected async override void OnResume() {
             await UserTokenSettings.Current.RefreshUserTokenAsync();
 
             if (registered)
@@ -74,8 +64,7 @@ namespace XamCnblogs.UI
             registered = true;
             Connectivity.ConnectivityChanged += ConnectivityChanged;
 
-            MessagingService.Current.Subscribe(MessageKeys.NavigateLogin, async m =>
-            {
+            MessagingService.Current.Subscribe(MessageKeys.NavigateLogin, async m => {
                 Page page = new NavigationPage(new AuthorizePage());
 
                 var nav = Xamarin.Forms.Application.Current?.MainPage?.Navigation;
@@ -84,18 +73,15 @@ namespace XamCnblogs.UI
 
                 await NavigationService.PushModalAsync(nav, page);
             });
-            MessagingService.Current.Subscribe<string>(MessageKeys.NavigateToken, async (m, q) =>
-            {
+            MessagingService.Current.Subscribe<string>(MessageKeys.NavigateToken, async (m, q) => {
                 var result = await TokenHttpClient.Current.PostTokenAsync(q);
-                if (result.Success)
-                {
+                if (result.Success) {
                     var token = JsonConvert.DeserializeObject<Token>(result.Message.ToString());
                     token.RefreshTime = DateTime.Now;
                     UserTokenSettings.Current.UpdateUserToken(token);
 
                     var userResult = await UserHttpClient.Current.GetAsyn(Apis.Users);
-                    if (userResult.Success)
-                    {
+                    if (userResult.Success) {
                         var user = JsonConvert.DeserializeObject<User>(userResult.Message.ToString());
 
                         UserSettings.Current.UpdateUser(user);
@@ -107,8 +93,7 @@ namespace XamCnblogs.UI
                     }
                 }
             });
-            MessagingService.Current.Subscribe(MessageKeys.NavigateAccount, async m =>
-            {
+            MessagingService.Current.Subscribe(MessageKeys.NavigateAccount, async m => {
                 Page page = new NavigationPage(new AccountPage());
 
                 var nav = Xamarin.Forms.Application.Current?.MainPage?.Navigation;
@@ -117,18 +102,15 @@ namespace XamCnblogs.UI
 
                 await NavigationService.PushModalAsync(nav, page);
             });
-            MessagingService.Current.Subscribe<string>(MessageKeys.NavigateNotification, async (m, message) =>
-            {
+            MessagingService.Current.Subscribe<string>(MessageKeys.NavigateNotification, async (m, message) => {
                 DependencyService.Get<IToast>().SendToast(message);
                 var nav = Xamarin.Forms.Application.Current?.MainPage?.Navigation;
                 if (nav == null)
                     return;
                 Page page = null;
                 var notification = JsonConvert.DeserializeObject<Notification>(message);
-                if (notification != null)
-                {
-                    switch (notification.Type)
-                    {
+                if (notification != null) {
+                    switch (notification.Type) {
                         case "articles":
                             page = new NavigationPage(new ArticlesDetailsPage(new Articles() { Title = notification.Title, Id = notification.ID }));
                             break;
@@ -142,10 +124,8 @@ namespace XamCnblogs.UI
                             page = new NavigationPage(new QuestionsDetailsPage(new Questions() { Title = notification.Title, Qid = notification.ID }));
                             break;
                         case "update":
-                            if (notification.ID > int.Parse(VersionTracking.CurrentBuild))
-                            {
-                                if (await Xamarin.Forms.Application.Current?.MainPage.DisplayAlert("新版提示", notification.Title, "立即下载", "取消"))
-                                {
+                            if (notification.ID > int.Parse(VersionTracking.CurrentBuild)) {
+                                if (await Xamarin.Forms.Application.Current?.MainPage.DisplayAlert("新版提示", notification.Title, "立即下载", "取消")) {
                                     await ViewModelBase.ExecuteLaunchBrowserAsync(notification.Url);
                                 }
                             }
@@ -158,20 +138,16 @@ namespace XamCnblogs.UI
             });
         }
 
-        private async void ConnectivityChanged(Xamarin.Essentials.ConnectivityChangedEventArgs e)
-        {
-            if (Connectivity.NetworkAccess != NetworkAccess.Internet)
-            {
+        private async void ConnectivityChanged(Xamarin.Essentials.ConnectivityChangedEventArgs e) {
+            if (Connectivity.NetworkAccess != NetworkAccess.Internet) {
                 DependencyService.Get<IToast>().SendToast("网络不给你，请检查网络设置");
             }
-            else
-            {
+            else {
                 await UserTokenSettings.Current.RefreshUserTokenAsync();
             }
         }
 
-        protected override void OnSleep()
-        {
+        protected override void OnSleep() {
             if (!registered)
                 return;
 

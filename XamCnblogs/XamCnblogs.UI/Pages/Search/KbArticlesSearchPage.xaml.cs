@@ -14,6 +14,7 @@ namespace XamCnblogs.UI.Pages.Search
             this.SearchsListView.ItemSelected += async delegate
             {
                 var search = SearchsListView.SelectedItem as Portable.Model.Search;
+                this.SearchsListView.SelectedItem = null;
                 if (search == null)
                     return;
                 var articles = new KbArticles()
@@ -31,7 +32,6 @@ namespace XamCnblogs.UI.Pages.Search
                 var articlesDetails = new KbArticle.KbArticlesDetailsPage(articles);
 
                 await NavigationService.PushAsync(Navigation, articlesDetails);
-                this.SearchsListView.SelectedItem = null;
             };
         }
         public override async void Search(string value)

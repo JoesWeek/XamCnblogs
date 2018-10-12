@@ -112,6 +112,7 @@ body {
 .content {
     padding: 10px;
     line-height: 1.67;
+    font-size: 16px !important;
 }
 
     .content img {
@@ -120,18 +121,21 @@ body {
         display: block;
         cursor: zoom-in;
     }
+
     .content .ing-icon {
         width: 24px;
         margin-left: 5px;
         vertical-align: middle;
         display: initial;
-        max-width:  initial;
+        max-width: initial;
     }
-    .statuses {
-        font-size: 110%;
-        padding: 10px;
-        line-height: 1.67;
-    }
+
+.statuses {
+    font-size: 110%;
+    padding: 10px;
+    line-height: 1.67;
+}
+
     .statuses img {
         width: 18px;
         height: 18px;
@@ -222,7 +226,7 @@ body {
     border: 1px solid #2196F3;
     border-radius: 3px;
     display: inline-table;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 1em;
     padding: 5px;
     float: right;
@@ -231,13 +235,13 @@ body {
 
 .comments-item .item-time {
     color: #757575;
-    font-size: 12px !important;
+    font-size: 14px !important;
 }
 
 .comments-item .item-edit {
     display: inline-block;
     float: right;
-    font-size: 12px;
+    font-size: 14px;
     color: #757575;
     margin-right: 5px;
 }
@@ -334,7 +338,7 @@ pre {
 h2 {
     font-size: 150%;
     font-weight: bold;
-    line-height:1.5em;
+    line-height: 1.5em;
 }
 
 h3 {

@@ -17,29 +17,36 @@ namespace XamCnblogs.UI.Pages.Account
     {
         BlogsViewModel ViewModel => vm ?? (vm = BindingContext as BlogsViewModel);
         BlogsViewModel vm;
+        bool hasInitialization;
+        string blogApp;
         public ArticlesPage(string blogApp) : base()
         {
+            this.blogApp = blogApp;
             InitializeComponent();
             Xamarin.Forms.PlatformConfiguration.iOSSpecific.Page.SetUseSafeArea(this, true);
 
-            BindingContext = new BlogsViewModel(blogApp);
-            this.ArticlesListView.ItemSelected += async delegate
-            {
-                var articles = ArticlesListView.SelectedItem as Articles;
-                if (articles == null)
-                    return;
-
-                var articlesDetails = new ArticlesDetailsPage(articles);
-
-                await NavigationService.PushAsync(Navigation, articlesDetails);
-                this.ArticlesListView.SelectedItem = null;
-            };
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
 
+            if (!hasInitialization) {
+
+                BindingContext = new BlogsViewModel(blogApp);
+                this.ArticlesListView.ItemSelected += async delegate
+                {
+                    var articles = ArticlesListView.SelectedItem as Articles;
+                    this.ArticlesListView.SelectedItem = null;
+                    if (articles == null)
+                        return;
+
+                    var articlesDetails = new ArticlesDetailsPage(articles);
+
+                    await NavigationService.PushAsync(Navigation, articlesDetails);
+                };
+                hasInitialization = true;
+            }
             UpdatePage();
         }
         private void UpdatePage()

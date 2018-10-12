@@ -16,8 +16,9 @@
             LoadMoreCommand="{Binding LoadMoreCommand}"
             LoadStatus="{Binding LoadStatus}"
             CanLoadMore="{Binding CanLoadMore}"
-            BackgroundColor="White"
-            SeparatorColor="{StaticResource Divider}">
+            BackgroundColor="{StaticResource Background}"
+            SeparatorColor="{StaticResource Background}"
+            SeparatorVisibility="None">
             <controls:LoadMoreListView.ItemTemplate>
                 <DataTemplate>
                     <cells:ArticlesItemCell/>

@@ -20,13 +20,13 @@
                     <OnPlatform x:TypeArguments="Color" Android="White"/>
                 </SearchBar.PlaceholderColor>
                 <SearchBar.BackgroundColor>
-                    <OnPlatform x:TypeArguments="Color" Android="{StaticResource Primary}"/>
+                    <OnPlatform x:TypeArguments="Color" Android="{StaticResource ItemBarText}"/>
                 </SearchBar.BackgroundColor>
                 <SearchBar.TextColor>
                     <OnPlatform x:TypeArguments="Color" Android="White"/>
                 </SearchBar.TextColor>
                 <SearchBar.CancelButtonColor>
-                    <OnPlatform x:TypeArguments="Color" Android="White" iOS="{StaticResource Primary}"/>
+                    <OnPlatform x:TypeArguments="Color" Android="White" iOS="{StaticResource ItemBarText}"/>
                 </SearchBar.CancelButtonColor>
             </SearchBar>
             <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Grid.Row="1">

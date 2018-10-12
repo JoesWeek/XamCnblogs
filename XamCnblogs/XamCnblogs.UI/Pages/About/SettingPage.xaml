@@ -9,16 +9,16 @@
             <StackLayout Padding="20" Spacing="10">
                 <Label 
                     Text="通知"
-                    Style="{StaticResource SecondaryTextStyle}"
-                    TextColor="{StaticResource Primary}"/>
+                    Style="{StaticResource ActionTextStyle}"
+                    TextColor="{StaticResource ItemBarText}"/>
                 <StackLayout Orientation="Horizontal" VerticalOptions="CenterAndExpand">
                     <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" Spacing="10">
                         <Label 
                             Text="接收消息推送"
-                            Style="{StaticResource PrimaryTextStyle}"/>
+                            Style="{StaticResource TitleTextStyle}"/>
                         <Label 
                             Text="开启也没用，压根没这个功能"
-                            Style="{StaticResource SecondaryTextStyle}"/>
+                            Style="{StaticResource ActionTextStyle}"/>
                     </StackLayout>
                     <Switch 
                         HorizontalOptions="End"
@@ -30,16 +30,16 @@
             <StackLayout Padding="20" Spacing="10">
                 <Label 
                     Text="小尾巴"
-                    Style="{StaticResource SecondaryTextStyle}"
-                    TextColor="{StaticResource Primary}"/>
+                    Style="{StaticResource ActionTextStyle}"
+                    TextColor="{StaticResource ItemBarText}"/>
                 <StackLayout Orientation="Horizontal" VerticalOptions="CenterAndExpand">
                     <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" Spacing="10">
                         <Label 
                             Text="个性小尾巴"
-                            Style="{StaticResource PrimaryTextStyle}"/>
+                            Style="{StaticResource TitleTextStyle}"/>
                         <Label 
                             Text="开启后可以自定义，这个也没有用"
-                            Style="{StaticResource SecondaryTextStyle}"/>
+                            Style="{StaticResource ActionTextStyle}"/>
                     </StackLayout>
                     <Switch 
                         x:Name="WeibaSwitch"
@@ -53,7 +53,7 @@
                 <Label 
                     x:Name="WeibaButton"
                     Text="设置小尾巴"
-                    Style="{StaticResource PrimaryTextStyle}" HorizontalOptions="FillAndExpand"/>
+                    Style="{StaticResource TitleTextStyle}" HorizontalOptions="FillAndExpand"/>
                 <StackLayout.GestureRecognizers>
                     <TapGestureRecognizer Tapped="OnSettingWeiba"/>
                 </StackLayout.GestureRecognizers>

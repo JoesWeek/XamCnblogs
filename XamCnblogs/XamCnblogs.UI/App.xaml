@@ -4,47 +4,42 @@
              x:Class="XamCnblogs.UI.App">
     <Application.Resources>
         <ResourceDictionary>
-            <Color x:Key="Primary">#2196F3</Color>
-            <Color x:Key="Accent">#03A9F4</Color>
+            <Color x:Key="ItemBarText">#2196F3</Color>
             <Color x:Key="NavigationText">#FFFFFF</Color>
-            <Color x:Key="PrimaryText">#212121</Color>
-            <Color x:Key="SecondaryText">#757575</Color>
-            <Color x:Key="MoreSecondaryText">#EBE8EB</Color>
-            <Color x:Key="Icons">#FFFFFF</Color>
+
+            <Color x:Key="TitleText">#212121</Color>
+            <Color x:Key="DescriptionText">#212121</Color>
+            <Color x:Key="ActionText">#757575</Color>
+
             <Color x:Key="Divider">#EBE8EB</Color>
             <Color x:Key="GoldText">#f47a20</Color>
             <Color x:Key="Background">#F4F4F4</Color>
 
-            <x:Double x:Key="SmallSpacing">4</x:Double>
             <x:Double x:Key="StandardPadding">8</x:Double>
 
-            <OnPlatform x:TypeArguments="x:Double" Android="16" iOS="16" WinPhone="13" x:Key="PrimaryTextSize" />
-            <OnPlatform x:TypeArguments="x:Double" Android="13" iOS="13" WinPhone="13" x:Key="SecondaryTextSize" />
-            <OnPlatform x:TypeArguments="x:Double" Android="11" iOS="11" WinPhone="13" x:Key="MoreSecondarySize" />
-            <OnPlatform x:TypeArguments="x:Double" Android="20" iOS="20" WinPhone="13" x:Key="TitleTextSize" />
-
-            <Style x:Key="PrimaryTextStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="{StaticResource PrimaryTextSize}" />
-                <Setter Property="TextColor" Value="{StaticResource PrimaryText}"/>
-            </Style>
-            <Style x:Key="SecondaryTextStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="{StaticResource SecondaryTextSize}" />
-                <Setter Property="TextColor" Value="{StaticResource SecondaryText}"/>
-            </Style>
-            <Style x:Key="MoreSecondaryStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="{StaticResource MoreSecondarySize}" />
-                <Setter Property="TextColor" Value="{StaticResource SecondaryText}"/>
-            </Style>
+            <OnPlatform x:TypeArguments="x:Double" Android="16" iOS="16" WinPhone="13" x:Key="TitleTextSize" />
+            <OnPlatform x:TypeArguments="x:Double" Android="16" iOS="16" WinPhone="13" x:Key="DescriptionTextSize" />
+            <OnPlatform x:TypeArguments="x:Double" Android="14" iOS="14" WinPhone="13" x:Key="ActionTextSize" />
+            
             <Style x:Key="TitleTextStyle" TargetType="Label">
-                <Setter Property="TextColor" Value="{StaticResource PrimaryText}"/>
+                <Setter Property="TextColor" Value="{StaticResource TitleText}"/>
                 <Setter Property="FontSize" Value="{StaticResource TitleTextSize}" />
             </Style>
+            <Style x:Key="DescriptionTextStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource DescriptionText}"/>
+                <Setter Property="FontSize" Value="{StaticResource DescriptionTextSize}" />
+            </Style>
+            <Style x:Key="ActionTextStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource ActionText}"/>
+                <Setter Property="FontSize" Value="{StaticResource ActionTextSize}" />
+            </Style>
+            
             <Style x:Key="GoldTextStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="{StaticResource SecondaryTextSize}" />
+                <Setter Property="FontSize" Value="{StaticResource ActionTextSize}" />
                 <Setter Property="TextColor" Value="{StaticResource GoldText}"/>
             </Style>
             <Style x:Key="LogoutStyle" TargetType="Label">
-                <Setter Property="FontSize" Value="{DynamicResource SecondaryTextSize}" />
+                <Setter Property="FontSize" Value="{DynamicResource ActionTextSize}" />
                 <Setter Property="TextColor" Value="Red"/>
             </Style>
         </ResourceDictionary>

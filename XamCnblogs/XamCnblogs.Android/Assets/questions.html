@@ -120,6 +120,11 @@
         $(window).scroll(function () {
             loadReload();
         });
+        function scrollToComments() {
+            if (app.hasContent) {
+                $("html,body").animate({ scrollTop: $(".comments").offset().top }, 1000);
+            }
+        }
         function loadReload() {
             if ($(document).scrollTop() + window.screen.height + 70 >= $(document).height()) {
                 if (app.loadStatus == 0 || app.loadStatus == 2)

@@ -20,7 +20,7 @@ namespace XamCnblogs.UI.Controls
         private StackLayout nodataPage;
         //没有登录
         private StackLayout nologinPage;
-        public LoadMoreListView() : base(ListViewCachingStrategy.RecycleElement)
+        public LoadMoreListView() : base()
         {
             Xamarin.Forms.PlatformConfiguration.iOSSpecific.ListView.SetSeparatorStyle(this, Xamarin.Forms.PlatformConfiguration.iOSSpecific.SeparatorStyle.FullWidth);
 
@@ -39,13 +39,13 @@ namespace XamCnblogs.UI.Controls
                                     IsRunning=true,
                                     WidthRequest=20,
                                     HeightRequest=20,
-                                    Color=(Color)Application.Current.Resources["Primary"],
+                                    Color=(Color)Application.Current.Resources["ItemBarText"],
                                     VerticalOptions = LayoutOptions.CenterAndExpand
                                 },
                                 new Label
                                 {
                                     Text = "正在加载中",
-                                    Style=Application.Current.Resources["SecondaryTextStyle"] as Style,
+                                    Style=Application.Current.Resources["ActionTextStyle"] as Style,
                                     VerticalOptions = LayoutOptions.CenterAndExpand
                                 }
                          }
@@ -61,7 +61,7 @@ namespace XamCnblogs.UI.Controls
                       new Label
                       {
                            Text = "没有更多了",
-                           Style=Application.Current.Resources["SecondaryTextStyle"] as Style,
+                           Style=Application.Current.Resources["ActionTextStyle"] as Style,
                             VerticalOptions = LayoutOptions.CenterAndExpand
                        }
                  }
@@ -78,14 +78,14 @@ namespace XamCnblogs.UI.Controls
                             new Label
                             {
                                 Text = "似乎出了点问题",
-                                Style = Application.Current.Resources["SecondaryTextStyle"] as Style      ,
+                                Style = Application.Current.Resources["ActionTextStyle"] as Style      ,
                                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                             },
                             new Label
                             {
                                 Text = "重新加载",
-                                Style = Application.Current.Resources["SecondaryTextStyle"] as Style,
-                                TextColor=(Color)Application.Current.Resources["Primary"],
+                                Style = Application.Current.Resources["ActionTextStyle"] as Style,
+                                TextColor=(Color)Application.Current.Resources["ItemBarText"],
                                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                             }
                         }
@@ -109,7 +109,7 @@ namespace XamCnblogs.UI.Controls
                       new Label
                       {
                            Text = "还没有内容",
-                           Style=Application.Current.Resources["SecondaryTextStyle"] as Style,
+                           Style=Application.Current.Resources["ActionTextStyle"] as Style,
                             VerticalOptions = LayoutOptions.CenterAndExpand
                        }
                  }
@@ -124,7 +124,7 @@ namespace XamCnblogs.UI.Controls
                       new Label
                       {
                            Text = "加载失败，点击重试",
-                           Style=Application.Current.Resources["SecondaryTextStyle"] as Style,
+                           Style=Application.Current.Resources["ActionTextStyle"] as Style,
                             VerticalOptions = LayoutOptions.CenterAndExpand
                        }
                  }
@@ -149,14 +149,14 @@ namespace XamCnblogs.UI.Controls
                             new Label
                             {
                                 Text = "还未登录",
-                                Style = Application.Current.Resources["SecondaryTextStyle"] as Style      ,
+                                Style = Application.Current.Resources["ActionTextStyle"] as Style      ,
                                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                             },
                             new Label
                             {
                                 Text = "马上登录",
-                                Style = Application.Current.Resources["SecondaryTextStyle"] as Style,
-                                TextColor=(Color)Application.Current.Resources["Primary"],
+                                Style = Application.Current.Resources["ActionTextStyle"] as Style,
+                                TextColor=(Color)Application.Current.Resources["ItemBarText"],
                                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                             }
                         }
@@ -249,5 +249,19 @@ namespace XamCnblogs.UI.Controls
                     break;
             }
         }
+        
+        public static readonly BindableProperty HasFloatingViewProperty = BindableProperty.Create(propertyName: nameof(HasFloatingView),
+                returnType: typeof(bool),
+                declaringType: typeof(LoadMoreListView),
+                defaultValue: false);
+        public bool HasFloatingView {
+            get { return (bool)GetValue(HasFloatingViewProperty); }
+            set { SetValue(HasFloatingViewProperty, value); }
+        }
+        public void OnFloatingChanged(bool e) {
+            FloatingChanged?.Invoke(this, e);
+        }
+        public event OnFloatingChangedEventHandler FloatingChanged;
     }
+    public delegate void OnFloatingChangedEventHandler(object sender, bool e);
 }

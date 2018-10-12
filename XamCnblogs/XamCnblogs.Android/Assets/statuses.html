@@ -87,6 +87,11 @@
                 }
             }
         });
+        function scrollToComments() {
+            if (app.hasContent) {
+                $("html,body").animate({ scrollTop: $(".comments").offset().top }, 1000);
+            }
+        }
         function loadReload() {
             if (app.loadStatus == 0 || app.loadStatus == 2)
                 reload();

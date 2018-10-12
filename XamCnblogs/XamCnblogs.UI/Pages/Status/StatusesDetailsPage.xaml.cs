@@ -21,6 +21,7 @@ namespace XamCnblogs.UI.Pages.Status
         StatusesDetailsViewModel ViewModel => vm ?? (vm = BindingContext as StatusesDetailsViewModel);
         StatusesDetailsViewModel vm;
         Statuses statuses;
+        StatusesCommentPopupPage popupPage;
 
         public StatusesDetailsPage(Statuses statuses)
         {
@@ -63,8 +64,8 @@ namespace XamCnblogs.UI.Pages.Status
             var model = JsonConvert.SerializeObject(statuses);
             await formsWebView.InjectJavascriptAsync("updateModel(" + model + ");");
         }
-        void OnScrollComment(object sender, EventArgs args)
-        {
+        async void OnScrollComment(object sender, EventArgs args) {
+            await formsWebView.InjectJavascriptAsync("scrollToComments();");
         }
         async void OnShowComment(object sender, EventArgs args)
         {
@@ -74,9 +75,9 @@ namespace XamCnblogs.UI.Pages.Status
             }
             else
             {
-                var page = new StatusesCommentPopupPage(statuses, new Action<StatusesComments>(OnResult));
-                if (page != null && Navigation != null)
-                    await Navigation.PushPopupAsync(page);
+                popupPage = new StatusesCommentPopupPage(statuses, new Action<StatusesComments>(OnResult));
+                if (popupPage != null && Navigation != null)
+                    await Navigation.PushPopupAsync(popupPage);
             }
         }
         async void OnResult(StatusesComments result)
@@ -86,6 +87,14 @@ namespace XamCnblogs.UI.Pages.Status
                 ViewModel.AddComment(result);
                 await formsWebView.InjectJavascriptAsync("updateComment(" + JsonConvert.SerializeObject(result) + ");");
             }
+        }
+        protected override bool OnBackButtonPressed() {
+            if (popupPage != null) {
+                Navigation.RemovePopupPageAsync(popupPage);
+                popupPage = null;
+                return true;
+            }
+            return base.OnBackButtonPressed();
         }
     }
 }

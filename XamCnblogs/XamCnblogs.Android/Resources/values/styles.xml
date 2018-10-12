@@ -12,6 +12,10 @@
     <item name="android:windowBackground">@color/window_background</item>
     <item name="actionBarSize">45dp</item>
   </style>
+  <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
+    <item name="colorControlNormal">@color/action_text</item>
+    <item name="colorControlHighlight">@color/action_text</item>
+  </style>
 
   <style name="SplashTheme" parent="SplashTheme.Base">
     <item name="android:windowTranslucentNavigation">true</item>

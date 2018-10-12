@@ -9,7 +9,11 @@ namespace XamCnblogs.UI.Controls
             if (Device.RuntimePlatform == Device.iOS)
             {
                 HasShadow = false;
-                BorderColor = (Color)Application.Current.Resources["MoreSecondaryText"];
+                BorderColor = (Color)Application.Current.Resources["Divider"];
+                CornerRadius = 0;
+            }
+            else
+            {
                 CornerRadius = 0;
             }
         }

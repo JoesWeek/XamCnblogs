@@ -1,30 +1,28 @@
 ﻿using Xamarin.Forms;
+using XamCnblogs.UI.Pages.Account;
+using XamCnblogs.UI.Pages.Article;
+using XamCnblogs.UI.Pages.New;
+using XamCnblogs.UI.Pages.Question;
+using XamCnblogs.UI.Pages.Status;
 
-namespace XamCnblogs.UI.Controls
-{
-    public class HomeTabbedPage : TabbedPage
-    {
-        public HomeTabbedPage()
-        {
+namespace XamCnblogs.UI.Controls {
+    public class HomeTabbedPage : TabbedPage {
+        bool hasInitialization;
+        public HomeTabbedPage() {
 
         }
-        public static readonly BindableProperty HasFloatingActionButtonProperty = BindableProperty.Create(propertyName: nameof(HasFloatingActionButton),
-                returnType: typeof(bool),
-                declaringType: typeof(HomeTabbedPage),
-                defaultValue: false);
-        public bool HasFloatingActionButton
-        {
-            get { return (bool)GetValue(HasFloatingActionButtonProperty); }
-            set { SetValue(HasFloatingActionButtonProperty, value); }
-        }
-        public static readonly BindableProperty ToggleFloatingActionButtonProperty = BindableProperty.Create(propertyName: nameof(ToggleFloatingActionButton),
-                returnType: typeof(bool),
-                declaringType: typeof(HomeTabbedPage),
-                defaultValue: false);
-        public bool ToggleFloatingActionButton
-        {
-            get { return (bool)GetValue(ToggleFloatingActionButtonProperty); }
-            set { SetValue(ToggleFloatingActionButtonProperty, value); }
+        protected override void OnAppearing() {
+            base.OnAppearing();
+
+            if (!hasInitialization) {
+                this.Children.Add(new ArticlesTopTabbedPage());
+                this.Children.Add(new NewsTopTabbedPage());
+                this.Children.Add(new StatusesTopTabbedPage());
+                this.Children.Add(new QuestionsTopTabbedPage());
+                this.Children.Add(new AccountPage());
+
+                hasInitialization = true;
+            }
         }
     }
 }

@@ -16,23 +16,23 @@
                 <ColumnDefinition Width="50"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Row="0" Grid.Column="0" Text="标题" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Style="{StaticResource SecondaryTextStyle}"/>
+            <Label Grid.Row="0" Grid.Column="0" Text="标题" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Style="{StaticResource ActionTextStyle}"/>
             <controls:XamEntry 
                 x:Name="entryTitle"
                 Grid.Row="0" 
                 Grid.Column="1" 
                 VerticalOptions="CenterAndExpand"
                 Placeholder="简明的将问题描述清楚"
-                Style="{StaticResource SecondaryTextStyle}"/>
+                Style="{StaticResource ActionTextStyle}"/>
             <controls:HeaderDivider  Grid.Row="1" Grid.Column="1"/>
-            <Label Grid.Row="2" Grid.Column="0" Text="标签" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Style="{StaticResource SecondaryTextStyle}"/>
+            <Label Grid.Row="2" Grid.Column="0" Text="标签" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Style="{StaticResource ActionTextStyle}"/>
             <controls:XamEntry 
                 x:Name="entryTags"
                 Grid.Row="2" 
                 Grid.Column="1" 
                 VerticalOptions="CenterAndExpand"
                 Placeholder="最多可以添加5个Tag"
-                Style="{StaticResource SecondaryTextStyle}"/>
+                Style="{StaticResource ActionTextStyle}"/>
             <controls:HeaderDivider  Grid.Row="3" Grid.Column="1"/>
             <controls:XamEditor 
                 x:Name="editorContent"
@@ -40,7 +40,7 @@
                 Grid.ColumnSpan="2"
                 VerticalOptions="FillAndExpand"
                 Placeholder="详细描述您所遇到的问题"
-                Style="{StaticResource SecondaryTextStyle}"/>
+                Style="{StaticResource ActionTextStyle}"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

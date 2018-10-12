@@ -26,17 +26,17 @@
                     <Label
                         x:Name="UserName"
                                    Text="JoesWeek"
-                                   Style="{StaticResource PrimaryTextStyle}"
+                                   Style="{StaticResource TitleTextStyle}"
                                    VerticalOptions="CenterAndExpand"/>
                     <Label
                         x:Name="UserSeniority"
                                    Text="园龄：11个月"
-                                   Style="{StaticResource SecondaryTextStyle}"
+                                   Style="{StaticResource ActionTextStyle}"
                                    VerticalOptions="CenterAndExpand"/>
                     <Label
                         x:Name="Login"
                                    Text="点击登录"
-                                   Style="{StaticResource PrimaryTextStyle}"
+                                   Style="{StaticResource TitleTextStyle}"
                                    VerticalOptions="CenterAndExpand"/>
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnLogin"/>
@@ -60,7 +60,7 @@
                     VerticalOptions="CenterAndExpand">
                     <Label
                                    Text="我的博文"
-                                   Style="{StaticResource PrimaryTextStyle}" VerticalOptions="CenterAndExpand"/>
+                                   Style="{StaticResource TitleTextStyle}" VerticalOptions="CenterAndExpand"/>
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnBlog"/>
                     </StackLayout.GestureRecognizers>
@@ -71,7 +71,7 @@
                     VerticalOptions="CenterAndExpand">
                     <Label
                                    Text="我的收藏"
-                                   Style="{StaticResource PrimaryTextStyle}" VerticalOptions="CenterAndExpand"/>
+                                   Style="{StaticResource TitleTextStyle}" VerticalOptions="CenterAndExpand"/>
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnBookmarks"/>
                     </StackLayout.GestureRecognizers>
@@ -96,7 +96,7 @@
                     VerticalOptions="CenterAndExpand">
                     <Label
                                    Text="设置"
-                                   Style="{StaticResource PrimaryTextStyle}" VerticalOptions="CenterAndExpand"/>
+                                   Style="{StaticResource TitleTextStyle}" VerticalOptions="CenterAndExpand"/>
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnSetting"/>
                     </StackLayout.GestureRecognizers>
@@ -107,7 +107,7 @@
                     VerticalOptions="CenterAndExpand">
                     <Label
                                    Text="关于"
-                                   Style="{StaticResource PrimaryTextStyle}" VerticalOptions="CenterAndExpand"/>
+                                   Style="{StaticResource TitleTextStyle}" VerticalOptions="CenterAndExpand"/>
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnAbout"/>
                     </StackLayout.GestureRecognizers>
@@ -118,7 +118,7 @@
                     VerticalOptions="CenterAndExpand">
                     <Label
                                    Text="意见反馈"
-                                   Style="{StaticResource PrimaryTextStyle}" VerticalOptions="CenterAndExpand"/>
+                                   Style="{StaticResource TitleTextStyle}" VerticalOptions="CenterAndExpand"/>
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnEmail"/>
                     </StackLayout.GestureRecognizers>

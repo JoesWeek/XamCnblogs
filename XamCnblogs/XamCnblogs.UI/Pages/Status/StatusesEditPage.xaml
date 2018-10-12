@@ -9,6 +9,6 @@
             VerticalOptions="FillAndExpand"
             HorizontalOptions="FillAndExpand"
             Placeholder="随便说点什么"
-            Style="{StaticResource SecondaryTextStyle}"/>
+            Style="{StaticResource ActionTextStyle}"/>
     </ContentPage.Content>
 </ContentPage>

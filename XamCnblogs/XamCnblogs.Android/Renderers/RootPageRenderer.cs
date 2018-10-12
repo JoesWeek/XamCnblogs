@@ -188,11 +188,11 @@ namespace XamCnblogs.Droid.Renderers
             if (barFragment == null)
             {
                 barFragment = AppCompat.FragmentContainer.CreateInstance(barPage);
-                transaction.Add(rootContainer.Id, barFragment).Commit();
+                transaction.Add(rootContainer.Id, barFragment).CommitAllowingStateLoss();
             }
             else
             {
-                transaction.Show(barFragment).Commit();
+                transaction.Show(barFragment).CommitAllowingStateLoss();
             }
         }
         void SwitchSearchPage()
@@ -201,11 +201,11 @@ namespace XamCnblogs.Droid.Renderers
             if (searchFragment == null)
             {
                 searchFragment = AppCompat.FragmentContainer.CreateInstance(searchPage);
-                transaction.Add(rootContainer.Id, searchFragment).Commit();
+                transaction.Add(rootContainer.Id, searchFragment).CommitAllowingStateLoss();
             }
             else
             {
-                transaction.Show(searchFragment).Commit();
+                transaction.Show(searchFragment).CommitAllowingStateLoss();
             }
         }
         public void HideBarPage()
@@ -213,7 +213,7 @@ namespace XamCnblogs.Droid.Renderers
             FragmentTransaction transaction = FragmentManager.BeginTransaction();
             if (barFragment != null)
             {
-                transaction.Hide(barFragment).Commit();
+                transaction.Hide(barFragment).CommitAllowingStateLoss();
             }
         }
         public void HideSearchPage()
@@ -221,7 +221,7 @@ namespace XamCnblogs.Droid.Renderers
             FragmentTransaction transaction = FragmentManager.BeginTransaction();
             if (searchFragment != null)
             {
-                transaction.Hide(searchFragment).Commit();
+                transaction.Hide(searchFragment).CommitAllowingStateLoss();
             }
         }
 

@@ -1,102 +1,102 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="24" android:versionName="2.4.1" package="com.android.cnblogs" android:installLocation="auto">
-  <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="25" />
-  <uses-permission android:name="android.permission.INTERNET" />
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-  <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-  <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
-  <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-  <uses-permission android:name="android.permission.READ_LOGS" />
-  <uses-permission android:name="android.permission.CALL_PHONE" />
-  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-  <uses-permission android:name="android.permission.GET_TASKS" />
-  <uses-permission android:name="android.permission.SET_DEBUG_APP" />
-  <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-  <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-  <uses-permission android:name="android.permission.USE_CREDENTIALS" />
-  <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
-  <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-  <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-  <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-  <uses-permission android:name="andorid.permission.CHANGE_CONFIGURATION" />
-  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-  <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-  <uses-permission android:name="android.permission.WAKE_LOCK" />
-  <uses-permission android:name="android.permission.VIBRATE" />
-  <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
-  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-  <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-  <uses-permission android:name="android.permission.RESTART_PACKAGES" />
-  <uses-permission android:name="android.permission.BROADCAST_STICKY" />
-  <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
-  <uses-permission android:name="android.permission.BLUETOOTH" />
-  <uses-permission android:name="android.permission.BATTERY_STATS" />
-  <application android:theme="@style/MainTheme" android:icon="@drawable/ic_launcher" android:label="博客园">
-    <activity android:name="com.tencent.bugly.beta.ui.BetaActivity" android:configChanges="keyboardHidden|orientation|screenSize|locale" android:theme="@android:style/Theme.Translucent" />
-    <!-- 友盟统计 -->
-    <meta-data android:name="UMENG_APPKEY" android:value="" />
-    <meta-data android:name="UMENG_CHANNEL" android:value="" />
-    <!-- tencent -->
-    <activity android:name="com.umeng.qq.tencent.AuthActivity" android:launchMode="singleTask" android:noHistory="true">
-      <intent-filter>
-        <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.DEFAULT" />
-        <category android:name="android.intent.category.BROWSABLE" />
-        <data android:scheme="tencent100424468" />
-      </intent-filter>
-    </activity>
-    <activity android:name="com.umeng.qq.tencent.AssistActivity" android:configChanges="orientation|keyboardHidden|screenSize" android:screenOrientation="portrait" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-    <activity android:name=".WBShareActivity" android:configChanges="keyboardHidden|orientation" android:screenOrientation="portrait">
-      <intent-filter>
-        <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
-        <category android:name="android.intent.category.DEFAULT" />
-      </intent-filter>
-    </activity>
-    <!-- 信鸽推送 begin -->
-    <!-- 【必须】 (2.30及以上版新增)展示通知的activity -->
-    <activity android:name="com.tencent.android.tpush.XGPushActivity" android:exported="false" android:theme="@android:style/Theme.Translucent">
-      <intent-filter>
-        <!-- 若使用AndroidStudio，请设置android:name="android.intent.action" -->
-        <action android:name="" />
-      </intent-filter>
-    </activity>
-    <!-- 【必须】 信鸽receiver广播接收 -->
-    <receiver android:name="com.tencent.android.tpush.XGPushReceiver" android:process=":xg_service_v3">
-      <intent-filter android:priority="0x7fffffff">
-        <!-- 【必须】 信鸽SDK的内部广播 -->
-        <action android:name="com.tencent.android.tpush.action.SDK" />
-        <action android:name="com.tencent.android.tpush.action.INTERNAL_PUSH_MESSAGE" />
-        <!-- 【必须】 系统广播：开屏和网络切换 -->
-        <action android:name="android.intent.action.USER_PRESENT" />
-        <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-        <!-- 【可选】 一些常用的系统广播，增强信鸽service的复活机会，请根据需要选择。当然，你也可以添加APP自定义的一些广播让启动service -->
-        <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
-        <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
-        <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
-      </intent-filter>
-    </receiver>
-    <!-- 【必须】 信鸽service -->
-    <service android:name="com.tencent.android.tpush.service.XGPushServiceV3" android:exported="true" android:persistent="true" android:process=":xg_service_v3" />
-    <!-- 【必须】 提高service的存活率 -->
-    <service android:name="com.tencent.android.tpush.rpc.XGRemoteService" android:exported="true">
-      <intent-filter>
-        <!-- 【必须】 请修改为当前APP包名 .PUSH_ACTION, 如demo的包名为：com.qq.xgdemo -->
-        <action android:name="com.android.cnblogs.PUSH_ACTION" />
-      </intent-filter>
-    </service>
-    <!-- 【必须】 【注意】authorities修改为 包名.AUTH_XGPUSH, 如demo的包名为：com.qq.xgdemo-->
-    <provider android:name="com.tencent.android.tpush.XGPushProvider" android:authorities="com.android.cnblogs.AUTH_XGPUSH" android:exported="true" />
-    <!-- 【必须】 【注意】authorities修改为 包名.TPUSH_PROVIDER, 如demo的包名为：com.qq.xgdemo-->
-    <provider android:name="com.tencent.android.tpush.SettingsContentProvider" android:authorities="com.android.cnblogs.TPUSH_PROVIDER" android:exported="false" />
-    <!-- 【必须】 【注意】authorities修改为 包名.TENCENT.MID.V3, 如demo的包名为：com.qq.xgdemo-->
-    <provider android:name="com.tencent.mid.api.MidProvider" android:authorities="com.android.cnblogs.TENCENT.MID.V3" android:exported="true"></provider>
-    <!-- 【必须】 请将YOUR_ACCESS_ID修改为APP的AccessId，“21”开头的10位数字，中间没空格 -->
-    <meta-data android:name="XG_V2_ACCESS_ID" android:value="2100279713" />
-    <!-- 【必须】 请将YOUR_ACCESS_KEY修改为APP的AccessKey，“A”开头的12位字符串，中间没空格 -->
-    <meta-data android:name="XG_V2_ACCESS_KEY" android:value="A3689MYYJ9HY" />
-    <!-- 信鸽推送 end -->
-  </application>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="27" android:versionName="2.5.2" package="com.android.cnblogs" android:installLocation="auto">
+	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="28" />
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+	<uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+	<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+	<uses-permission android:name="android.permission.READ_LOGS" />
+	<uses-permission android:name="android.permission.CALL_PHONE" />
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+	<uses-permission android:name="android.permission.GET_TASKS" />
+	<uses-permission android:name="android.permission.SET_DEBUG_APP" />
+	<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
+	<uses-permission android:name="android.permission.USE_CREDENTIALS" />
+	<uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+	<uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+	<uses-permission android:name="andorid.permission.CHANGE_CONFIGURATION" />
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+	<uses-permission android:name="android.permission.WAKE_LOCK" />
+	<uses-permission android:name="android.permission.VIBRATE" />
+	<uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+	<uses-permission android:name="android.permission.WRITE_SETTINGS" />
+	<uses-permission android:name="android.permission.RESTART_PACKAGES" />
+	<uses-permission android:name="android.permission.BROADCAST_STICKY" />
+	<uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+	<uses-permission android:name="android.permission.BLUETOOTH" />
+	<uses-permission android:name="android.permission.BATTERY_STATS" />
+	<application android:theme="@style/MainTheme" android:label="博客园" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:supportsRtl="true">
+		<activity android:name="com.tencent.bugly.beta.ui.BetaActivity" android:configChanges="keyboardHidden|orientation|screenSize|locale" android:theme="@android:style/Theme.Translucent" />
+		<!-- 友盟统计 -->
+		<meta-data android:name="UMENG_APPKEY" android:value="" />
+		<meta-data android:name="UMENG_CHANNEL" android:value="" />
+		<!-- tencent -->
+		<activity android:name="com.umeng.qq.tencent.AuthActivity" android:launchMode="singleTask" android:noHistory="true">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data android:scheme="tencent100424468" />
+			</intent-filter>
+		</activity>
+		<activity android:name="com.umeng.qq.tencent.AssistActivity" android:configChanges="orientation|keyboardHidden|screenSize" android:screenOrientation="portrait" android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+		<activity android:name=".WBShareActivity" android:configChanges="keyboardHidden|orientation" android:screenOrientation="portrait">
+			<intent-filter>
+				<action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+		</activity>
+		<!-- 信鸽推送 begin -->
+		<!-- 【必须】 (2.30及以上版新增)展示通知的activity -->
+		<activity android:name="com.tencent.android.tpush.XGPushActivity" android:exported="false" android:theme="@android:style/Theme.Translucent">
+			<intent-filter>
+				<!-- 若使用AndroidStudio，请设置android:name="android.intent.action" -->
+				<action android:name="" />
+			</intent-filter>
+		</activity>
+		<!-- 【必须】 信鸽receiver广播接收 -->
+		<receiver android:name="com.tencent.android.tpush.XGPushReceiver" android:process=":xg_service_v3">
+			<intent-filter android:priority="0x7fffffff">
+				<!-- 【必须】 信鸽SDK的内部广播 -->
+				<action android:name="com.tencent.android.tpush.action.SDK" />
+				<action android:name="com.tencent.android.tpush.action.INTERNAL_PUSH_MESSAGE" />
+				<!-- 【必须】 系统广播：开屏和网络切换 -->
+				<action android:name="android.intent.action.USER_PRESENT" />
+				<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+				<!-- 【可选】 一些常用的系统广播，增强信鸽service的复活机会，请根据需要选择。当然，你也可以添加APP自定义的一些广播让启动service -->
+				<action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
+				<action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+				<action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+			</intent-filter>
+		</receiver>
+		<!-- 【必须】 信鸽service -->
+		<service android:name="com.tencent.android.tpush.service.XGPushServiceV3" android:exported="true" android:persistent="true" android:process=":xg_service_v3" />
+		<!-- 【必须】 提高service的存活率 -->
+		<service android:name="com.tencent.android.tpush.rpc.XGRemoteService" android:exported="true">
+			<intent-filter>
+				<!-- 【必须】 请修改为当前APP包名 .PUSH_ACTION, 如demo的包名为：com.qq.xgdemo -->
+				<action android:name="com.android.cnblogs.PUSH_ACTION" />
+			</intent-filter>
+		</service>
+		<!-- 【必须】 【注意】authorities修改为 包名.AUTH_XGPUSH, 如demo的包名为：com.qq.xgdemo-->
+		<provider android:name="com.tencent.android.tpush.XGPushProvider" android:authorities="com.android.cnblogs.AUTH_XGPUSH" android:exported="true" />
+		<!-- 【必须】 【注意】authorities修改为 包名.TPUSH_PROVIDER, 如demo的包名为：com.qq.xgdemo-->
+		<provider android:name="com.tencent.android.tpush.SettingsContentProvider" android:authorities="com.android.cnblogs.TPUSH_PROVIDER" android:exported="false" />
+		<!-- 【必须】 【注意】authorities修改为 包名.TENCENT.MID.V3, 如demo的包名为：com.qq.xgdemo-->
+		<provider android:name="com.tencent.mid.api.MidProvider" android:authorities="com.android.cnblogs.TENCENT.MID.V3" android:exported="true"></provider>
+		<!-- 【必须】 请将YOUR_ACCESS_ID修改为APP的AccessId，“21”开头的10位数字，中间没空格 -->
+		<meta-data android:name="XG_V2_ACCESS_ID" android:value="" />
+		<!-- 【必须】 请将YOUR_ACCESS_KEY修改为APP的AccessKey，“A”开头的12位字符串，中间没空格 -->
+		<meta-data android:name="XG_V2_ACCESS_KEY" android:value="" />
+		<!-- 信鸽推送 end -->
+	</application>
 </manifest>

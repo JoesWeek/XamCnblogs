@@ -10,6 +10,6 @@
             VerticalOptions="FillAndExpand"
             HorizontalOptions="FillAndExpand"
             Placeholder="设置个性小尾巴"
-            Style="{StaticResource SecondaryTextStyle}"/>
+            Style="{StaticResource ActionTextStyle}"/>
     </ContentPage.Content>
 </ContentPage>

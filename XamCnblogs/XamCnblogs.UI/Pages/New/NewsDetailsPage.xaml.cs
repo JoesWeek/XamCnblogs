@@ -22,6 +22,7 @@ namespace XamCnblogs.UI.Pages.New
         NewsDetailsViewModel ViewModel => vm ?? (vm = BindingContext as NewsDetailsViewModel);
         NewsDetailsViewModel vm;
         News news;
+        NewsCommentPopupPage popupPage;
 
         public NewsDetailsPage(News news)
         {
@@ -80,8 +81,8 @@ namespace XamCnblogs.UI.Pages.New
         {
             RefreshNews();
         }
-        void OnScrollComment(object sender, EventArgs args)
-        {
+        async void OnScrollComment(object sender, EventArgs args) {
+            await formsWebView.InjectJavascriptAsync("scrollToComments();");
         }
         async void OnShowComment(object sender, EventArgs args)
         {
@@ -91,8 +92,8 @@ namespace XamCnblogs.UI.Pages.New
             }
             else
             {
-                var page = new NewsCommentPopupPage(news, new Action<NewsComments>(OnResult));
-                await Navigation.PushPopupAsync(page);
+                popupPage = new NewsCommentPopupPage(news, new Action<NewsComments>(OnResult));
+                await Navigation.PushPopupAsync(popupPage);
             }
         }
         private async void OnResult(NewsComments result)
@@ -114,6 +115,14 @@ namespace XamCnblogs.UI.Pages.New
                 var url = "https://news.cnblogs.com/n/" + news.Id + "/";
                 await NavigationService.PushAsync(Navigation, new BookmarksEditPage(new Bookmarks() { Title = news.Title, LinkUrl = url, FromCNBlogs = true }));
             }
+        }
+        protected override bool OnBackButtonPressed() {
+            if (popupPage != null) {
+                Navigation.RemovePopupPageAsync(popupPage);
+                popupPage = null;
+                return true;
+            }
+            return base.OnBackButtonPressed();
         }
     }
 }

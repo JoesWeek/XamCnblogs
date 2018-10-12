@@ -2,4 +2,6 @@
 <resources>
   <string name="Hello">Hello World, Click Me!</string>
   <string name="ApplicationName">$projectname$</string>
+  <string name="umeng_sharebutton_copy">复制链接</string>
+  <string name="umeng_sharebutton_copyurl">浏览器打开</string>
 </resources>

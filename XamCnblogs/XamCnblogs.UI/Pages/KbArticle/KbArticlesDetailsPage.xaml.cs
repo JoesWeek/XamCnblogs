@@ -24,8 +24,22 @@ namespace XamCnblogs.UI.Pages.KbArticle
             this.kbArticles = kbArticles;
             BindingContext = new KbArticlesDetailsViewModel(kbArticles);
 
-            if (Device.Android == Device.RuntimePlatform)
-            {
+            var bookmarks = new ToolbarItem {
+                Text = "收藏",
+                Command = new Command(async () => {
+                    if (UserTokenSettings.Current.HasExpiresIn()) {
+                        MessagingService.Current.SendMessage(MessageKeys.NavigateLogin);
+                    }
+                    else {
+                        var url = "http://kb.cnblogs.com/page/" + kbArticles.Id + "/";
+                        await NavigationService.PushAsync(Navigation, new BookmarksEditPage(new Bookmarks() { Title = kbArticles.Title, LinkUrl = url, FromCNBlogs = true }));
+                    }
+                }),
+                Icon = "icon_bookmarks.png"
+            };
+            ToolbarItems.Add(bookmarks);
+
+            if (Device.Android == Device.RuntimePlatform) {
                 var cancel = new ToolbarItem
                 {
                     Text = "分享",
@@ -54,15 +68,6 @@ namespace XamCnblogs.UI.Pages.KbArticle
         }
         async void OnBookmarks(object sender, EventArgs args)
         {
-            if (UserTokenSettings.Current.HasExpiresIn())
-            {
-                MessagingService.Current.SendMessage(MessageKeys.NavigateLogin);
-            }
-            else
-            {
-                var url = "http://kb.cnblogs.com/page/" + kbArticles.Id + "/";
-                await NavigationService.PushAsync(Navigation, new BookmarksEditPage(new Bookmarks() { Title = kbArticles.Title, LinkUrl = url, FromCNBlogs = true }));
-            }
         }
     }
 }
